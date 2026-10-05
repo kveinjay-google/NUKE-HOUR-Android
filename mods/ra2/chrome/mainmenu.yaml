@@ -1,0 +1,608 @@
+Container@MAINMENU:
+	Logic: MainMenuLogic
+	Children:
+		LogicKeyListener@GLOBAL_KEYHANDLER:
+			Logic: MusicHotkeyLogic, ScreenshotHotkeyLogic, MuteHotkeyLogic
+				StopMusicKey: StopMusic
+				PauseMusicKey: PauseMusic
+				PrevMusicKey: PrevMusic
+				NextMusicKey: NextMusic
+				TakeScreenshotKey: TakeScreenshot
+				MuteAudioKey: ToggleMute
+		MenuVideoBackground@MENU_BG_STANDARD:
+			Profile: standard
+			Background: cc-soviet-shell-standard
+			X: 0
+			Y: 0
+			Width: WINDOW_WIDTH
+			Height: WINDOW_HEIGHT
+			ClickThrough: true
+			PreserveAspectRatio: false
+		MenuVideoBackground@MENU_BG_TABLET:
+			Profile: tablet
+			Background: cc-soviet-shell-tablet
+			X: 0
+			Y: 0
+			Width: WINDOW_WIDTH
+			Height: WINDOW_HEIGHT
+			ClickThrough: true
+			Visible: false
+			PreserveAspectRatio: false
+		MenuVideoBackground@MENU_BG_ULTRAWIDE:
+			Profile: ultrawide
+			Background: cc-soviet-shell-ultrawide
+			X: 0
+			Y: 0
+			Width: WINDOW_WIDTH
+			Height: WINDOW_HEIGHT
+			ClickThrough: true
+			Visible: false
+			PreserveAspectRatio: false
+		# Soft vignette frame — no heavy red chrome border
+		Background@BORDER:
+			Background: menu-panel
+			X: 24
+			Y: 24
+			Width: WINDOW_WIDTH - 48
+			Height: WINDOW_HEIGHT - 48
+			ClickThrough: true
+			Visible: false
+		Label@VERSION_LABEL:
+			Logic: VersionLabelLogic
+			X: WINDOW_WIDTH - 420
+			Y: WINDOW_HEIGHT - 36
+			Width: 400
+			Height: 25
+			Align: Right
+			Font: Small
+			Shadow: true
+		# Keep home clean even when the player enables in-game telemetry.
+		Container@PERFORMANCE_INFO:
+			Logic: PerfDebugLogic
+			Visible: false
+			Children:
+				Label@PERF_TEXT:
+					X: 24
+					Y: 24
+					Width: 310
+					Height: 90
+					Contrast: true
+				Background@GRAPH_BG:
+					ClickThrough: true
+					Background: dialog4
+					X: WINDOW_WIDTH - 240
+					Y: WINDOW_HEIGHT - 240
+					Width: 210
+					Height: 210
+					Children:
+						PerfGraph@GRAPH:
+							X: 5
+							Y: 5
+							Width: 200
+							Height: 200
+		Container@MENUS:
+			X: 0
+			Y: 0
+			Width: WINDOW_WIDTH
+			Height: WINDOW_HEIGHT
+			Children:
+				Container@MAIN_MENU:
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
+					Children:
+						AdaptiveRouteButton@SINGLEPLAYER_BUTTON:
+							X: WINDOW_WIDTH * 59 / 1000
+							Y: WINDOW_HEIGHT * 286 / 1000
+							Width: WINDOW_WIDTH * 355 / 1000
+							Height: WINDOW_HEIGHT * 145 / 1000
+							VisualHeight: 0
+							Background: cc-soviet-hit-target
+							Text: label-singleplayer-title
+							Font: BigBold
+							TextColor: F8FBFF
+							Contrast: true
+							Shadow: true
+							Children:
+								MenuIconLabel@WORDMARK:
+									IconName: singleplayer
+									Route: true
+									X: 0
+									Y: 0
+									Width: PARENT_WIDTH
+									Height: PARENT_HEIGHT
+									AlignLeft: true
+									ImageCollection: cc-soviet-wordmarks-zh
+									ImageName: singleplayer-normal
+								Label@CHEVRON:
+									X: PARENT_WIDTH * 88 / 100
+									Y: 0
+									Width: PARENT_WIDTH * 10 / 100
+									Height: PARENT_HEIGHT
+									Text: ›
+									Font: BigBold
+									Align: Center
+									VAlign: Middle
+						AdaptiveRouteButton@MULTIPLAYER_BUTTON:
+							ArtworkRow: 1
+							X: WINDOW_WIDTH * 59 / 1000
+							Y: WINDOW_HEIGHT * 446 / 1000
+							Width: WINDOW_WIDTH * 355 / 1000
+							Height: WINDOW_HEIGHT * 145 / 1000
+							VisualHeight: 0
+							Background: cc-soviet-hit-target
+							Text: label-multiplayer-title
+							Font: BigBold
+							TextColor: F8FBFF
+							Contrast: true
+							Shadow: true
+							Children:
+								MenuIconLabel@WORDMARK:
+									IconName: multiplayer
+									Route: true
+									X: 0
+									Y: 0
+									Width: PARENT_WIDTH
+									Height: PARENT_HEIGHT
+									AlignLeft: true
+									ImageCollection: cc-soviet-wordmarks-zh
+									ImageName: multiplayer-normal
+								Label@CHEVRON:
+									X: PARENT_WIDTH * 88 / 100
+									Y: 0
+									Width: PARENT_WIDTH * 10 / 100
+									Height: PARENT_HEIGHT
+									Text: ›
+									Font: BigBold
+									Align: Center
+									VAlign: Middle
+						AdaptiveRouteButton@CAMPAIGN_BUTTON:
+							ArtworkRow: 2
+							X: WINDOW_WIDTH * 59 / 1000
+							Y: WINDOW_HEIGHT * 627 / 1000
+							Width: WINDOW_WIDTH * 355 / 1000
+							Height: WINDOW_HEIGHT * 145 / 1000
+							VisualHeight: 0
+							Background: cc-soviet-hit-target
+							Text: label-campaign-title
+							Font: BigBold
+							TextColor: F8FBFF
+							Contrast: true
+							Shadow: true
+							Children:
+								MenuIconLabel@WORDMARK:
+									IconName: campaign
+									Route: true
+									X: 0
+									Y: 0
+									Width: PARENT_WIDTH
+									Height: PARENT_HEIGHT
+									AlignLeft: true
+									ImageCollection: cc-soviet-wordmarks-zh
+									ImageName: campaign-normal
+								Label@CHEVRON:
+									X: PARENT_WIDTH * 88 / 100
+									Y: 0
+									Width: PARENT_WIDTH * 10 / 100
+									Height: PARENT_HEIGHT
+									Text: ›
+									Font: BigBold
+									Align: Center
+									VAlign: Middle
+						MacHomeUtilityButton@SETTINGS_BUTTON:
+							X: WINDOW_WIDTH * 31 / 1000
+							Y: WINDOW_HEIGHT * 878 / 1000
+							Width: WINDOW_WIDTH * 230 / 1000
+							Height: WINDOW_HEIGHT * 82 / 1000
+							VisualHeight: 0
+							Background: cc-soviet-utility
+							Text: button-settings-title
+							Font: Bold
+							Children:
+								MenuIconLabel@WORDMARK:
+									IconName: settings
+									Route: false
+									X: 0
+									Y: 0
+									Width: PARENT_WIDTH
+									Height: PARENT_HEIGHT
+									AlignLeft: true
+									ImageCollection: cc-soviet-wordmarks-zh
+									ImageName: settings-normal
+						MacHomeUtilityButton@THANKS_BUTTON:
+							X: WINDOW_WIDTH * 277 / 1000
+							Y: WINDOW_HEIGHT * 878 / 1000
+							Width: WINDOW_WIDTH * 230 / 1000
+							Height: WINDOW_HEIGHT * 82 / 1000
+							VisualHeight: 0
+							Background: cc-soviet-utility
+							Text: button-main-menu-special-thanks
+							Font: Bold
+							Children:
+								MenuIconLabel@WORDMARK:
+									IconName: thanks
+									Route: false
+									X: 0
+									Y: 0
+									Width: PARENT_WIDTH
+									Height: PARENT_HEIGHT
+									AlignLeft: true
+									ImageCollection: cc-soviet-compact-wordmarks-thanks-zh
+									ImageName: thanks-normal
+						MacHomeUtilityButton@ABOUT_BUTTON:
+							X: WINDOW_WIDTH * 507 / 1000
+							Y: WINDOW_HEIGHT * 878 / 1000
+							Width: WINDOW_WIDTH * 220 / 1000
+							Height: WINDOW_HEIGHT * 82 / 1000
+							VisualHeight: 0
+							Background: cc-soviet-utility
+							Text: button-main-menu-about
+							Font: BigBold
+							Children:
+								MenuIconLabel@WORDMARK:
+									IconName: about
+									Route: false
+									X: 0
+									Y: 0
+									Width: PARENT_WIDTH
+									Height: PARENT_HEIGHT
+									ImageCollection: cc-soviet-wordmarks-zh
+									ImageName: about-normal
+						MacHomeUtilityButton@QUIT_BUTTON:
+							X: WINDOW_WIDTH * 737 / 1000
+							Y: WINDOW_HEIGHT * 878 / 1000
+							Width: WINDOW_WIDTH * 230 / 1000
+							Height: WINDOW_HEIGHT * 82 / 1000
+							VisualHeight: 0
+							Background: cc-soviet-utility
+							Text: button-quit
+							Font: BigBold
+							Children:
+								MenuIconLabel@WORDMARK:
+									IconName: quit
+									Route: false
+									X: 0
+									Y: 0
+									Width: PARENT_WIDTH
+									Height: PARENT_HEIGHT
+									ImageCollection: cc-soviet-wordmarks-zh
+									ImageName: quit-normal
+						MainMenuSlideSelector@SLIDE_SELECTOR:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+				Background@MAP_EDITOR_MENU:
+					Background: menu-panel
+					Width: PARENT_WIDTH
+					Height: 360
+					Children:
+						Label@MAP_EDITOR_MENU_TITLE:
+							X: 0
+							Y: 28
+							Width: PARENT_WIDTH
+							Height: 30
+							Text: label-map-editor-title
+							Align: Center
+							Font: Bold
+							Shadow: true
+						Button@NEW_MAP_BUTTON:
+							X: 28
+							Y: 90
+							Width: 264
+							Height: 46
+							VisualHeight: 0
+							Background: menu-button
+							Text: button-map-editor-new-map
+							Font: Bold
+						Button@LOAD_MAP_BUTTON:
+							X: 28
+							Y: 146
+							Width: 264
+							Height: 46
+							VisualHeight: 0
+							Background: menu-button
+							Text: button-map-editor-load-map
+							Font: Bold
+						Button@BACK_BUTTON:
+							X: 28
+							Key: escape
+							Y: 280
+							Width: 264
+							Height: 46
+							VisualHeight: 0
+							Background: menu-button
+							Text: button-back
+							Font: Bold
+SpecialThanksPanel@SPECIAL_THANKS_PANEL:
+	X: 0
+	Y: 0
+	Width: WINDOW_WIDTH
+	Height: WINDOW_HEIGHT
+	Background: thanks-desktop-v3
+	PreserveAspectRatio: true
+	ClickThrough: false
+	Children:
+		Label@TITLE:
+			X: PARENT_WIDTH * 37 / 100
+			Y: PARENT_HEIGHT * 85 / 1000
+			Width: PARENT_WIDTH * 26 / 100
+			Height: PARENT_HEIGHT * 12 / 100
+			Align: Center
+			VAlign: Middle
+			Font: SettingsTitle
+			TextColor: F2D5A0
+			Shadow: true
+			Text: label-nuke-hour-special-thanks-title
+		Label@INTRO:
+			X: PARENT_WIDTH * 27 / 100
+			Y: PARENT_HEIGHT * 23 / 100
+			Width: PARENT_WIDTH * 46 / 100
+			Height: PARENT_HEIGHT * 7 / 100
+			Align: Center
+			VAlign: Middle
+			Font: SettingsBold
+			WordWrap: true
+			TextColor: DCCAB0
+			Text: label-nuke-hour-special-thanks-intro
+		SpecialThanksRoll@SUPPORTER_ROLL:
+			X: PARENT_WIDTH * 31 / 100
+			Y: PARENT_HEIGHT * 295 / 1000
+			Width: PARENT_WIDTH * 38 / 100
+			Height: PARENT_HEIGHT * 245 / 1000
+			Children:
+				Label@SUPPORTER_01:
+					X: 0
+					Y: PARENT_HEIGHT * 20 / 100
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT * 22 / 100
+					Align: Center
+					VAlign: Middle
+					Font: SettingsTitle
+					TextColor: F2D5A0
+					Shadow: true
+					Text: 美食
+				Label@SUPPORTER_02:
+					X: 0
+					Y: PARENT_HEIGHT * 75 / 100
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT * 22 / 100
+					Align: Center
+					VAlign: Middle
+					Font: SettingsTitle
+					TextColor: F2D5A0
+					Shadow: true
+					Text: 北海
+				Label@SUPPORTER_03:
+					X: 0
+					Y: PARENT_HEIGHT * 130 / 100
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT * 22 / 100
+					Align: Center
+					VAlign: Middle
+					Font: SettingsTitle
+					TextColor: F2D5A0
+					Shadow: true
+					Text: 小杰
+				Label@SUPPORTER_04:
+					X: 0
+					Y: PARENT_HEIGHT * 185 / 100
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT * 22 / 100
+					Align: Center
+					VAlign: Middle
+					Font: SettingsTitle
+					TextColor: F2D5A0
+					Shadow: true
+					Text: 美食4
+				Label@SUPPORTER_05:
+					X: 0
+					Y: PARENT_HEIGHT * 240 / 100
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT * 22 / 100
+					Align: Center
+					VAlign: Middle
+					Font: SettingsTitle
+					TextColor: F2D5A0
+					Shadow: true
+					Text: 姜
+				Label@SUPPORTER_06:
+					X: 0
+					Y: PARENT_HEIGHT * 295 / 100
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT * 22 / 100
+					Align: Center
+					VAlign: Middle
+					Font: SettingsTitle
+					TextColor: F2D5A0
+					Shadow: true
+					Text: Lonely
+				Label@SUPPORTER_07:
+					X: 0
+					Y: PARENT_HEIGHT * 350 / 100
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT * 22 / 100
+					Align: Center
+					VAlign: Middle
+					Font: SettingsTitle
+					TextColor: F2D5A0
+					Shadow: true
+					Text: 龙华力宏
+				Label@SUPPORTER_08:
+					X: 0
+					Y: PARENT_HEIGHT * 405 / 100
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT * 22 / 100
+					Align: Center
+					VAlign: Middle
+					Font: SettingsTitle
+					TextColor: F2D5A0
+					Shadow: true
+					Text: 许
+				Label@SUPPORTER_09:
+					X: 0
+					Y: PARENT_HEIGHT * 460 / 100
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT * 22 / 100
+					Align: Center
+					VAlign: Middle
+					Font: SettingsTitle
+					TextColor: F2D5A0
+					Shadow: true
+					Text: Zzz77zzZ
+				Label@SUPPORTER_10:
+					X: 0
+					Y: PARENT_HEIGHT * 515 / 100
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT * 22 / 100
+					Align: Center
+					VAlign: Middle
+					Font: SettingsTitle
+					TextColor: F2D5A0
+					Shadow: true
+					Text: Yung
+		Label@PRIVACY_NOTE:
+			X: PARENT_WIDTH * 27 / 100
+			Y: PARENT_HEIGHT * 67 / 100
+			Width: PARENT_WIDTH * 46 / 100
+			Height: PARENT_HEIGHT * 5 / 100
+			Align: Center
+			VAlign: Middle
+			Font: SettingsRegular
+			TextColor: AFA395
+			Text: label-nuke-hour-special-thanks-privacy
+		Button@SUPPORT_BUTTON:
+			X: PARENT_WIDTH * 175 / 1000
+			Y: PARENT_HEIGHT * 8155 / 10000
+			Width: PARENT_WIDTH * 18 / 100
+			Height: PARENT_HEIGHT * 55 / 1000
+			Background: ""
+			Font: SettingsBold
+			Text: button-nuke-hour-special-thanks-support
+		Button@MORE_BUTTON:
+			X: PARENT_WIDTH * 41 / 100
+			Y: PARENT_HEIGHT * 8155 / 10000
+			Width: PARENT_WIDTH * 18 / 100
+			Height: PARENT_HEIGHT * 55 / 1000
+			Background: ""
+			Font: SettingsBold
+			Text: button-nuke-hour-special-thanks-more
+		Button@BACK_BUTTON:
+			X: PARENT_WIDTH * 645 / 1000
+			Y: PARENT_HEIGHT * 8155 / 10000
+			Width: PARENT_WIDTH * 18 / 100
+			Height: PARENT_HEIGHT * 55 / 1000
+			Background: ""
+			Font: SettingsBold
+			Text: button-back
+			Key: escape
+
+StretchBackground@ABOUT_PANEL:
+	X: 0
+	Y: 0
+	Width: WINDOW_WIDTH
+	Height: WINDOW_HEIGHT
+	Background: cc-about-panel
+	PreserveAspectRatio: false
+	ClickThrough: false
+	Children:
+		LogicTicker@ABOUT_LAYOUT_WATCHER:
+		Label@ABOUT_TITLE:
+			X: 48
+			Y: 48
+			Width: PARENT_WIDTH - 96
+			Height: 56
+			Align: Center
+			VAlign: Middle
+			Font: SettingsTitle
+			Text: label-nuke-hour-about-title
+		ScrollPanel@ABOUT_SCROLL:
+			X: 48
+			Y: 120
+			Width: PARENT_WIDTH - 96
+			Height: PARENT_HEIGHT - 240
+			Background: cc-mp-scrollpanel
+			ScrollBarBackground: cc-mp-surface
+			Button: cc-mp-control
+			EnableContentDragging: true
+			ItemSpacing: 20
+			TopBottomSpacing: 20
+			Children:
+				Label@ABOUT_DESCRIPTION:
+					X: 20
+					Width: PARENT_WIDTH - 88
+					Height: 48
+					VAlign: Top
+					Font: SettingsBold
+					WordWrap: true
+					Text: label-nuke-hour-about-description
+				Label@VERSION_CAPTION:
+					X: 20
+					Width: PARENT_WIDTH - 88
+					Height: 48
+					VAlign: Top
+					Font: SettingsBold
+					WordWrap: true
+					Text: label-nuke-hour-about-version
+				Label@VERSION_VALUE:
+					Logic: VersionLabelLogic
+					X: 20
+					Width: PARENT_WIDTH - 88
+					Height: 48
+					VAlign: Top
+					Font: SettingsRegular
+					WordWrap: true
+				Label@COPYRIGHT_TITLE:
+					X: 20
+					Width: PARENT_WIDTH - 88
+					Height: 48
+					VAlign: Top
+					Font: SettingsBold
+					WordWrap: true
+					Text: label-nuke-hour-about-copyright-title
+				Label@COPYRIGHT_PROJECT:
+					X: 20
+					Width: PARENT_WIDTH - 88
+					Height: 48
+					VAlign: Top
+					Font: SettingsRegular
+					WordWrap: true
+					Text: label-nuke-hour-about-copyright-project
+				Label@COPYRIGHT_ENGINE:
+					X: 20
+					Width: PARENT_WIDTH - 88
+					Height: 48
+					VAlign: Top
+					Font: SettingsRegular
+					WordWrap: true
+					Text: label-nuke-hour-about-copyright-engine
+				Label@COPYRIGHT_THIRD_PARTY:
+					X: 20
+					Width: PARENT_WIDTH - 88
+					Height: 48
+					VAlign: Top
+					Font: SettingsRegular
+					WordWrap: true
+					Text: label-nuke-hour-about-copyright-third-party
+				Label@COPYRIGHT_IMPORT:
+					X: 20
+					Width: PARENT_WIDTH - 88
+					Height: 48
+					VAlign: Top
+					Font: SettingsRegular
+					WordWrap: true
+					Text: label-nuke-hour-about-copyright-import
+		Button@WEBSITE_BUTTON:
+			Background: settings-v2-control
+			X: 48
+			Y: PARENT_HEIGHT - 104
+			Width: (PARENT_WIDTH - 116) / 2
+			Height: 56
+			Font: SettingsBold
+			Text: button-nuke-hour-about-website
+		Button@BACK_BUTTON:
+			Background: settings-v2-control
+			X: (PARENT_WIDTH + 20) / 2
+			Y: PARENT_HEIGHT - 104
+			Width: (PARENT_WIDTH - 116) / 2
+			Height: 56
+			Font: SettingsBold
+			Text: button-back
+			Key: escape

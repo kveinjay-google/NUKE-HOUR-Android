@@ -1,0 +1,125 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="../../packaging/nukehour-version.props" />
+  <!--
+    Phase 1 Android POC host project (hosts OpenRA from Phase 7 on).
+
+    Scope contract for the POC:
+      - .NET 8 (net8.0-android), same major as the iOS host (net8.0-ios).
+      - ARM64 only (RuntimeIdentifier android-arm64 -> APK ABI arm64-v8a).
+      - Personal sideload package id com.openra.android.personal.
+      - Landscape only; OpenGL ES 3.0+ is required.
+      - No engine upgrade, no SDL3, no NativeAOT in this POC.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net8.0-android</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RuntimeIdentifier>android-arm64</RuntimeIdentifier>
+    <PublicClean Condition="'$(PublicClean)' == ''">true</PublicClean>
+
+	<ApplicationTitle>NUKE HOUR</ApplicationTitle>
+    <ApplicationId>com.openra.android.personal</ApplicationId>
+    <Version>$(NukeHourProductVersion)</Version>
+    <VersionCode>$(NukeHourBuildNumber)</VersionCode>
+    <AndroidVersionName>$(NukeHourProductVersion)</AndroidVersionName>
+    <ApplicationDisplayVersion>$(NukeHourProductVersion)</ApplicationDisplayVersion>
+    <ApplicationVersion>$(NukeHourBuildNumber)</ApplicationVersion>
+
+    <SupportedOSPlatformVersion>24</SupportedOSPlatformVersion>
+    <TargetPlatformVersion>34</TargetPlatformVersion>
+    <AndroidBuildToolsVersion>35.0.0</AndroidBuildToolsVersion>
+
+    <!-- Debug builds use normal reflection; trimming decisions are recorded
+         for Release builds in the phase reports. -->
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+    <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+
+    <!-- Keep run-as support in developer builds; public Release packages are non-debuggable. -->
+    <AndroidDebuggable Condition="'$(Configuration)' == 'Debug'">true</AndroidDebuggable>
+    <AndroidDebuggable Condition="'$(Configuration)' != 'Debug'">false</AndroidDebuggable>
+
+    <AndroidManifest>Properties/AndroidManifest.xml</AndroidManifest>
+
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>OpenRA.Android</RootNamespace>
+    <AssemblyName>OpenRA.Android</AssemblyName>
+  </PropertyGroup>
+  <Target Name="NukeHourVersionCheck" BeforeTargets="PrepareForBuild">
+    <Exec Command="python3 &quot;$(MSBuildProjectDirectory)/../../packaging/nukehour_version.py&quot; check" />
+  </Target>
+
+  <ItemGroup>
+    <!-- SDL2 release-2.30.10 Java glue compiled by the app (see
+         java/org/libsdl/app/NOTICE-SDL2-GLUE.txt). The vendored classes are
+         package-private and AndroidHostBridge is additive, so no managed
+         bindings/callable wrappers are generated; the glue is driven from
+         managed code through raw JNI only. -->
+    <AndroidJavaSource Include="java/**/*.java" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- arm64-v8a native libraries (SDL2 2.30.10; FreeType built for Android
+         and renamed to match the FreeTypeFont DllImport "freetype6"). -->
+    <AndroidNativeLibrary Include="native/arm64-v8a/libSDL2.so" />
+    <AndroidNativeLibrary Include="native/arm64-v8a/libfreetype6.so" />
+    <AndroidNativeLibrary Include="native/arm64-v8a/libnukehour_video_pixels.so" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(PublicClean)' != 'true'">
+    <AndroidAsset Include="../../engine/VERSION">
+      <Link>runtime/engine/VERSION</Link>
+    </AndroidAsset>
+    <!-- Engine runtime assets (from the OpenRA engine archive, not retail):
+         the global mix database maps retail mix entry ids to names. It is
+         embedded in the APK and copied to openra/engine on first launch with
+         an explicit state check (see AndroidOpenRaHost). -->
+    <AndroidAsset Include="../../engine/global mix database.dat">
+      <Link>runtime/global mix database.dat</Link>
+    </AndroidAsset>
+
+    <!-- Plain-APK runtime content: the whole engine/RA2 runtime tree that a
+         release install must be able to provision by itself. Copied to the
+         app support dir on first launch (see AndroidOpenRaHost); only the
+         retail RA2 content is imported by the user later. -->
+    <AndroidAsset Include="../../engine/glsl/**/*">
+      <Link>runtime/engine/glsl/%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="../../engine/mods/common/**/*">
+      <Link>runtime/engine/mods/common/%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="../../engine/mods/common-content/**/*">
+      <Link>runtime/engine/mods/common-content/%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="../../engine/mods/ts/**/*">
+      <Link>runtime/engine/mods/ts/%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="../../engine/mods/ts-content/**/*">
+      <Link>runtime/engine/mods/ts-content/%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="../../mods/ra2/**/*">
+      <Link>runtime/mods/ra2/%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </AndroidAsset>
+    <AndroidAsset Include="../../mods/ra2-content/**/*">
+      <Link>runtime/mods/ra2-content/%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </AndroidAsset>
+  </ItemGroup>
+
+  <!-- Public exports use an explicit, independently audited file inventory.
+       Generate it before evaluation; never fall back to broad source globs. -->
+  <Import Project="$(NukeHourAndroidAssetsProps)" Condition="'$(PublicClean)' == 'true' and Exists('$(NukeHourAndroidAssetsProps)')" />
+  <Target Name="RequireAndroidCleanAssetInventory" BeforeTargets="PrepareForBuild" Condition="'$(PublicClean)' == 'true'">
+    <Error Condition="'$(NukeHourAndroidAssetsProps)' == '' or !Exists('$(NukeHourAndroidAssetsProps)')"
+           Text="PublicClean requires the generated Android resource whitelist." />
+  </Target>
+
+  <ItemGroup>
+    <ProjectReference Include="../../engine/OpenRA.Game/OpenRA.Game.csproj" />
+    <ProjectReference Include="../../engine/OpenRA.Mods.Common/OpenRA.Mods.Common.csproj" />
+    <ProjectReference Include="../../engine/OpenRA.Mods.Cnc/OpenRA.Mods.Cnc.csproj" />
+    <ProjectReference Include="../../OpenRA.Mods.RA2/OpenRA.Mods.RA2.csproj" />
+    <ProjectReference Include="../OpenRA.Platforms.Android/OpenRA.Platforms.Android.csproj" />
+  </ItemGroup>
+</Project>

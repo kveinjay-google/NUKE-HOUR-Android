@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><AllowUnsafeBlocks>true</AllowUnsafeBlocks><Nullable>disable</Nullable></PropertyGroup>
+  <ItemGroup>
+    <Reference Include="OpenRA.Game"><HintPath>../../../engine/bin/OpenRA.Game.dll</HintPath></Reference>
+    <Compile Include="../../OpenRA.Platforms.Android/AndroidSoundEngine.cs" Link="AndroidSoundEngine.cs" />
+  </ItemGroup>
+</Project>

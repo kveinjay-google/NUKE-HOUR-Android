@@ -1,0 +1,97 @@
+Container@ADVANCED_PANEL:
+	Logic: AdvancedSettingsLogic
+	Width: PARENT_WIDTH
+	Height: PARENT_HEIGHT
+	Children:
+		ScrollPanel@SETTINGS_SCROLLPANEL:
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			CollapseHiddenChildren: True
+			TopBottomSpacing: 8
+			ItemSpacing: 12
+			Children:
+				Background@RESOURCE_SECTION_HEADER:
+					X: 5
+					Width: PARENT_WIDTH - 34
+					Height: 28
+					Background: settings-section-header
+					ClickThrough: True
+					Children:
+						Label@LABEL:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Font: Bold
+							Align: Center
+							Text: label-settings-resource-section
+				Container@RESOURCE_ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 60
+					Children:
+						Button@RESOURCE_MANAGEMENT_BUTTON:
+							X: 16
+							Y: 6
+							Width: PARENT_WIDTH - 32
+							Height: 48
+							VisualHeight: 0
+							Text: button-main-menu-content
+							Font: Bold
+				Container@SPACER:
+					Height: 4
+				Background@NETWORK_SECTION_HEADER:
+					X: 5
+					Width: PARENT_WIDTH - 34
+					Height: 28
+					Background: settings-section-header
+					ClickThrough: True
+					Children:
+						Label@LABEL:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Font: Bold
+							Align: Center
+							Text: label-settings-network-section
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 44
+					Children:
+						Container@NAT_DISCOVERY_CONTAINER:
+							X: 16
+							Y: 6
+							Width: PARENT_WIDTH - 32
+							Height: 32
+							Children:
+								Checkbox@NAT_DISCOVERY:
+									Width: PARENT_WIDTH
+									Height: PARENT_HEIGHT
+									Font: Regular
+									Text: checkbox-nat-discovery-container
+				Container@SPACER:
+					Height: 4
+				Background@PERFORMANCE_SECTION_HEADER:
+					X: 5
+					Width: PARENT_WIDTH - 34
+					Height: 28
+					Background: settings-section-header
+					ClickThrough: True
+					Children:
+						Label@LABEL:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Font: Bold
+							Align: Center
+							Text: label-settings-diagnostics-section
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 44
+					Children:
+						Container@PERFTEXT_CHECKBOX_CONTAINER:
+							X: 16
+							Y: 6
+							Width: PARENT_WIDTH - 32
+							Height: 32
+							Children:
+								Checkbox@PERFTEXT_CHECKBOX:
+									Width: PARENT_WIDTH
+									Height: PARENT_HEIGHT
+									Font: Regular
+									Text: checkbox-perftext-container

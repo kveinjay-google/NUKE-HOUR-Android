@@ -1,0 +1,145 @@
+StretchBackground@THREEBUTTON_PROMPT:
+	Logic: IosTouchDialogLogic
+	Background: cc-ingame-confirmation
+	PreserveAspectRatio: false
+	ClickThrough: false
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 780
+	Height: 266
+	Children:
+		Label@PROMPT_TITLE:
+			Width: PARENT_WIDTH
+			Y: 68
+			Height: 42
+			Font: SettingsTitle
+			Align: Center
+		Label@PROMPT_TEXT:
+			X: 80
+			Y: 120
+			Width: PARENT_WIDTH - 160
+			Height: 54
+			Font: SettingsRegular
+			WordWrap: true
+			Align: Center
+		Button@CONFIRM_BUTTON:
+			Background: cc-mp-control
+			X: 75
+			Y: PARENT_HEIGHT - 130
+			Width: 200
+			Height: 52
+			Text: button-prompt-confirm
+			Font: SettingsBold
+			Key: return
+			Visible: false
+		Button@OTHER_BUTTON:
+			Background: cc-mp-control
+			X: (PARENT_WIDTH - WIDTH) / 2
+			Y: PARENT_HEIGHT - 130
+			Width: 200
+			Height: 52
+			Text: button-prompt-other
+			Font: SettingsBold
+			Visible: false
+		Button@CANCEL_BUTTON:
+			Background: cc-mp-control
+			X: PARENT_WIDTH - WIDTH - 75
+			Y: PARENT_HEIGHT - 130
+			Width: 200
+			Height: 52
+			Text: button-cancel
+			Font: SettingsBold
+			Key: escape
+			Visible: false
+
+StretchBackground@TWOBUTTON_PROMPT:
+	Logic: IosTouchDialogLogic
+	Background: cc-ingame-confirmation
+	PreserveAspectRatio: false
+	ClickThrough: false
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 780
+	Height: 266
+	Children:
+		Label@PROMPT_TITLE:
+			Width: PARENT_WIDTH
+			Y: 68
+			Height: 42
+			Font: SettingsTitle
+			Align: Center
+		Label@PROMPT_TEXT:
+			X: 80
+			Y: 120
+			Width: PARENT_WIDTH - 160
+			Height: 54
+			Font: SettingsRegular
+			WordWrap: true
+			Align: Center
+		Button@CONFIRM_BUTTON:
+			Background: cc-mp-control
+			X: 90
+			Y: PARENT_HEIGHT - 130
+			Width: 280
+			Height: 52
+			Text: button-prompt-confirm
+			Font: SettingsBold
+			Key: return
+			Visible: false
+		Button@CANCEL_BUTTON:
+			Background: cc-mp-control
+			X: PARENT_WIDTH - WIDTH - 90
+			Y: PARENT_HEIGHT - 130
+			Width: 280
+			Height: 52
+			Text: button-cancel
+			Font: SettingsBold
+			Key: escape
+			Visible: false
+
+Background@TEXT_INPUT_PROMPT:
+	Logic: IosTouchDialogLogic
+	Background: cc-modal-info
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 720
+	Height: 340
+	Children:
+		Label@PROMPT_TITLE:
+			Width: PARENT_WIDTH
+			Y: 78
+			Height: 42
+			Font: SettingsTitle
+			Align: Center
+		Label@PROMPT_TEXT:
+			X: 64
+			Y: 126
+			Width: PARENT_WIDTH - 128
+			Height: 52
+			Font: SettingsRegular
+			WordWrap: true
+			Align: Center
+		TextField@INPUT_TEXT:
+			X: 64
+			Y: 188
+			Width: PARENT_WIDTH - 128
+			Height: 52
+			Background: cc-mp-field
+		Button@ACCEPT_BUTTON:
+			Background: cc-mp-control
+			X: 64
+			Y: PARENT_HEIGHT - 78
+			Width: 280
+			Height: 52
+			Text: button-text-input-prompt-accept
+			Font: SettingsBold
+			Key: return
+		Button@CANCEL_BUTTON:
+			Background: cc-mp-control
+			X: PARENT_WIDTH - WIDTH - 64
+			Y: PARENT_HEIGHT - 78
+			Width: 280
+			Height: 52
+			Text: button-cancel
+			Font: SettingsBold
+			Key: escape

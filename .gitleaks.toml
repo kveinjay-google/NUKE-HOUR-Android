@@ -1,0 +1,9 @@
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "OpenRA Fluent localization: keyboard keypad label, not a credential"
+condition = "AND"
+paths = ['''(^|/)engine/mods/common/fluent/common\.ftl$''']
+regexTarget = "line"
+regexes = ['''(?m)^\+?\s+\.kp_comma = Keypad ,\r?$''']

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    SDL2-CS binding compiled for Android (arm64-v8a host project).
+
+    Same source as ios/SDL2-CS but WITHOUT the IOS define so nativeLibName
+    resolves to "SDL2" (dlopen libSDL2.so) instead of "__Internal".
+  -->
+  <PropertyGroup>
+    <TargetFramework>net8.0-android</TargetFramework>
+    <AssemblyName>SDL2-CS</AssemblyName>
+    <RootNamespace>SDL2</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../third_party/SDL2-CS/SDL2.cs" />
+  </ItemGroup>
+</Project>

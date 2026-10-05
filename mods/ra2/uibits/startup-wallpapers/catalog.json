@@ -1,0 +1,67 @@
+{
+  "wallpapers": [
+    {
+      "file": "wallpaper-01.png",
+      "width": 1942,
+      "height": 809,
+      "source_name": "85fb7c9e-1c7a-4b20-ba8d-beaab7f77acc.png",
+      "source_sha256": "a37af8deb53779c6c78c0dda758a17bad811ac87f204e627df56bbb367bbedbf"
+    },
+    {
+      "file": "wallpaper-02.png",
+      "width": 1916,
+      "height": 821,
+      "source_name": "ChatGPT Image 2026年8月19日 06_46_47.png",
+      "source_sha256": "6887a8afc7672c5ed20121c7bf46a821df8a98d3b86a8790e7025612dad50115"
+    },
+    {
+      "file": "wallpaper-03.png",
+      "width": 1916,
+      "height": 821,
+      "source_name": "ChatGPT Image 2026年8月19日 06_49_49.png",
+      "source_sha256": "69230ae92f975e49d5f494770be7a37e90ad763d6cd510bdb990f579678d0847"
+    },
+    {
+      "file": "wallpaper-04.png",
+      "width": 1916,
+      "height": 821,
+      "source_name": "ChatGPT Image 2026年8月19日 06_59_54.png",
+      "source_sha256": "7f187edd3bd90cf0be2a109565464adb38bfeb23b0b7201851d8a421486a85d6"
+    },
+    {
+      "file": "wallpaper-05.png",
+      "width": 1935,
+      "height": 813,
+      "source_name": "ChatGPT Image 2026年8月19日 07_38_53.png",
+      "source_sha256": "519b885aa30054afc87d33d5d1e55bf47eea9baec797aa1de2ee3d2349977529"
+    },
+    {
+      "file": "wallpaper-06.png",
+      "width": 1916,
+      "height": 821,
+      "source_name": "ChatGPT Image 2026年8月19日 07_45_17.png",
+      "source_sha256": "1968b944c21646aa7abe646c54b520dd224bde6ff98fe6b8edcbe5b3a3ceda4d"
+    },
+    {
+      "file": "wallpaper-07.png",
+      "width": 1916,
+      "height": 821,
+      "source_name": "ChatGPT Image 2026年8月19日 07_47_06.png",
+      "source_sha256": "b75cd967b046153d46a5b43a97598831367ec38908be6cf1f1e27245c5c37f5f"
+    },
+    {
+      "file": "wallpaper-08.png",
+      "width": 1916,
+      "height": 821,
+      "source_name": "ChatGPT Image 2026年8月19日 08_01_01.png",
+      "source_sha256": "be9092deb37a3b63cd71f5cba3253d71963c6cc3d3a6126b14edd97e8d05be31"
+    },
+    {
+      "file": "wallpaper-09.png",
+      "width": 1672,
+      "height": 941,
+      "source_name": "ChatGPT Image 2026年8月19日 09_01_26.png",
+      "source_sha256": "b6b622227a7cb93c6d54a91bb44ab6c523bf8f06d21dd99aa6ce7d08a0e9b61a"
+    }
+  ]
+}

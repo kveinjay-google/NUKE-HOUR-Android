@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    OpenRA Android platform layer (Phase 6). Mirrors the iOS platform assembly:
+    the shared OpenRA.Platforms.Default sources are compiled into an assembly
+    that is also named OpenRA.Platforms.Default, minus the desktop-only files
+    (DefaultPlatform.cs, OpenAlSoundEngine.cs), plus Android-specific files.
+
+    Deliberately NOT defining IOS: FreeType and SDL bindings therefore resolve
+    their native libraries by name (freetype6 / SDL2) instead of __Internal.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net8.0-android</TargetFramework>
+    <OutputType>Library</OutputType>
+    <AssemblyName>OpenRA.Platforms.Default</AssemblyName>
+    <RootNamespace>OpenRA.Platforms.Default</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <Nullable>disable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>ANDROID</DefineConstants>
+    <LangVersion>11</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../engine/OpenRA.Platforms.Default/**/*.cs"
+             Exclude="../../engine/OpenRA.Platforms.Default/bin/**;../../engine/OpenRA.Platforms.Default/obj/**;../../engine/OpenRA.Platforms.Default/DefaultPlatform.cs;../../engine/OpenRA.Platforms.Default/OpenAlSoundEngine.cs" />
+    <Compile Include="AndroidPlatform.cs" />
+    <Compile Include="AndroidHapticEngine.cs" />
+    <Compile Include="AndroidSoundEngine.cs" />
+    <ProjectReference Include="../../engine/OpenRA.Game/OpenRA.Game.csproj" />
+    <ProjectReference Include="../SDL2-CS/SDL2-CS.csproj" />
+  </ItemGroup>
+</Project>

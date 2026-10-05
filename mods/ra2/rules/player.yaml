@@ -1,0 +1,206 @@
+^BasePlayer:
+	AlwaysVisible:
+	Shroud:
+	PlayerResources:
+		DefaultCashDropdownLabel: dropdown-starting-cash.label
+		DefaultCashDropdownDescription: dropdown-starting-cash.description
+		ResourceValues:
+			Ore: 25
+			Gems: 50
+
+EditorPlayer:
+	Inherits: ^BasePlayer
+
+Player:
+	GrantConditionOnPrerequisite@NATIVE_SNIPE:
+		Prerequisites: radar, ~infantry.england
+		Condition: native-snipe
+	ProvidesPrerequisite@NATIVE_SNIPE:
+		Prerequisite: can-build-snipe
+		RequiresCondition: native-snipe
+	GrantConditionOnPrerequisite@NATIVE_TERROR:
+		Prerequisites: naradr, ~infantry.cuba
+		Condition: native-terror
+	ProvidesPrerequisite@NATIVE_TERROR:
+		Prerequisite: can-build-terror
+		RequiresCondition: native-terror
+	GrantConditionOnPrerequisite@NATIVE_DESO:
+		Prerequisites: naradr, ~infantry.iraq
+		Condition: native-deso
+	ProvidesPrerequisite@NATIVE_DESO:
+		Prerequisite: can-build-deso
+		RequiresCondition: native-deso
+	GrantConditionOnPrerequisite@NATIVE_YURI:
+		Prerequisites: natech, ~nahand
+		Condition: native-yuri
+	ProvidesPrerequisite@NATIVE_YURI:
+		Prerequisite: can-build-yuri
+		RequiresCondition: native-yuri
+	GrantConditionOnPrerequisite@NATIVE_TNKD:
+		Prerequisites: ~vehicles.germany
+		Condition: native-tnkd
+	ProvidesPrerequisite@NATIVE_TNKD:
+		Prerequisite: can-build-tnkd
+		RequiresCondition: native-tnkd
+	GrantConditionOnPrerequisite@NATIVE_TTNK:
+		Prerequisites: ~naweap, naradr, ~vehicles.russia
+		Condition: native-ttnk
+	ProvidesPrerequisite@NATIVE_TTNK:
+		Prerequisite: can-build-ttnk
+		RequiresCondition: native-ttnk
+	GrantConditionOnPrerequisite@NATIVE_DTRUCK:
+		Prerequisites: naradr, ~vehicles.libya
+		Condition: native-dtruck
+	ProvidesPrerequisite@NATIVE_DTRUCK:
+		Prerequisite: can-build-dtruck
+		RequiresCondition: native-dtruck
+	GrantConditionOnPrerequisite@NATIVE_GTGCAN:
+		Prerequisites: radar, ~structures.france
+		Condition: native-gtgcan
+	ProvidesPrerequisite@NATIVE_GTGCAN:
+		Prerequisite: can-build-gtgcan
+		RequiresCondition: native-gtgcan
+	Ra2GameRules:
+	Inherits: ^BasePlayer
+	TechTree:
+	ClassicProductionQueue@Building:
+		Type: Building
+		ItemLimit: 1
+		QueueLimit: 1
+		DisplayOrder: 0
+		LowPowerModifier: 300
+		QueuedAudio: Building
+		ReadyAudio: ConstructionComplete
+		BlockedAudio: NoBuild
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
+		SpeedUp: true
+		BuildTimeSpeedReduction: 100, 75, 60, 50, 45, 40
+	ClassicProductionQueue@Support:
+		Type: Support
+		ItemLimit: 1
+		QueueLimit: 1
+		DisplayOrder: 1
+		LowPowerModifier: 300
+		QueuedAudio: Building
+		ReadyAudio: ConstructionComplete
+		BlockedAudio: NoBuild
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
+		SpeedUp: true
+		BuildTimeSpeedReduction: 100, 75, 60, 50, 45, 40
+	ClassicProductionQueue@Vehicle:
+		Type: Vehicle
+		DisplayOrder: 3
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
+		BlockedAudio: NoBuild
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
+		SpeedUp: true
+		BuildTimeSpeedReduction: 100, 75, 60, 50, 45, 40
+	ClassicProductionQueue@Infantry:
+		Type: Infantry
+		DisplayOrder: 2
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
+		BlockedAudio: NoBuild
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
+		SpeedUp: true
+		BuildTimeSpeedReduction: 100, 75, 60, 50, 45, 40
+	ClassicProductionQueue@Aircraft:
+		Type: Aircraft
+		DisplayOrder: 4
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
+		BlockedAudio: NoBuild
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
+		SpeedUp: true
+	ClassicProductionQueue@Ship:
+		Type: Ship
+		DisplayOrder: 5
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
+		BlockedAudio: NoBuild
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
+		SpeedUp: true
+		BuildTimeSpeedReduction: 100, 75, 60, 50, 45, 40
+	PlaceBuilding:
+		NewOptionsNotification: NewOptions
+		CannotPlaceNotification: BuildingCannotPlaceAudio
+	SupportPowerManager:
+	ScriptTriggers:
+	MissionObjectives:
+		WinNotification: Win
+		LoseNotification: Lose
+		LeaveNotification: Leave
+	ConquestVictoryConditions:
+		EnemyDefeatedNotification: PlayerDefeated
+		EnemyDefeatedTextNotification: notification-enemy-defeated
+		Objective: checkbox-stats-objective
+	PowerManager:
+		AdviceInterval: 30000
+		SpeechNotification: LowPower
+	AllyRepair:
+	AutoRepairManager:
+	PlayerResources:
+		DefaultCashDropdownLabel: dropdown-starting-cash.label
+		DefaultCashDropdownDescription: dropdown-starting-cash.description
+		CashTickUpNotification: CashTickUp
+		CashTickDownNotification: CashTickDown
+	DeveloperMode:
+		CheckboxEnabled: true
+		CheckboxDisplayOrder: 5
+	GpsWatcher:
+	Shroud:
+		FogCheckboxDisplayOrder: 3
+	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		ID: factundeploy
+		Label: checkbox-redeployable-mcvs.label
+		Description: checkbox-redeployable-mcvs.description
+		Enabled: True
+		DisplayOrder: 7
+		Prerequisites: global-factundeploy
+	FrozenActorLayer:
+	BaseAttackNotifier:
+		AllyNotification: OurAllyIsUnderAttack
+	HarvesterAttackNotifier:
+		Notification: OreMinerUnderAttack
+	PlayerStatistics:
+	PlaceBeacon:
+		IsPlayerPalette: true
+		Palette: player
+		BeaconSequence: idle
+		ArrowSequence:
+		CircleSequence:
+	ProvidesTechPrerequisite@infonly:
+		Name: options-tech-level.infantry-only
+		Prerequisites: techlevel.infonly
+		Id: infantryonly
+	ProvidesTechPrerequisite@low:
+		Name: options-tech-level.low
+		Prerequisites: techlevel.infonly, techlevel.low
+		Id: low
+	ProvidesTechPrerequisite@medium:
+		Name: options-tech-level.medium
+		Prerequisites: techlevel.infonly, techlevel.low, techlevel.medium
+		Id: medium
+	ProvidesTechPrerequisite@unrestricted:
+		Name: options-tech-level.unrestricted
+		Prerequisites: techlevel.infonly, techlevel.low, techlevel.medium, techlevel.unrestricted
+		Id: unrestricted
+	GrantConditionOnPrerequisiteManager:
+	ProductionIconOverlayManager:
+		Image: cameo-chevron
+		Sequence: idle
+		Palette: cameo-chevron
+		Type: Veterancy
+	GameSaveViewportManager:
+	PlayerRadarTerrain:

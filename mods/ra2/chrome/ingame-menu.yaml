@@ -1,0 +1,51 @@
+Container@INGAME_MENU:
+	Width: WINDOW_WIDTH
+	Height: WINDOW_HEIGHT
+	Logic: IngameMenuLogic
+		Buttons: RESUME, LOAD_GAME, SAVE_GAME, SETTINGS, MUSIC, SURRENDER, RESTART, BACK_TO_EDITOR, ABORT_MISSION, SAVE_MAP, PLAY_MAP, EXIT_EDITOR
+		ButtonStride: 0, 64
+	Children:
+		Background@MENU_SHELL:
+			Background: cc-mp-surface
+			Width: WINDOW_WIDTH
+			Height: WINDOW_HEIGHT
+			Children:
+				StretchBackground@INGAME_SOVIET_SHELL:
+					Background: cc-ingame-command-shell
+					CompactPhoneSurface: true
+					Width: WINDOW_WIDTH
+					Height: WINDOW_HEIGHT
+					PreserveAspectRatio: false
+					ClickThrough: true
+				AspectImage@SHELL_BRAND:
+					X: (WINDOW_WIDTH - WIDTH) / 2
+					Y: 32
+					Width: 360
+					Height: 64
+					ImageCollection: cc-soviet-brand-header
+					ImageName: brand
+				ScrollPanel@MENU_NAV:
+					X: 48
+					Y: 100
+					Width: 260
+					Height: PARENT_HEIGHT - 196
+					Background: cc-mp-scrollpanel
+					ScrollBarBackground: cc-mp-surface
+					Button: cc-mp-control
+					EnableContentDragging: true
+					Children:
+						Container@MENU_BUTTONS:
+							Width: PARENT_WIDTH - 64
+							Height: 56
+							Children:
+								Button@BUTTON_TEMPLATE:
+									Width: PARENT_WIDTH
+									Height: 56
+									VisualHeight: 0
+									Background: cc-mp-control
+									Font: SettingsBold
+				Container@PANEL_ROOT:
+					X: 328
+					Y: 100
+					Width: PARENT_WIDTH - 376
+					Height: PARENT_HEIGHT - 196

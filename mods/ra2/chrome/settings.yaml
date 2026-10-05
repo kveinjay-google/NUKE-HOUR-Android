@@ -1,0 +1,87 @@
+StretchBackground@SETTINGS_PANEL:
+	Logic: SettingsLogic
+		ButtonStride: 0, 76
+		Panels:
+			DISPLAY_PANEL: button-settings-tab-display
+			AUDIO_PANEL: button-settings-tab-audio
+			INPUT_PANEL: button-settings-tab-input
+			HOTKEYS_PANEL: button-settings-tab-hotkeys
+			ADVANCED_PANEL: button-settings-tab-advanced
+	Background: settings-v3-background
+	TabletBackground: settings-ipad-fullscreen
+	PreserveAspectRatio: false
+	ClickThrough: false
+	CompactPhoneSurface: true
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: WINDOW_WIDTH - 32
+	Height: WINDOW_HEIGHT - 32
+	Children:
+		Label@SETTINGS_LABEL_TITLE:
+			X: PARENT_WIDTH * 21 / 100
+			Y: PARENT_HEIGHT * 11 / 100
+			Width: 300
+			Height: 48
+			Text: button-settings-title
+			Align: Left
+			Font: SettingsTitle
+			Shadow: true
+		Label@SETTINGS_LABEL_CONTEXT:
+			X: PARENT_WIDTH * 50 / 100
+			Y: PARENT_HEIGHT * 11 / 100
+			Width: PARENT_WIDTH * 44 / 100
+			Height: 48
+			Align: Right
+			Font: MediumBold
+			Shadow: true
+		Button@RESET_BUTTON:
+			X: PARENT_WIDTH * 21 / 100
+			Y: PARENT_HEIGHT * 86 / 100
+			Width: PARENT_WIDTH * 35 / 100
+			Height: PARENT_HEIGHT * 7 / 100
+			VisualHeight: 0
+			Background: settings-v3-navigation
+			StretchBackground: true
+			Text: button-settings-panel-reset
+			Font: SettingsBold
+		Button@BACK_BUTTON:
+			Key: escape
+			X: PARENT_WIDTH * 59 / 100
+			Y: PARENT_HEIGHT * 86 / 100
+			Width: PARENT_WIDTH * 35 / 100
+			Height: PARENT_HEIGHT * 7 / 100
+			VisualHeight: 0
+			Background: settings-v3-navigation
+			StretchBackground: true
+			Text: button-back
+			Font: SettingsBold
+		Container@SETTINGS_TAB_CONTAINER:
+			X: PARENT_WIDTH * 4 / 100
+			Y: PARENT_HEIGHT * 13 / 100
+			Width: PARENT_WIDTH * 13 / 100
+			Height: PARENT_HEIGHT * 65 / 100
+			Children:
+				Button@BUTTON_TEMPLATE:
+					Width: PARENT_WIDTH
+					Height: 66
+					VisualHeight: 0
+					Background: settings-v3-navigation
+					StretchBackground: true
+					Font: SettingsBold
+		Background@SETTINGS_CONTENT_WELL:
+			X: PARENT_WIDTH * 21 / 100
+			Y: PARENT_HEIGHT * 18 / 100
+			Width: PARENT_WIDTH * 73 / 100
+			Height: PARENT_HEIGHT * 65 / 100
+			Background: settings-v2-scrollpanel
+			ClickThrough: True
+		Container@PANEL_CONTAINER:
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			Children:
+				Container@PANEL_TEMPLATE:
+					X: PARENT_WIDTH * 21 / 100
+					Y: PARENT_HEIGHT * 18 / 100
+					Width: PARENT_WIDTH * 73 / 100
+					Height: PARENT_HEIGHT * 65 / 100
+		TooltipContainer@SETTINGS_TOOLTIP_CONTAINER:

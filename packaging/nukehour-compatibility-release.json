@@ -1,0 +1,7 @@
+{
+  "schema": 1,
+  "source_digest": "763fb30519c9cc80a02c5d5e5030b5467c2cf32f1dbb60cd93a37f8ac04cac03",
+  "published_compatibility": "nukehour-core-sha256-592c39b5cf2995d62695da65c91dac63ea94a443301da2644c8b0ead22be4af3",
+  "evidence_file": "ios109-compatibility-evidence.json",
+  "evidence_sha256": "6014b119061fad752027209b87b5f518992ba2f1f6927ce131587a3ea8f9f985"
+}

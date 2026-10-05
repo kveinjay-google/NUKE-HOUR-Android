@@ -1,0 +1,706 @@
+StretchBackground@MULTIPLAYER_HUB:
+	Logic: MultiplayerHubLogic
+	Background: cc-mp-surface
+	PreserveAspectRatio: true
+	ClickThrough: false
+	CompactPhoneSurface: true
+	OpaquePhoneSurface: true
+	OpaqueSurface: true
+	Width: WINDOW_WIDTH
+	Height: WINDOW_HEIGHT
+	Children:
+		Background@RANKED_CONTENT:
+			Background: cc-ranked-armor-shell
+			X: 0
+			Y: 0
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			Children:
+				StretchBackground@FULL_ART:
+					Background: cc-ranked-desktop-hub
+					TabletBackground: cc-ranked-tablet-hub
+					TabletWideBackground: cc-ranked-tablet-wide-hub
+					PhoneBackground: cc-ranked-phone-hub-v7
+					PhoneFullScreenFrame: true
+					PhoneFrameHeaderHeight: 120
+					PhoneFrameFooterHeight: 28
+					PhoneFrameReserveBottomInset: false
+					TabletFillViewport: false
+					PreserveAspectRatio: true
+					ClickThrough: true
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
+				Label@TITLE:
+					Text: label-ranked-hub-title
+					Width: PARENT_WIDTH
+					Height: 48
+					Align: Center
+					Font: BigBold
+				Button@RANKED_BUTTON:
+					X: PARENT_WIDTH / 2
+					Y: 0
+					Width: PARENT_WIDTH - PARENT_WIDTH / 2
+					Height: PARENT_HEIGHT - PARENT_HEIGHT / 2
+					Background: ""
+					VisualHeight: 0
+					Children:
+						StretchBackground@CARD_SCENE:
+							Background: cc-ranked-armor-ranked
+							X: 12
+							Y: 12
+							Width: PARENT_WIDTH - 24
+							Height: PARENT_HEIGHT * 70 / 100 - 12
+							PreserveAspectRatio: true
+							ClickThrough: true
+						Background@CARD_FRAME:
+							Background: cc-ranked-armor-frame
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							ClickThrough: true
+						Background@CARD_PLATE:
+							Background: cc-ranked-armor-secondary
+							X: 10
+							Y: PARENT_HEIGHT * 70 / 100
+							Width: PARENT_WIDTH - 20
+							Height: PARENT_HEIGHT * 28 / 100
+							ClickThrough: true
+						StretchBackground@CARD_ICON:
+							Background: cc-ranked-armor-ranked-icon
+							X: PARENT_WIDTH * 6 / 100
+							Y: PARENT_HEIGHT * 74 / 100
+							Width: PARENT_HEIGHT * 20 / 100
+							Height: PARENT_HEIGHT * 20 / 100
+							PreserveAspectRatio: true
+							ClickThrough: true
+						Label@CARD_TITLE:
+							X: PARENT_WIDTH * 25 / 100
+							Y: PARENT_HEIGHT * 73 / 100
+							Width: PARENT_WIDTH * 68 / 100
+							Height: PARENT_HEIGHT * 19 / 100
+							Text: button-ranked-match
+							Font: BigBold
+							TextColor: E8E8E8
+							Shadow: true
+							Contrast: true
+							VAlign: Middle
+				Button@ONLINE_BUTTON:
+					X: 0
+					Y: PARENT_HEIGHT / 2
+					Width: PARENT_WIDTH - PARENT_WIDTH / 2
+					Height: PARENT_HEIGHT - PARENT_HEIGHT / 2
+					Background: ""
+					VisualHeight: 0
+					Children:
+						StretchBackground@CARD_SCENE:
+							Background: cc-ranked-armor-online
+							X: 12
+							Y: 12
+							Width: PARENT_WIDTH - 24
+							Height: PARENT_HEIGHT * 70 / 100 - 12
+							PreserveAspectRatio: true
+							ClickThrough: true
+						Background@CARD_FRAME:
+							Background: cc-ranked-armor-frame
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							ClickThrough: true
+						Background@CARD_PLATE:
+							Background: cc-ranked-armor-secondary
+							X: 10
+							Y: PARENT_HEIGHT * 70 / 100
+							Width: PARENT_WIDTH - 20
+							Height: PARENT_HEIGHT * 28 / 100
+							ClickThrough: true
+						StretchBackground@CARD_ICON:
+							Background: cc-ranked-armor-online-icon
+							X: PARENT_WIDTH * 6 / 100
+							Y: PARENT_HEIGHT * 74 / 100
+							Width: PARENT_HEIGHT * 20 / 100
+							Height: PARENT_HEIGHT * 20 / 100
+							PreserveAspectRatio: true
+							ClickThrough: true
+						Label@CARD_TITLE:
+							X: PARENT_WIDTH * 25 / 100
+							Y: PARENT_HEIGHT * 73 / 100
+							Width: PARENT_WIDTH * 68 / 100
+							Height: PARENT_HEIGHT * 19 / 100
+							Text: button-online-rooms
+							Font: BigBold
+							TextColor: E8E8E8
+							Shadow: true
+							Contrast: true
+							VAlign: Middle
+				Button@LOCAL_BUTTON:
+					X: 0
+					Y: 0
+					Width: PARENT_WIDTH - PARENT_WIDTH / 2
+					Height: PARENT_HEIGHT - PARENT_HEIGHT / 2
+					Background: ""
+					VisualHeight: 0
+					Children:
+						StretchBackground@CARD_SCENE:
+							Background: cc-ranked-armor-local
+							X: 12
+							Y: 12
+							Width: PARENT_WIDTH - 24
+							Height: PARENT_HEIGHT * 70 / 100 - 12
+							PreserveAspectRatio: true
+							ClickThrough: true
+						Background@CARD_FRAME:
+							Background: cc-ranked-armor-frame
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							ClickThrough: true
+						Background@CARD_PLATE:
+							Background: cc-ranked-armor-secondary
+							X: 10
+							Y: PARENT_HEIGHT * 70 / 100
+							Width: PARENT_WIDTH - 20
+							Height: PARENT_HEIGHT * 28 / 100
+							ClickThrough: true
+						StretchBackground@CARD_ICON:
+							Background: cc-ranked-armor-local-icon
+							X: PARENT_WIDTH * 6 / 100
+							Y: PARENT_HEIGHT * 74 / 100
+							Width: PARENT_HEIGHT * 20 / 100
+							Height: PARENT_HEIGHT * 20 / 100
+							PreserveAspectRatio: true
+							ClickThrough: true
+						Label@CARD_TITLE:
+							X: PARENT_WIDTH * 25 / 100
+							Y: PARENT_HEIGHT * 73 / 100
+							Width: PARENT_WIDTH * 68 / 100
+							Height: PARENT_HEIGHT * 19 / 100
+							Text: button-local-multiplayer
+							Font: BigBold
+							TextColor: E8E8E8
+							Shadow: true
+							Contrast: true
+							VAlign: Middle
+				Button@LEADERBOARD_BUTTON:
+					X: PARENT_WIDTH / 2
+					Y: PARENT_HEIGHT / 2
+					Width: PARENT_WIDTH - PARENT_WIDTH / 2
+					Height: PARENT_HEIGHT - PARENT_HEIGHT / 2
+					Background: ""
+					VisualHeight: 0
+					Children:
+						StretchBackground@CARD_SCENE:
+							Background: cc-ranked-armor-leaderboard
+							X: 12
+							Y: 12
+							Width: PARENT_WIDTH - 24
+							Height: PARENT_HEIGHT * 70 / 100 - 12
+							PreserveAspectRatio: true
+							ClickThrough: true
+						Background@CARD_FRAME:
+							Background: cc-ranked-armor-frame
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							ClickThrough: true
+						Background@CARD_PLATE:
+							Background: cc-ranked-armor-secondary
+							X: 10
+							Y: PARENT_HEIGHT * 70 / 100
+							Width: PARENT_WIDTH - 20
+							Height: PARENT_HEIGHT * 28 / 100
+							ClickThrough: true
+						StretchBackground@CARD_ICON:
+							Background: cc-ranked-armor-leaderboard-icon
+							X: PARENT_WIDTH * 6 / 100
+							Y: PARENT_HEIGHT * 74 / 100
+							Width: PARENT_HEIGHT * 20 / 100
+							Height: PARENT_HEIGHT * 20 / 100
+							PreserveAspectRatio: true
+							ClickThrough: true
+						Label@CARD_TITLE:
+							X: PARENT_WIDTH * 25 / 100
+							Y: PARENT_HEIGHT * 73 / 100
+							Width: PARENT_WIDTH * 68 / 100
+							Height: PARENT_HEIGHT * 19 / 100
+							Text: button-season-leaderboard
+							Font: BigBold
+							TextColor: E8E8E8
+							Shadow: true
+							Contrast: true
+							VAlign: Middle
+				Button@BACK_BUTTON:
+					X: PARENT_WIDTH - WIDTH - 16
+					Y: 12
+					Width: 140
+					Height: 48
+					Background: cc-ranked-desktop-secondary
+					StretchBackground: true
+					PreserveBackgroundAspectRatio: true
+					Text: button-back
+					Key: escape
+					Font: SettingsBold
+StretchBackground@RANKED_MATCH_PANEL:
+	Logic: RankedMatchLogic
+	Background: cc-mp-surface
+	PreserveAspectRatio: true
+	ClickThrough: false
+	CompactPhoneSurface: true
+	OpaquePhoneSurface: true
+	OpaqueSurface: true
+	Width: WINDOW_WIDTH
+	Height: WINDOW_HEIGHT
+	Children:
+		Background@RANKED_CONTENT:
+			Background: cc-ranked-armor-shell
+			X: 0
+			Y: 0
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			Children:
+				StretchBackground@FULL_ART:
+					Background: cc-ranked-desktop-match
+					TabletBackground: cc-ranked-tablet-match
+					TabletWideBackground: cc-ranked-tablet-wide-match
+					PhoneBackground: cc-ranked-phone-match-v7
+					PhoneFullScreenFrame: true
+					PhoneFrameHeaderHeight: 120
+					PhoneFrameFooterHeight: 28
+					PhoneFrameReserveBottomInset: false
+					TabletFillViewport: false
+					PreserveAspectRatio: true
+					ClickThrough: true
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
+				StretchBackground@SCENE:
+					Background: cc-ranked-armor-tank
+					X: PARENT_WIDTH * 4 / 100
+					Y: PARENT_HEIGHT * 14 / 100
+					Width: PARENT_WIDTH * 37 / 100
+					Height: PARENT_HEIGHT * 43 / 100
+					PreserveAspectRatio: true
+					ClickThrough: true
+				Background@DOSSIER:
+					Background: cc-ranked-armor-panel
+					X: PARENT_WIDTH * 4 / 100
+					Y: PARENT_HEIGHT * 60 / 100
+					Width: PARENT_WIDTH * 37 / 100
+					Height: PARENT_HEIGHT * 22 / 100
+					ClickThrough: true
+				Background@OPERATION_SURFACE:
+					Background: cc-ranked-armor-panel
+					X: PARENT_WIDTH * 44 / 100
+					Y: PARENT_HEIGHT * 14 / 100
+					Width: PARENT_WIDTH * 52 / 100
+					Height: PARENT_HEIGHT * 70 / 100
+					ClickThrough: true
+				Label@TITLE:
+					X: PARENT_WIDTH * 5 / 100
+					Y: PARENT_HEIGHT * 32 / 100
+					Width: PARENT_WIDTH * 90 / 100
+					Height: PARENT_HEIGHT * 7 / 100
+					Text: label-ranked-match-title
+					Font: BigBold
+					Align: Center
+					TextColor: E8E8E8
+				Label@MATCH_HEADING:
+					Width: PARENT_WIDTH
+					Height: 48
+					Font: BigBold
+					Align: Center
+					VAlign: Middle
+					TextColor: E8E8E8
+				StretchBackground@MATCH_SIGNAL:
+					Background: cc-ranked-armor-online-icon
+					Width: 96
+					Height: 96
+					PreserveAspectRatio: true
+					ClickThrough: true
+				Label@USERNAME_LABEL:
+					X: PARENT_WIDTH * 9 / 100
+					Y: PARENT_HEIGHT * 42 / 100
+					Width: PARENT_WIDTH * 22 / 100
+					Height: PARENT_HEIGHT * 7 / 100
+					Text: label-ranked-username
+					Font: SettingsBold
+					TextColor: D7C5A4
+				TextField@USERNAME:
+					X: PARENT_WIDTH * 32 / 100
+					Y: PARENT_HEIGHT * 42 / 100
+					Width: PARENT_WIDTH * 59 / 100
+					Height: PARENT_HEIGHT * 7 / 100
+					MaxLength: 24
+					Background: cc-mp-field
+					Font: SettingsRegular
+				Label@PASSWORD_LABEL:
+					X: PARENT_WIDTH * 9 / 100
+					Y: PARENT_HEIGHT * 51 / 100
+					Width: PARENT_WIDTH * 22 / 100
+					Height: PARENT_HEIGHT * 7 / 100
+					Text: label-ranked-password
+					Font: SettingsBold
+					TextColor: D7C5A4
+				PasswordField@PASSWORD:
+					X: PARENT_WIDTH * 32 / 100
+					Y: PARENT_HEIGHT * 51 / 100
+					Width: PARENT_WIDTH * 59 / 100
+					Height: PARENT_HEIGHT * 7 / 100
+					MaxLength: 128
+					Background: cc-mp-field
+					Font: SettingsRegular
+				Label@CONFIRM_PASSWORD_LABEL:
+					Width: 120
+					Height: 44
+					Text: label-ranked-confirm-password
+					Font: SettingsBold
+					TextColor: D7C5A4
+				PasswordField@CONFIRM_PASSWORD:
+					Width: 300
+					Height: 44
+					MaxLength: 128
+					Background: cc-mp-field
+					Font: SettingsRegular
+
+				Button@LOGIN_BUTTON:
+					X: PARENT_WIDTH * 32 / 100
+					Y: PARENT_HEIGHT * 60 / 100
+					Width: PARENT_WIDTH * 28 / 100
+					Height: PARENT_HEIGHT * 8 / 100
+					Background: cc-ranked-desktop-primary
+					StretchBackground: true
+					PreserveBackgroundAspectRatio: true
+					Text: button-ranked-login
+					Font: SettingsBold
+					TextColor: E8E8E8
+				Button@REGISTER_BUTTON:
+					X: PARENT_WIDTH * 63 / 100
+					Y: PARENT_HEIGHT * 60 / 100
+					Width: PARENT_WIDTH * 28 / 100
+					Height: PARENT_HEIGHT * 8 / 100
+					Background: cc-ranked-desktop-secondary
+					StretchBackground: true
+					PreserveBackgroundAspectRatio: true
+					Text: button-ranked-register
+					Font: SettingsBold
+				Label@ACCOUNT:
+					X: PARENT_WIDTH * 8 / 100
+					Y: PARENT_HEIGHT * 48 / 100
+					Width: PARENT_WIDTH * 84 / 100
+					Height: PARENT_HEIGHT * 8 / 100
+					Text: label-ranked-account
+					Font: SettingsBold
+					Align: Center
+					TextColor: E8E8E8
+				Label@STATUS:
+					X: PARENT_WIDTH * 8 / 100
+					Y: PARENT_HEIGHT * 69 / 100
+					Width: PARENT_WIDTH * 84 / 100
+					Height: PARENT_HEIGHT * 10 / 100
+					Text: label-ranked-status-signed-out
+					Font: SettingsRegular
+					Align: Center
+					VAlign: Middle
+					WordWrap: true
+				ScrollPanel@RECOVERY_CODES:
+					Width: 400
+					Height: 200
+					Background: cc-mp-scrollpanel
+					ScrollBarBackground: cc-mp-surface
+					Button: cc-mp-control
+					EnableContentDragging: true
+					Children:
+						Label@CODE_TEXT:
+							X: 12
+							Y: 12
+							Width: PARENT_WIDTH - 48
+							Height: PARENT_HEIGHT - 24
+							Font: SettingsRegular
+							WordWrap: true
+							Align: Center
+							TextColor: D7C5A4
+
+				Button@RECOVERY_CONTINUE:
+					Width: 400
+					Height: 44
+					Background: cc-ranked-desktop-primary
+					StretchBackground: true
+					PreserveBackgroundAspectRatio: true
+					Text: button-ranked-recovery-continue
+					Font: SettingsBold
+
+				Button@QUEUE_BUTTON:
+					X: PARENT_WIDTH * 30 / 100
+					Y: PARENT_HEIGHT * 80 / 100
+					Width: PARENT_WIDTH * 40 / 100
+					Height: PARENT_HEIGHT * 8 / 100
+					Background: cc-ranked-desktop-primary
+					StretchBackground: true
+					PreserveBackgroundAspectRatio: true
+					Text: button-ranked-queue
+					Font: SettingsBold
+					TextColor: E8E8E8
+				Button@CANCEL_BUTTON:
+					X: PARENT_WIDTH * 30 / 100
+					Y: PARENT_HEIGHT * 80 / 100
+					Width: PARENT_WIDTH * 40 / 100
+					Height: PARENT_HEIGHT * 8 / 100
+					Background: cc-ranked-desktop-secondary
+					StretchBackground: true
+					PreserveBackgroundAspectRatio: true
+					Text: button-ranked-cancel
+					Font: SettingsBold
+					TextColor: E8E8E8
+				Button@ACCEPT_BUTTON:
+					X: PARENT_WIDTH * 20 / 100
+					Y: PARENT_HEIGHT * 80 / 100
+					Width: PARENT_WIDTH * 28 / 100
+					Height: PARENT_HEIGHT * 8 / 100
+					Background: cc-ranked-desktop-primary
+					StretchBackground: true
+					PreserveBackgroundAspectRatio: true
+					Text: button-ranked-accept
+					Font: SettingsBold
+					TextColor: E8E8E8
+				Button@DECLINE_BUTTON:
+					X: PARENT_WIDTH * 52 / 100
+					Y: PARENT_HEIGHT * 80 / 100
+					Width: PARENT_WIDTH * 28 / 100
+					Height: PARENT_HEIGHT * 8 / 100
+					Background: cc-ranked-desktop-secondary
+					StretchBackground: true
+					PreserveBackgroundAspectRatio: true
+					Text: button-ranked-decline
+					Font: SettingsBold
+					TextColor: E8E8E8
+				Button@LOGOUT_BUTTON:
+					X: PARENT_WIDTH * 5 / 100
+					Y: PARENT_HEIGHT * 90 / 100
+					Width: PARENT_WIDTH * 23 / 100
+					Height: PARENT_HEIGHT * 7 / 100
+					Background: cc-ranked-desktop-secondary
+					StretchBackground: true
+					PreserveBackgroundAspectRatio: true
+					Text: button-ranked-logout
+					Font: SettingsBold
+				Button@BACK_BUTTON:
+					X: PARENT_WIDTH - WIDTH - PARENT_WIDTH / 20
+					Y: PARENT_HEIGHT * 90 / 100
+					Width: PARENT_WIDTH * 23 / 100
+					Height: PARENT_HEIGHT * 7 / 100
+					Background: cc-ranked-desktop-secondary
+					StretchBackground: true
+					PreserveBackgroundAspectRatio: true
+					Text: button-back
+					Key: escape
+					Font: SettingsBold
+StretchBackground@RANKED_LEADERBOARD_PANEL:
+	Logic: RankedLeaderboardLogic
+	Background: cc-mp-surface
+	PreserveAspectRatio: true
+	ClickThrough: false
+	CompactPhoneSurface: true
+	OpaquePhoneSurface: true
+	OpaqueSurface: true
+	Width: WINDOW_WIDTH
+	Height: WINDOW_HEIGHT
+	Children:
+		Background@RANKED_CONTENT:
+			Background: cc-ranked-armor-shell
+			X: 0
+			Y: 0
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			Children:
+				StretchBackground@FULL_ART:
+					Background: cc-ranked-desktop-leaderboard
+					TabletBackground: cc-ranked-tablet-leaderboard
+					TabletWideBackground: cc-ranked-tablet-wide-leaderboard
+					PhoneBackground: cc-ranked-phone-leaderboard-v6
+					PhoneFullScreenFrame: true
+					TabletFillViewport: false
+					PreserveAspectRatio: true
+					ClickThrough: true
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
+				StretchBackground@SCENE:
+					Background: cc-ranked-armor-archive
+					X: PARENT_WIDTH * 4 / 100
+					Y: PARENT_HEIGHT * 14 / 100
+					Width: PARENT_WIDTH * 37 / 100
+					Height: PARENT_HEIGHT * 43 / 100
+					PreserveAspectRatio: true
+					ClickThrough: true
+				Label@TITLE:
+					X: PARENT_WIDTH * 5 / 100
+					Y: PARENT_HEIGHT * 29 / 100
+					Width: PARENT_WIDTH * 90 / 100
+					Height: PARENT_HEIGHT * 7 / 100
+					Text: label-ranked-leaderboard-title
+					Font: BigBold
+					Align: Center
+					TextColor: E8E8E8
+				Label@STATUS:
+					X: PARENT_WIDTH * 6 / 100
+					Y: PARENT_HEIGHT * 36 / 100
+					Width: PARENT_WIDTH * 88 / 100
+					Height: PARENT_HEIGHT * 6 / 100
+					Text: label-ranked-leaderboard-loading
+					Font: SettingsRegular
+					Align: Center
+					TextColor: BDAA88
+				Background@HEADER:
+					X: PARENT_WIDTH * 6 / 100
+					Y: PARENT_HEIGHT * 43 / 100
+					Width: PARENT_WIDTH * 88 / 100
+					Height: PARENT_HEIGHT * 6 / 100
+					Background: cc-ranked-armor-secondary
+					Children:
+						Label@RANK:
+							X: PARENT_WIDTH * 0 / 100
+							Width: PARENT_WIDTH * 12 / 100
+							Height: PARENT_HEIGHT
+							Font: SettingsBold
+							Align: Center
+							TextColor: E8E8E8
+							Text: label-ranked-rank-column
+						Label@PLAYER:
+							X: PARENT_WIDTH * 14 / 100
+							Width: PARENT_WIDTH * 43 / 100
+							Height: PARENT_HEIGHT
+							Font: SettingsBold
+							Align: Left
+							TextColor: E8E8E8
+							Text: label-ranked-player-column
+						Label@RATING:
+							X: PARENT_WIDTH * 59 / 100
+							Width: PARENT_WIDTH * 18 / 100
+							Height: PARENT_HEIGHT
+							Font: SettingsBold
+							Align: Center
+							TextColor: E8E8E8
+							Text: label-ranked-rating-column
+						Label@RECORD:
+							X: PARENT_WIDTH * 79 / 100
+							Width: PARENT_WIDTH * 21 / 100
+							Height: PARENT_HEIGHT
+							Font: SettingsBold
+							Align: Center
+							TextColor: E8E8E8
+							Text: label-ranked-record-column
+				ScrollPanel@LEADERBOARD_LIST:
+					X: PARENT_WIDTH * 6 / 100
+					Y: PARENT_HEIGHT * 49 / 100
+					Width: PARENT_WIDTH * 88 / 100
+					Height: PARENT_HEIGHT * 38 / 100
+					Background: cc-mp-scrollpanel
+					ScrollBarBackground: cc-mp-surface
+					Button: cc-mp-control
+					EnableContentDragging: true
+					Children:
+						ScrollItem@PLAYER_TEMPLATE:
+							Width: PARENT_WIDTH - 24
+							Height: 48
+							Background: cc-ranked-armor-secondary
+							Visible: false
+							Children:
+								Label@RANK:
+									X: PARENT_WIDTH * 0 / 100
+									Width: PARENT_WIDTH * 12 / 100
+									Height: PARENT_HEIGHT
+									Font: SettingsRegular
+									Align: Center
+									TextColor: E8E1D4
+								Label@PLAYER:
+									X: PARENT_WIDTH * 14 / 100
+									Width: PARENT_WIDTH * 43 / 100
+									Height: PARENT_HEIGHT
+									Font: SettingsRegular
+									Align: Left
+									TextColor: E8E1D4
+								Label@RATING:
+									X: PARENT_WIDTH * 59 / 100
+									Width: PARENT_WIDTH * 18 / 100
+									Height: PARENT_HEIGHT
+									Font: SettingsRegular
+									Align: Center
+									TextColor: E8E1D4
+								Label@RECORD:
+									X: PARENT_WIDTH * 79 / 100
+									Width: PARENT_WIDTH * 21 / 100
+									Height: PARENT_HEIGHT
+									Font: SettingsRegular
+									Align: Center
+									TextColor: E8E1D4
+				Button@BACK_BUTTON:
+					X: PARENT_WIDTH - WIDTH - PARENT_WIDTH / 20
+					Y: PARENT_HEIGHT * 90 / 100
+					Width: PARENT_WIDTH * 23 / 100
+					Height: PARENT_HEIGHT * 7 / 100
+					Background: cc-ranked-desktop-secondary
+					StretchBackground: true
+					PreserveBackgroundAspectRatio: true
+					Text: button-back
+					Key: escape
+					Font: SettingsBold
+StretchBackground@RANKED_RESULT_PANEL:
+	Logic: RankedResultLogic
+	Background: cc-mp-surface
+	PreserveAspectRatio: true
+	ClickThrough: false
+	CompactPhoneSurface: true
+	OpaquePhoneSurface: true
+	OpaqueSurface: true
+	Width: WINDOW_WIDTH
+	Height: WINDOW_HEIGHT
+	Children:
+		Background@RANKED_CONTENT:
+			Background: cc-mp-surface
+			X: (WINDOW_WIDTH - WIDTH) / 2
+			Y: (WINDOW_HEIGHT - HEIGHT) / 2
+			Width: 760
+			Height: 560
+			Children:
+				Label@TITLE:
+					Y: 36
+					Width: PARENT_WIDTH
+					Height: 48
+					Text: label-ranked-result-title
+					Font: BigBold
+					Align: Center
+				Label@OPPONENT:
+					X: 60
+					Y: 112
+					Width: PARENT_WIDTH - 120
+					Height: 40
+					Text: label-ranked-result-opponent
+					Font: SettingsRegular
+					Align: Center
+				Label@RESULT:
+					X: 60
+					Y: 174
+					Width: PARENT_WIDTH - 120
+					Height: 72
+					Text: label-ranked-result-pending
+					Font: BigBold
+					Align: Center
+				Label@RATING:
+					X: 60
+					Y: 266
+					Width: PARENT_WIDTH - 120
+					Height: 52
+					Font: SettingsBold
+					Align: Center
+				Label@STATUS:
+					X: 70
+					Y: 338
+					Width: PARENT_WIDTH - 140
+					Height: 74
+					Text: label-ranked-result-settling
+					Font: SettingsRegular
+					Align: Center
+					VAlign: Middle
+					WordWrap: true
+				Button@BACK_BUTTON:
+					X: (PARENT_WIDTH - WIDTH) / 2
+					Y: PARENT_HEIGHT - HEIGHT - 32
+					Width: 220
+					Height: 52
+					Background: cc-ranked-armor-secondary
+					Key: escape
+					Text: button-ranked-result-continue
+					Font: SettingsBold

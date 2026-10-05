@@ -1,0 +1,27 @@
+# The OpenRA engine baseline is part of the deterministic contract.
+engine/VERSION
+
+# Lockstep order serialization and sync primitives.
+engine/OpenRA.Game/Network/Order.cs
+engine/OpenRA.Game/Network/OrderIO.cs
+engine/OpenRA.Game/Network/Session.cs
+engine/OpenRA.Game/Player.cs
+engine/OpenRA.Game/Sync.cs
+engine/OpenRA.Mods.Common/ServerTraits/LobbyCommands.cs
+engine/OpenRA.Mods.Common/Traits/World/ValidateOrder.cs
+engine/OpenRA.Mods.Common/Traits/World/PopulationLimits.cs
+OpenRA.Mods.RA2/Traits/Attack/AttackOpenTopped.cs
+OpenRA.Mods.RA2/Traits/SlaveMinerAutomation.cs
+
+# NUKE HOUR simulation data. Maps have their own UID and are checked separately.
+mods/ra2/rules/**/*.yaml
+!mods/ra2/rules/*-base.yaml
+mods/ra2/weapons/**/*.yaml
+
+# Coordinated vertical bombing changes deterministic movement and firing.
+engine/OpenRA.Mods.Common/Activities/Air/CoordinatedVerticalBombingAttack.cs
+engine/OpenRA.Mods.Common/Traits/Attack/AttackFrontal.cs
+engine/OpenRA.Mods.Common/Traits/Air/Aircraft.cs
+
+# Captured secret lab changes deterministic production permissions.
+OpenRA.Mods.RA2/Traits/SecretLab.cs

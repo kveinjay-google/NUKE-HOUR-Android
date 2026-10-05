@@ -1,0 +1,209 @@
+StretchBackground@CONNECTING_PANEL:
+	Logic: ConnectionLogic, ConnectionDialogLayoutLogic
+	Background: cc-ranked-armor-phone-shell
+	PreserveAspectRatio: true
+	CompactPhoneSurface: true
+	OpaquePhoneSurface: true
+	OpaqueSurface: true
+	ClickThrough: false
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: WINDOW_WIDTH
+	Height: WINDOW_HEIGHT
+	Children:
+		StretchBackground@FULL_ART:
+			Background: cc-ranked-desktop-match
+			TabletBackground: cc-ranked-tablet-match
+			TabletWideBackground: cc-ranked-tablet-wide-match
+			PhoneBackground: cc-ranked-phone-match
+			TabletFillViewport: false
+			PreserveAspectRatio: true
+			ClickThrough: true
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+		StretchBackground@SCENE:
+			Background: cc-ranked-armor-tank
+			PreserveAspectRatio: true
+			ClickThrough: true
+			Width: PARENT_WIDTH / 2
+			Height: PARENT_HEIGHT / 2
+		Label@CONNECTING_TITLE:
+			X: 32
+			Y: 32
+			Width: PARENT_WIDTH - 64
+			Height: 40
+			Text: label-connecting-panel-title
+			Font: SettingsTitle
+			Align: Center
+		ScrollPanel@CONNECTION_DETAILS:
+			X: 32
+			Y: 84
+			Width: PARENT_WIDTH - 64
+			Height: PARENT_HEIGHT - 184
+			Background:
+			ScrollBarBackground: cc-mp-surface
+			Button: cc-mp-control
+			EnableContentDragging: true
+			CollapseHiddenChildren: true
+			Children:
+				Label@CONNECTING_DESC:
+					Width: 550
+					Height: 48
+					Font: SettingsRegular
+		Container@CONNECTION_ACTIONS:
+			X: 32
+			Y: PARENT_HEIGHT - 88
+			Width: PARENT_WIDTH - 64
+			Height: 56
+			Children:
+				Button@ABORT_BUTTON:
+					Width: PARENT_WIDTH
+					Height: 56
+					Background: cc-ranked-armor-secondary
+					Text: button-connecting-panel-abort
+					Font: SettingsBold
+					Key: escape
+
+StretchBackground@CONNECTIONFAILED_PANEL:
+	Logic: ConnectionFailedLogic, ConnectionDialogLayoutLogic
+	Background: cc-connection-shell
+	PreserveAspectRatio: false
+	ClickThrough: false
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 680
+	Height: 400
+	Children:
+		Label@TITLE:
+			X: 32
+			Y: 32
+			Width: PARENT_WIDTH - 64
+			Height: 40
+			Font: SettingsTitle
+		ScrollPanel@CONNECTION_DETAILS:
+			X: 32
+			Y: 84
+			Width: PARENT_WIDTH - 64
+			Height: PARENT_HEIGHT - 184
+			Background:
+			ScrollBarBackground: cc-mp-surface
+			Button: cc-mp-control
+			EnableContentDragging: true
+			CollapseHiddenChildren: true
+			Children:
+				Label@CONNECTING_DESC:
+					Width: 550
+					Height: 48
+					Font: SettingsRegular
+				Label@CONNECTION_ERROR:
+					Width: 550
+					Height: 48
+					Font: SettingsBold
+				Label@PASSWORD_LABEL:
+					Width: 550
+					Height: 28
+					Text: label-connectionfailed-panel-password
+					Font: SettingsBold
+				PasswordField@PASSWORD:
+					Width: 550
+					Height: 48
+					MaxLength: 6
+					Font: SettingsRegular
+					Background: cc-mp-field
+		Container@CONNECTION_ACTIONS:
+			X: 32
+			Y: PARENT_HEIGHT - 88
+			Width: PARENT_WIDTH - 64
+			Height: 56
+			Children:
+				Button@RETRY_BUTTON:
+					Width: 290
+					Height: 56
+					Background: cc-mp-control
+					Text: button-retry
+					Font: SettingsBold
+					Key: return
+				Button@ABORT_BUTTON:
+					X: 310
+					Width: 290
+					Height: 56
+					Background: cc-mp-control
+					Text: button-connectionfailed-panel-abort
+					Font: SettingsBold
+					Key: escape
+				Button@QUIT_BUTTON:
+					X: 310
+					Width: 290
+					Height: 56
+					Background: cc-mp-control
+					Text: button-quit
+					Font: SettingsBold
+					Key: escape
+
+StretchBackground@CONNECTION_SWITCHMOD_PANEL:
+	Logic: ConnectionSwitchModLogic, ConnectionDialogLayoutLogic
+	Background: cc-connection-shell
+	PreserveAspectRatio: false
+	ClickThrough: false
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 680
+	Height: 400
+	Children:
+		Label@TITLE:
+			X: 32
+			Y: 32
+			Width: PARENT_WIDTH - 64
+			Height: 40
+			Font: SettingsTitle
+			Text: label-connection-switchmod-panel-title
+		ScrollPanel@CONNECTION_DETAILS:
+			X: 32
+			Y: 84
+			Width: PARENT_WIDTH - 64
+			Height: PARENT_HEIGHT - 184
+			Background:
+			ScrollBarBackground: cc-mp-surface
+			Button: cc-mp-control
+			EnableContentDragging: true
+			CollapseHiddenChildren: true
+			Children:
+				Label@DESC:
+					Width: 550
+					Height: 48
+					Font: SettingsRegular
+					Text: label-connection-switchmod-panel-desc
+				Label@MOD_TITLE:
+					Width: 550
+					Height: 28
+					Font: SettingsBold
+				Label@MOD_VERSION:
+					Width: 550
+					Height: 28
+					Font: SettingsRegular
+				Label@DESC2:
+					Width: 550
+					Height: 48
+					Font: SettingsRegular
+					Text: label-connection-switchmod-panel-desc2
+		Container@CONNECTION_ACTIONS:
+			X: 32
+			Y: PARENT_HEIGHT - 88
+			Width: PARENT_WIDTH - 64
+			Height: 56
+			Children:
+				Button@SWITCH_BUTTON:
+					Width: 290
+					Height: 56
+					Background: cc-mp-control
+					Text: button-connection-switchmod-panel-switch
+					Font: SettingsBold
+					Key: return
+				Button@ABORT_BUTTON:
+					X: 310
+					Width: 290
+					Height: 56
+					Background: cc-mp-control
+					Text: button-connection-switchmod-panel-abort
+					Font: SettingsBold
+					Key: escape

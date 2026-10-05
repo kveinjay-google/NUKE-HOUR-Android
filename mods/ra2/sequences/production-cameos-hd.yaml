@@ -1,0 +1,984 @@
+# Generated from artsrc/production-cameos-hd/catalog.json.
+
+hd-production-shad:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/shad.png
+
+hd-production-zep:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/zep.png
+
+hd-production-orca:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/orca.png
+
+hd-production-beag:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/beag.png
+
+hd-production-engineer:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/engineer.png
+
+hd-production-dog:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/dog.png
+
+hd-production-e1:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/e1.png
+
+hd-production-snipe:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/snipe.png
+
+hd-production-spy:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/spy.png
+
+hd-production-ghost:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/ghost.png
+
+hd-production-ccomand:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/ccomand.png
+
+hd-production-ptroop:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/ptroop.png
+
+hd-production-tany:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/tany.png
+
+hd-production-jumpjet:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/jumpjet.png
+
+hd-production-cleg:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/cleg.png
+
+hd-production-lcrf:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/lcrf.png
+
+hd-production-dest:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/dest.png
+
+hd-production-aegis:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/aegis.png
+
+hd-production-dlph:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/dlph.png
+
+hd-production-carrier:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/carrier.png
+
+hd-production-gacnst:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/gacnst.png
+
+hd-production-gapowr:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/gapowr.png
+
+hd-production-gapile:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/gapile.png
+
+hd-production-garefn:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/garefn.png
+
+hd-production-gaairc:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/gaairc.png
+
+hd-production-amradr:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/amradr.png
+
+hd-production-gaweap:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/gaweap.png
+
+hd-production-gayard:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/gayard.png
+
+hd-production-gadept:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/gadept.png
+
+hd-production-gatech:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/gatech.png
+
+hd-production-gawall:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/gawall.png
+
+hd-production-gapill:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/gapill.png
+
+hd-production-nasam:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/nasam.png
+
+hd-production-gtgcan:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/gtgcan.png
+
+hd-production-gaorep:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/gaorep.png
+
+hd-production-gaspysat:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/gaspysat.png
+
+hd-production-gagap:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/gagap.png
+
+hd-production-gaweat:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/gaweat.png
+
+hd-production-gacsph:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/gacsph.png
+
+hd-production-atesla:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/atesla.png
+
+hd-production-amcv:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/amcv.png
+
+hd-production-cmin:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/cmin.png
+
+hd-production-mtnk:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/mtnk.png
+
+hd-production-tnkd:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/tnkd.png
+
+hd-production-fv:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/fv.png
+
+hd-production-sref:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/sref.png
+
+hd-production-mgtk:
+	icon:
+		Filename: uibits/production-cameos-hd/allies/mgtk.png
+
+hd-production-e2:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/e2.png
+
+hd-production-flakt:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/flakt.png
+
+hd-production-shk:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/shk.png
+
+hd-production-terror:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/terror.png
+
+hd-production-deso:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/deso.png
+
+hd-production-ivan:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/ivan.png
+
+hd-production-civan:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/civan.png
+
+hd-production-yuri:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/yuri.png
+
+hd-production-yuripr:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/yuripr.png
+
+hd-production-sapc:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/sapc.png
+
+hd-production-sub:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/sub.png
+
+hd-production-hyd:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/hyd.png
+
+hd-production-sqd:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/sqd.png
+
+hd-production-dred:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/dred.png
+
+hd-production-nacnst:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/nacnst.png
+
+hd-production-napowr:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/napowr.png
+
+hd-production-nahand:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/nahand.png
+
+hd-production-narefn:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/narefn.png
+
+hd-production-naradr:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/naradr.png
+
+hd-production-naweap:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/naweap.png
+
+hd-production-nayard:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/nayard.png
+
+hd-production-nadept:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/nadept.png
+
+hd-production-nanrct:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/nanrct.png
+
+hd-production-natech:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/natech.png
+
+hd-production-naclon:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/naclon.png
+
+hd-production-napsis:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/napsis.png
+
+hd-production-nairon:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/nairon.png
+
+hd-production-namisl:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/namisl.png
+
+hd-production-nawall:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/nawall.png
+
+hd-production-naflak:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/naflak.png
+
+hd-production-tesla:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/tesla.png
+
+hd-production-nalasr:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/nalasr.png
+
+hd-production-smcv:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/smcv.png
+
+hd-production-harv:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/harv.png
+
+hd-production-dron:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/dron.png
+
+hd-production-htk:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/htk.png
+
+hd-production-htnk:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/htnk.png
+
+hd-production-apoc:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/apoc.png
+
+hd-production-ttnk:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/ttnk.png
+
+hd-production-dtruck:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/dtruck.png
+
+hd-production-v3:
+	icon:
+		Filename: uibits/production-cameos-hd/soviets/v3.png
+
+hd-production-init:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/init.png
+
+hd-production-brute:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/brute.png
+
+hd-production-virus:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/virus.png
+
+hd-production-yurix:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/yurix.png
+
+hd-production-yhvr:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/yhvr.png
+
+hd-production-bsub:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/bsub.png
+
+hd-production-yacnst:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/yacnst.png
+
+hd-production-yapowr:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/yapowr.png
+
+hd-production-yabrck:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/yabrck.png
+
+hd-production-yarefn:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/yarefn.png
+
+hd-production-yaweap:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/yaweap.png
+
+hd-production-yadome:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/yadome.png
+
+hd-production-yawall:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/yawall.png
+
+hd-production-yaggun:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/yaggun.png
+
+hd-production-yatech:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/yatech.png
+
+hd-production-yagrnd:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/yagrnd.png
+
+hd-production-yadept:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/yadept.png
+
+hd-production-yayard:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/yayard.png
+
+hd-production-yapsyt:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/yapsyt.png
+
+hd-production-natbnk:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/natbnk.png
+
+hd-production-yagntc:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/yagntc.png
+
+hd-production-yappet:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/yappet.png
+
+hd-production-pcv:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/pcv.png
+
+hd-production-smin:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/smin.png
+
+hd-production-ltnk:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/ltnk.png
+
+hd-production-ytnk:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/ytnk.png
+
+hd-production-caos:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/caos.png
+
+hd-production-tele:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/tele.png
+
+hd-production-mind:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/mind.png
+
+hd-production-disk:
+	icon:
+		Filename: uibits/production-cameos-hd/yuri/disk.png
+
+hd-support-amradr-americanparatroopers:
+	icon:
+		Filename: uibits/production-cameos-hd/support/gaairc.paratroopers.png
+
+hd-support-caairp-alliedparatroopers:
+	icon:
+		Filename: uibits/production-cameos-hd/support/cairf.paradrop.allies.png
+
+hd-support-caairp-sovietparatroopers:
+	icon:
+		Filename: uibits/production-cameos-hd/support/cairf.paradrop.soviets.png
+
+hd-support-gaweat-weathercontroldevice:
+	icon:
+		Filename: uibits/production-cameos-hd/support/gaweat.lightning-storm.png
+
+hd-support-gacsph-chronoshift:
+	icon:
+		Filename: uibits/production-cameos-hd/support/gacsph.chronoshift.png
+
+hd-support-nairon-grantexternalconditionpowerinfoorder:
+	icon:
+		Filename: uibits/production-cameos-hd/support/nairon.iron-curtain.png
+
+hd-support-namisl-nukepowerinfoorder:
+	icon:
+		Filename: uibits/production-cameos-hd/support/namisl.nuclear-missile.png
+
+hd-support-yagntc-geneticmutator:
+	icon:
+		Filename: uibits/production-cameos-hd/support/yagntc.genetic-mutator.png
+
+hd-support-yappet-psychicdominator:
+	icon:
+		Filename: uibits/production-cameos-hd/support/yappet.psychic-dominator.png
+
+# Wide single-column variants; original HD sequences above remain unchanged.
+
+wide-production-shad:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/shad.png
+
+wide-production-zep:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/zep.png
+
+wide-production-orca:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/orca.png
+
+wide-production-beag:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/beag.png
+
+wide-production-engineer:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/engineer.png
+
+wide-production-dog:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/dog.png
+
+wide-production-e1:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/e1.png
+
+wide-production-snipe:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/snipe.png
+
+wide-production-spy:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/spy.png
+
+wide-production-ghost:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/ghost.png
+
+wide-production-ccomand:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/ccomand.png
+
+wide-production-ptroop:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/ptroop.png
+
+wide-production-tany:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/tany.png
+
+wide-production-jumpjet:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/jumpjet.png
+
+wide-production-cleg:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/cleg.png
+
+wide-production-lcrf:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/lcrf.png
+
+wide-production-dest:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/dest.png
+
+wide-production-aegis:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/aegis.png
+
+wide-production-dlph:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/dlph.png
+
+wide-production-carrier:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/carrier.png
+
+wide-production-gacnst:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/gacnst.png
+
+wide-production-gapowr:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/gapowr.png
+
+wide-production-gapile:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/gapile.png
+
+wide-production-garefn:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/garefn.png
+
+wide-production-gaairc:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/gaairc.png
+
+wide-production-amradr:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/amradr.png
+
+wide-production-gaweap:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/gaweap.png
+
+wide-production-gayard:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/gayard.png
+
+wide-production-gadept:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/gadept.png
+
+wide-production-gatech:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/gatech.png
+
+wide-production-gawall:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/gawall.png
+
+wide-production-gapill:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/gapill.png
+
+wide-production-nasam:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/nasam.png
+
+wide-production-gtgcan:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/gtgcan.png
+
+wide-production-gaorep:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/gaorep.png
+
+wide-production-gaspysat:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/gaspysat.png
+
+wide-production-gagap:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/gagap.png
+
+wide-production-gaweat:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/gaweat.png
+
+wide-production-gacsph:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/gacsph.png
+
+wide-production-atesla:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/atesla.png
+
+wide-production-amcv:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/amcv.png
+
+wide-production-cmin:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/cmin.png
+
+wide-production-mtnk:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/mtnk.png
+
+wide-production-tnkd:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/tnkd.png
+
+wide-production-fv:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/fv.png
+
+wide-production-sref:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/sref.png
+
+wide-production-mgtk:
+	icon:
+		Filename: uibits/production-cameos-wide/allies/mgtk.png
+
+wide-production-e2:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/e2.png
+
+wide-production-flakt:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/flakt.png
+
+wide-production-shk:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/shk.png
+
+wide-production-terror:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/terror.png
+
+wide-production-deso:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/deso.png
+
+wide-production-ivan:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/ivan.png
+
+wide-production-civan:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/civan.png
+
+wide-production-yuri:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/yuri.png
+
+wide-production-yuripr:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/yuripr.png
+
+wide-production-sapc:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/sapc.png
+
+wide-production-sub:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/sub.png
+
+wide-production-hyd:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/hyd.png
+
+wide-production-sqd:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/sqd.png
+
+wide-production-dred:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/dred.png
+
+wide-production-nacnst:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/nacnst.png
+
+wide-production-napowr:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/napowr.png
+
+wide-production-nahand:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/nahand.png
+
+wide-production-narefn:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/narefn.png
+
+wide-production-naradr:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/naradr.png
+
+wide-production-naweap:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/naweap.png
+
+wide-production-nayard:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/nayard.png
+
+wide-production-nadept:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/nadept.png
+
+wide-production-nanrct:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/nanrct.png
+
+wide-production-natech:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/natech.png
+
+wide-production-naclon:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/naclon.png
+
+wide-production-napsis:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/napsis.png
+
+wide-production-nairon:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/nairon.png
+
+wide-production-namisl:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/namisl.png
+
+wide-production-nawall:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/nawall.png
+
+wide-production-naflak:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/naflak.png
+
+wide-production-tesla:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/tesla.png
+
+wide-production-nalasr:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/nalasr.png
+
+wide-production-smcv:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/smcv.png
+
+wide-production-harv:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/harv.png
+
+wide-production-dron:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/dron.png
+
+wide-production-htk:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/htk.png
+
+wide-production-htnk:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/htnk.png
+
+wide-production-apoc:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/apoc.png
+
+wide-production-ttnk:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/ttnk.png
+
+wide-production-dtruck:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/dtruck.png
+
+wide-production-v3:
+	icon:
+		Filename: uibits/production-cameos-wide/soviets/v3.png
+
+wide-production-init:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/init.png
+
+wide-production-brute:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/brute.png
+
+wide-production-virus:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/virus.png
+
+wide-production-yurix:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/yurix.png
+
+wide-production-yhvr:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/yhvr.png
+
+wide-production-bsub:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/bsub.png
+
+wide-production-yacnst:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/yacnst.png
+
+wide-production-yapowr:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/yapowr.png
+
+wide-production-yabrck:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/yabrck.png
+
+wide-production-yarefn:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/yarefn.png
+
+wide-production-yaweap:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/yaweap.png
+
+wide-production-yadome:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/yadome.png
+
+wide-production-yawall:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/yawall.png
+
+wide-production-yaggun:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/yaggun.png
+
+wide-production-yatech:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/yatech.png
+
+wide-production-yagrnd:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/yagrnd.png
+
+wide-production-yadept:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/yadept.png
+
+wide-production-yayard:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/yayard.png
+
+wide-production-yapsyt:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/yapsyt.png
+
+wide-production-natbnk:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/natbnk.png
+
+wide-production-yagntc:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/yagntc.png
+
+wide-production-yappet:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/yappet.png
+
+wide-production-pcv:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/pcv.png
+
+wide-production-smin:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/smin.png
+
+wide-production-ltnk:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/ltnk.png
+
+wide-production-ytnk:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/ytnk.png
+
+wide-production-caos:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/caos.png
+
+wide-production-tele:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/tele.png
+
+wide-production-mind:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/mind.png
+
+wide-production-disk:
+	icon:
+		Filename: uibits/production-cameos-wide/yuri/disk.png
+

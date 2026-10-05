@@ -1,0 +1,12 @@
+using OpenRA.Android;
+var error = new AggregateException("outer", new InvalidOperationException("shader compile failed; token=secret-sentinel"), new OutOfMemoryException("allocation failed"));
+var report = AndroidFailureReport.Capture(error, new AndroidFailureReportContext(Build: "test", Phase: "gameplay", MemorySamples: "unavailable"));
+if (report.Failure.Category != AndroidStartupFailureCategory.Memory) throw new Exception("Nested OOM priority failed.");
+if (report.Text.Contains("secret-sentinel")) throw new Exception("Credential redaction failed.");
+if (report.Text.Length > AndroidFailureReport.MaximumCharacters) throw new Exception("Report size limit failed.");
+var general = AndroidFailureReport.Capture(new Exception("unknown"), new AndroidFailureReportContext());
+if (general.Failure.Category != AndroidStartupFailureCategory.General) throw new Exception("Unknown cause incorrectly diagnosed.");
+if (!general.Text.Contains("unavailable")) throw new Exception("Missing observations not marked unavailable.");
+var large = AndroidFailureReport.Capture(new Exception(new string('x', 100000)), new AndroidFailureReportContext());
+if (large.Text.Length > AndroidFailureReport.MaximumCharacters) throw new Exception("Large error not bounded.");
+Console.WriteLine("PASS Android failure diagnostics: nested causes, redaction, bounded text, unavailable observations, honest classification");

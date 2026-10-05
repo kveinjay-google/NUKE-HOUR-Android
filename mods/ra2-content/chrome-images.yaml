@@ -1,0 +1,4 @@
+nukehour-resource-wallpaper:
+	Image: ra2|uibits/cc-soviet-subpage-import.png
+	PanelRegion: 0, 0, 0, 0, 1920, 1080, 0, 0
+	PanelSides: Center

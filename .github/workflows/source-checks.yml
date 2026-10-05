@@ -1,0 +1,25 @@
+name: Source checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Source inventory
+        run: python3 packaging/android/audit_public_source.py
+      - name: Android source tests
+        run: sh packaging/android/test-public-source.sh
+      - name: Test log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-test-log
+          path: artifacts/public-source-tests/dotnet.log

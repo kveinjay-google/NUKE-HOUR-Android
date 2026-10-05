@@ -1,0 +1,199 @@
+#region Copyright & License Information
+/*
+ * Copyright (c) The OpenRA Developers and Contributors
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
+ */
+#endregion
+
+using System.Collections.Generic;
+using System.Linq;
+using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.Common.Orders;
+using OpenRA.Primitives;
+using OpenRA.Traits;
+
+namespace OpenRA.Mods.Common.Traits
+{
+	[Desc("Can enter a BridgeHut or LegacyBridgeHut to trigger a repair.")]
+	public class RepairsBridgesInfo : TraitInfo
+	{
+		[VoiceReference]
+		public readonly string Voice = "Action";
+
+		[Desc("Color to use for the target line.")]
+		public readonly Color TargetLineColor = Color.Yellow;
+
+		[Desc("Behaviour when entering the structure.",
+			"Possible values are Exit, Suicide, Dispose.")]
+		public readonly EnterBehaviour EnterBehaviour = EnterBehaviour.Dispose;
+
+		[CursorReference]
+		[Desc("Cursor to display when targeting an unrepaired bridge.")]
+		public readonly string TargetCursor = "goldwrench";
+
+		[CursorReference]
+		[Desc("Cursor to display when repairing is denied.")]
+		public readonly string TargetBlockedCursor = "goldwrench-blocked";
+
+		[NotificationReference("Speech")]
+		[Desc("Speech notification to play when a bridge is repaired.")]
+		public readonly string RepairNotification = null;
+
+		[FluentReference(optional: true)]
+		[Desc("Text notification to display when a bridge is repaired.")]
+		public readonly string RepairTextNotification = null;
+
+		public override object Create(ActorInitializer init) { return new RepairsBridges(this); }
+	}
+
+	public class RepairsBridges : IIssueOrder, IResolveOrder, IOrderVoice
+	{
+		readonly RepairsBridgesInfo info;
+
+		public RepairsBridges(RepairsBridgesInfo info)
+		{
+			this.info = info;
+		}
+
+		public IEnumerable<IOrderTargeter> Orders
+		{
+			get { yield return new RepairBridgeOrderTargeter(info); }
+		}
+
+		public Order IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued)
+		{
+			if (order.OrderID == "RepairBridge" && target.Type == TargetType.Actor &&
+				TryResolveRepairHut(self, target.Actor, out var repairHut, out _, out _))
+				return new Order(order.OrderID, self, Target.FromActor(repairHut), queued);
+
+			return null;
+		}
+
+		static bool TryResolveRepairHut(Actor self, Actor target, out Actor repairHut,
+			out LegacyBridgeHut legacyHut, out BridgeHut hut)
+		{
+			repairHut = target;
+			legacyHut = target.TraitOrDefault<LegacyBridgeHut>();
+			hut = target.TraitOrDefault<BridgeHut>();
+			if (legacyHut != null || hut != null)
+				return true;
+
+			if (target.TraitOrDefault<IBridgeSegment>() == null)
+				return false;
+
+			var match = self.World.ActorsWithTrait<BridgeHut>()
+				.Where(pair => pair.Trait.ContainsSegmentActor(target))
+				.OrderBy(pair => (pair.Actor.Location - self.Location).LengthSquared)
+				.FirstOrDefault();
+			if (match.Actor == null)
+				return false;
+
+			repairHut = match.Actor;
+			hut = match.Trait;
+			return true;
+		}
+
+		public string VoicePhraseForOrder(Actor self, Order order)
+		{
+			// TODO: Add support for FrozenActors
+			if (order.OrderString != "RepairBridge" || order.Target.Type != TargetType.Actor)
+				return null;
+
+			if (!TryResolveRepairHut(self, order.Target.Actor, out _, out var legacyHut, out var hut))
+				return null;
+
+			if (legacyHut != null)
+				return legacyHut.BridgeDamageState == DamageState.Undamaged || legacyHut.Repairing || legacyHut.Bridge.IsDangling ? null : info.Voice;
+
+			if (hut != null)
+				return hut.BridgeDamageState == DamageState.Undamaged || hut.Repairing ? null : info.Voice;
+
+			return null;
+		}
+
+		public void ResolveOrder(Actor self, Order order)
+		{
+			// TODO: Add support for FrozenActors
+			// The activity supports it, but still missing way to freeze bridge state on the hut
+			if (order.OrderString == "RepairBridge" && order.Target.Type == TargetType.Actor)
+			{
+				if (!TryResolveRepairHut(self, order.Target.Actor, out var repairHut, out var legacyHut, out var hut))
+					return;
+
+				if (legacyHut != null)
+				{
+					if (legacyHut.BridgeDamageState == DamageState.Undamaged || legacyHut.Repairing || legacyHut.Bridge.IsDangling)
+						return;
+				}
+				else if (hut != null)
+				{
+					if (hut.BridgeDamageState == DamageState.Undamaged || hut.Repairing)
+						return;
+				}
+				else
+					return;
+
+				self.QueueActivity(
+					order.Queued,
+					new RepairBridge(self, Target.FromActor(repairHut), info.EnterBehaviour, info.RepairNotification, info.RepairTextNotification, info.TargetLineColor));
+				self.ShowTargetLines();
+			}
+		}
+
+		sealed class RepairBridgeOrderTargeter : UnitOrderTargeter
+		{
+			readonly RepairsBridgesInfo info;
+
+			public RepairBridgeOrderTargeter(RepairsBridgesInfo info)
+				: base("RepairBridge", 6, info.TargetCursor, true, true)
+			{
+				this.info = info;
+			}
+
+			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
+			{
+				// Obey force moving onto bridges
+				if (modifiers.HasModifier(TargetModifiers.ForceMove))
+					return false;
+
+				if (!TryResolveRepairHut(self, target, out _, out var legacyHut, out var hut))
+					return false;
+
+				if (legacyHut != null)
+				{
+					// Require force attack to heal partially damaged bridges to avoid unnecessary cursor noise
+					var damage = legacyHut.BridgeDamageState;
+					if (!modifiers.HasModifier(TargetModifiers.ForceAttack) && damage != DamageState.Dead)
+						return false;
+
+					// Can't repair a bridge that is undamaged, already under repair, or dangling
+					if (damage == DamageState.Undamaged || legacyHut.Repairing || legacyHut.Bridge.IsDangling)
+						cursor = info.TargetBlockedCursor;
+				}
+				else if (hut != null)
+				{
+					// Require force attack to heal partially damaged bridges to avoid unnecessary cursor noise
+					var damage = hut.BridgeDamageState;
+					if (hut.Info.RequireForceAttackForHeal && !modifiers.HasModifier(TargetModifiers.ForceAttack) && damage != DamageState.Dead)
+						return false;
+
+					// Can't repair a bridge that is undamaged, already under repair, or dangling
+					if (damage == DamageState.Undamaged || hut.Repairing)
+						cursor = info.TargetBlockedCursor;
+				}
+
+				return true;
+			}
+
+			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
+			{
+				// TODO: Bridges don't yet support FrozenUnderFog.
+				return false;
+			}
+		}
+	}
+}

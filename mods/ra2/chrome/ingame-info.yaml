@@ -1,0 +1,183 @@
+AspectImage@INGAME_INFO_TAB_ICON:
+	Width: 32
+	Height: 32
+	ImageCollection: cc-ingame-tab-objectives
+	ImageName: icon
+	ClickThrough: true
+
+Container@GAME_INFO_PANEL:
+	# Anchored inside INGAME_MENU / PANEL_ROOT (not free-floating on the window).
+	X: 0
+	Y: 0
+	Width: PARENT_WIDTH
+	Height: PARENT_HEIGHT
+	Logic: GameInfoLogic
+	Visible: False
+	Children:
+		# Shell already provides chrome — hide the separate dialog frame.
+		Background@BACKGROUND:
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			Visible: False
+		Label@TITLE:
+			Y: 16
+			Width: PARENT_WIDTH
+			Height: 28
+			Visible: False
+			Align: Center
+			Font: SettingsBold
+			Shadow: true
+			TextColor: FFFFFF
+		Container@TAB_CONTAINER_2:
+			X: (PARENT_WIDTH - WIDTH) / 2
+			Width: 320
+			Height: 56
+			Visible: False
+			Children:
+				Button@BUTTON1:
+					Y: 4
+					Width: 160
+					Height: 56
+					VisualHeight: 0
+					Background: cc-mp-control
+					Font: SettingsBold
+				Button@BUTTON2:
+					X: 160
+					Y: 4
+					Width: 160
+					Height: 56
+					VisualHeight: 0
+					Background: cc-mp-control
+					Font: SettingsBold
+		Container@TAB_CONTAINER_3:
+			X: (PARENT_WIDTH - WIDTH) / 2
+			Width: 480
+			Height: 56
+			Visible: False
+			Children:
+				Button@BUTTON1:
+					Y: 4
+					Width: 160
+					Height: 56
+					VisualHeight: 0
+					Background: cc-mp-control
+					Font: SettingsBold
+				Button@BUTTON2:
+					X: 160
+					Y: 4
+					Width: 160
+					Height: 56
+					VisualHeight: 0
+					Background: cc-mp-control
+					Font: SettingsBold
+				Button@BUTTON3:
+					X: 320
+					Y: 4
+					Width: 160
+					Height: 56
+					VisualHeight: 0
+					Background: cc-mp-control
+					Font: SettingsBold
+		Container@TAB_CONTAINER_4:
+			X: (PARENT_WIDTH - WIDTH) / 2
+			Width: 640
+			Height: 56
+			Visible: False
+			Children:
+				Button@BUTTON1:
+					Y: 4
+					Width: 160
+					Height: 56
+					VisualHeight: 0
+					Background: cc-mp-control
+					Font: SettingsBold
+				Button@BUTTON2:
+					X: 160
+					Y: 4
+					Width: 160
+					Height: 56
+					VisualHeight: 0
+					Background: cc-mp-control
+					Font: SettingsBold
+				Button@BUTTON3:
+					X: 320
+					Y: 4
+					Width: 160
+					Height: 56
+					VisualHeight: 0
+					Background: cc-mp-control
+					Font: SettingsBold
+				Button@BUTTON4:
+					X: 480
+					Y: 4
+					Width: 160
+					Height: 56
+					VisualHeight: 0
+					Background: cc-mp-control
+					Font: SettingsBold
+		Container@TAB_CONTAINER_5:
+			X: (PARENT_WIDTH - WIDTH) / 2
+			Width: 640
+			Height: 56
+			Visible: False
+			Children:
+				Button@BUTTON1:
+					Y: 4
+					Width: 128
+					Height: 56
+					VisualHeight: 0
+					Background: cc-mp-control
+					Font: SettingsBold
+				Button@BUTTON2:
+					X: 128
+					Y: 4
+					Width: 128
+					Height: 56
+					VisualHeight: 0
+					Background: cc-mp-control
+					Font: SettingsBold
+				Button@BUTTON3:
+					X: 256
+					Y: 4
+					Width: 128
+					Height: 56
+					VisualHeight: 0
+					Background: cc-mp-control
+					Font: SettingsBold
+				Button@BUTTON4:
+					X: 384
+					Y: 4
+					Width: 128
+					Height: 56
+					VisualHeight: 0
+					Background: cc-mp-control
+					Font: SettingsBold
+				Button@BUTTON5:
+					X: 512
+					Y: 4
+					Width: 128
+					Height: 56
+					VisualHeight: 0
+					Background: cc-mp-control
+					Font: SettingsBold
+		Container@STATS_PANEL:
+			Y: 100
+		Container@MAP_PANEL:
+			Y: 100
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT - 100
+		Container@OBJECTIVES_PANEL:
+			Y: 100
+			Width: PARENT_WIDTH
+		Container@DEBUG_PANEL:
+			Y: 100
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT - 100
+		Container@CHAT_PANEL:
+			Y: 100
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT - 100
+		Container@LOBBY_OPTIONS_PANEL:
+			Y: 100
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT - 100

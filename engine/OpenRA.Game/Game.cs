@@ -1,0 +1,1316 @@
+#region Copyright & License Information
+/*
+ * Copyright (c) The OpenRA Developers and Contributors
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
+ */
+#endregion
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Runtime;
+using System.Threading;
+using OpenRA.Graphics;
+using OpenRA.Network;
+using OpenRA.Primitives;
+using OpenRA.Server;
+using OpenRA.Support;
+using OpenRA.Widgets;
+
+namespace OpenRA
+{
+	public static class Game
+	{
+		// Hosts such as iOS can provide a statically linked platform implementation.
+		// Desktop hosts leave this unset and continue to load OpenRA.Platforms.*.dll.
+		public static Func<string, IPlatform> PlatformFactoryOverride { get; set; }
+
+		[FluentReference("filename")]
+		const string SavedScreenshot = "notification-saved-screenshot";
+
+		public const int TimestepJankThreshold = 250; // Don't catch up for delays larger than 250ms
+
+		public static InstalledMods Mods { get; private set; }
+		public static ExternalMods ExternalMods { get; private set; }
+
+		public static ModData ModData;
+		public static Settings Settings;
+		public static CursorManager Cursor;
+		public static bool HideCursor;
+		public static bool ContentManagerReturnToLauncher { get; private set; }
+
+		static WorldRenderer worldRenderer;
+		static string modLaunchWrapper;
+
+		internal static OrderManager OrderManager;
+		static Server.Server server;
+
+		public static MersenneTwister CosmeticRandom = new(); // not synced
+
+		public static Renderer Renderer;
+		public static Sound Sound;
+		public static IHapticEngine Haptics;
+
+		public static string EngineVersion { get; private set; }
+		public static LocalPlayerProfile LocalPlayerProfile;
+
+		static bool takeScreenshot = false;
+		static Benchmark benchmark = null;
+
+		public static event Action OnShellmapLoaded = () => { };
+
+		public static OrderManager JoinServer(ConnectionTarget endpoint, string password, bool recordReplay = true)
+		{
+			CurrentServerSettings.ClearRankedAdmission();
+			return JoinServerInner(endpoint, password, recordReplay);
+		}
+
+		static OrderManager JoinServerInner(ConnectionTarget endpoint, string password, bool recordReplay)
+		{
+			var newConnection = new NetworkConnection(endpoint);
+			if (recordReplay)
+				newConnection.StartRecording(() => TimestampedFilename());
+
+			var om = new OrderManager(newConnection);
+			JoinInner(om);
+			CurrentServerSettings.Password = password;
+			CurrentServerSettings.Target = endpoint;
+
+			lastConnectionState = ConnectionState.PreConnecting;
+			ConnectionStateChanged(OrderManager, password, newConnection);
+
+			return om;
+		}
+
+		public static OrderManager JoinRankedServer(RankedMatchAssignment assignment, bool recordReplay = true)
+		{
+			ArgumentNullException.ThrowIfNull(assignment);
+			CurrentServerSettings.SetRankedAdmission(assignment);
+			return JoinServerInner(assignment.Endpoint, "", recordReplay);
+		}
+
+		public static string TimestampedFilename(bool includemilliseconds = false, string extra = "")
+		{
+			var format = includemilliseconds ? "yyyy-MM-ddTHHmmssfffZ" : "yyyy-MM-ddTHHmmssZ";
+			return ModData.Manifest.Id + extra + "-" + DateTime.UtcNow.ToString(format, CultureInfo.InvariantCulture);
+		}
+
+		static void JoinInner(OrderManager om)
+		{
+			// Refresh static classes before the game starts.
+			TextNotificationsManager.Clear();
+			UnitOrders.Clear();
+
+			// HACK: The shellmap World and OrderManager are owned by the main menu's WorldRenderer instead of Game.
+			// This allows us to switch Game.OrderManager from the shellmap to the new network connection when joining
+			// a lobby, while keeping the OrderManager that runs the shellmap intact.
+			// A matching check in World.Dispose (which is called by WorldRenderer.Dispose) makes sure that we dispose
+			// the shellmap's OM when a lobby game actually starts.
+			if (OrderManager?.World == null || OrderManager.World.Type != WorldType.Shellmap)
+				OrderManager?.Dispose();
+
+			OrderManager = om;
+		}
+
+		public static void JoinReplay(string replayFile)
+		{
+			JoinInner(new OrderManager(new ReplayConnection(replayFile)));
+		}
+
+		static void JoinLocal()
+		{
+			JoinInner(new OrderManager(new EchoConnection()));
+
+			// Add a spectator client for the local player
+			// On the shellmap this player is controlling the map via scripted orders
+			OrderManager.LobbyInfo.Clients.Add(new Session.Client
+			{
+				Index = OrderManager.Connection.LocalClientId,
+				Name = Settings.Player.Name,
+				PreferredColor = Settings.Player.Color,
+				Color = Settings.Player.Color,
+				Faction = "Random",
+				SpawnPoint = 0,
+				Team = 0,
+				State = Session.ClientState.Ready
+			});
+		}
+
+		// More accurate replacement for Environment.TickCount
+		static readonly Stopwatch Stopwatch = Stopwatch.StartNew();
+		public static long RunTime => Stopwatch.ElapsedMilliseconds;
+
+		// Transient platform render limit. Zero leaves the user's configured limit unchanged.
+		public static int RuntimeRenderFrameRateLimit { get; set; }
+
+		public static int RenderFrame = 0;
+		public static int NetFrameNumber => OrderManager.NetFrameNumber;
+		public static int LocalTick => OrderManager.LocalFrameNumber;
+
+		public static event Action<ConnectionTarget> OnRemoteDirectConnect = _ => { };
+		public static event Action<OrderManager, string, NetworkConnection> ConnectionStateChanged = (om, pass, conn) => { };
+		static ConnectionState lastConnectionState = ConnectionState.PreConnecting;
+		public static int LocalClientId => OrderManager.Connection.LocalClientId;
+
+		public static void RemoteDirectConnect(ConnectionTarget endpoint)
+		{
+			OnRemoteDirectConnect(endpoint);
+		}
+
+		// Hacky workaround for orderManager visibility
+		public static Widget OpenWindow(World world, string widget)
+		{
+			return Ui.OpenWindow(widget, new WidgetArgs() { { "world", world }, { "orderManager", OrderManager }, { "worldRenderer", worldRenderer } });
+		}
+
+		// Who came up with the great idea of making these things
+		// impossible for the things that want them to access them directly?
+		public static Widget OpenWindow(string widget, WidgetArgs args)
+		{
+			return Ui.OpenWindow(widget, new WidgetArgs(args)
+			{
+				{ "world", worldRenderer.World },
+				{ "orderManager", OrderManager },
+				{ "worldRenderer", worldRenderer },
+			});
+		}
+
+		// Load a widget with world, orderManager, worldRenderer args, without adding it to the widget tree
+		public static Widget LoadWidget(World world, string id, Widget parent, WidgetArgs args)
+		{
+			return ModData.WidgetLoader.LoadWidget(new WidgetArgs(args)
+			{
+				{ "world", world },
+				{ "orderManager", OrderManager },
+				{ "worldRenderer", worldRenderer },
+			}, parent, id);
+		}
+
+		public static event Action LobbyInfoChanged = () => { };
+
+		internal static void SyncLobbyInfo()
+		{
+			LobbyInfoChanged();
+		}
+
+		public static event Action BeforeGameStart = () => { };
+		public static event Action AfterGameStart = () => { };
+		public static Action OpenContentManagement = () => { };
+		public static Action OpenSpecialThanks = () => { };
+		public static Action OpenSupportPage = () => { };
+		public static Action OpenSupportersPage = () => { };
+		internal static void StartGame(string mapUID, WorldType type)
+		{
+			HangDiagnostics.Record("loading.start-game.enter");
+			using var startGameTrace = DiagnosticTrace.Scope(DiagnosticSubsystem.Loading, "Game.StartGame");
+			// Dispose of the old world before creating a new one.
+			using (DiagnosticTrace.Scope(DiagnosticSubsystem.Loading, "DisposeOldWorld"))
+				worldRenderer?.Dispose();
+
+			Cursor.SetCursor(null);
+			using (DiagnosticTrace.Scope(DiagnosticSubsystem.Loading, "BeforeGameStart"))
+				BeforeGameStart();
+
+			using (new PerfTimer("NewWorld"))
+			using (DiagnosticTrace.Scope(DiagnosticSubsystem.Loading, "World.ctor"))
+				OrderManager.World = new World(mapUID, ModData, OrderManager, type);
+			IosLoadStageJournal.Record("world-created", $"map={mapUID}");
+
+			// Local patch: pin the OrderManager/World this call created.
+			// LoadComplete below can synchronously replace Game.OrderManager via JoinInner
+			// (e.g. Game.LaunchInto opening the skirmish lobby from MainMenuLogic),
+			// so dereferencing OrderManager.World after that point can hit a null World
+			// on the freshly-joined lobby OrderManager.
+			var orderManager = OrderManager;
+			var world = OrderManager.World;
+
+			world.GameOver += FinishBenchmark;
+
+			using (DiagnosticTrace.Scope(DiagnosticSubsystem.Loading, "WorldRenderer.ctor"))
+				worldRenderer = new WorldRenderer(ModData, world);
+			IosLoadStageJournal.Record("renderer-created", $"map={mapUID}");
+
+			// Proactively collect memory during loading to reduce peak memory.
+			// iOS relies on the runtime collector while the managed SDL audio callback is active.
+			if (LoadMemoryPolicy.ShouldForceCollection(OperatingSystem.IsIOS()))
+				using (DiagnosticTrace.Scope(DiagnosticSubsystem.Loading, "GC.BeforeLoadComplete"))
+					GC.Collect();
+
+			using (new PerfTimer("LoadComplete"))
+			using (DiagnosticTrace.Scope(DiagnosticSubsystem.Loading, "World.LoadComplete"))
+				world.LoadComplete(worldRenderer);
+			HangDiagnostics.Record("loading.world-load-complete.exit");
+			IosLoadStageJournal.Record("load-complete", $"map={mapUID}");
+
+			// Proactively collect memory during loading to reduce peak memory.
+			if (LoadMemoryPolicy.ShouldForceCollection(OperatingSystem.IsIOS()))
+				using (DiagnosticTrace.Scope(DiagnosticSubsystem.Loading, "GC.AfterLoadComplete"))
+					GC.Collect();
+
+			if (orderManager.GameStarted)
+				return;
+
+			Ui.MouseFocusWidget = null;
+			Ui.KeyboardFocusWidget = null;
+
+			orderManager.StartGame();
+			IosLoadStageJournal.Record("order-manager-started", $"map={mapUID}");
+			worldRenderer.RefreshPalette();
+			IosLoadStageJournal.Record("palette-refreshed", $"map={mapUID}");
+			Cursor.SetCursor(ChromeMetrics.Get<string>("DefaultCursor"));
+
+			// Now loading is completed, now is the ideal time to run a GC and compact the LOH.
+			// - All the temporary garbage created during loading can be collected.
+			// - Live objects are likely to live for the length of the game or longer,
+			//   thus promoting them into a higher generation is not an issue.
+			// - We can remove any fragmentation in the LOH caused by temporary loading garbage.
+			// - A loading screen is visible, so a delay won't matter to the user.
+			//   Much better to clean up now then to drop frames during gameplay for GC pauses.
+			// The iOS runtime does not support explicit LOH compaction and must not
+			// force a stop-the-world collection while the audio callback is active.
+			if (LoadMemoryPolicy.ShouldForceCollection(OperatingSystem.IsIOS()))
+			{
+				if (LoadMemoryPolicy.SupportsLohCompaction)
+						GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+				GC.Collect();
+			}
+
+			// PostLoadComplete is designed for anything that should trigger at the very end of loading.
+			// e.g. audio notifications that the game is starting.
+			using (DiagnosticTrace.Scope(DiagnosticSubsystem.Loading, "World.PostLoadComplete"))
+				world.PostLoadComplete(worldRenderer);
+			IosLoadStageJournal.Record("post-load-complete", $"map={mapUID}");
+
+			AfterGameStart();
+			benchmark?.BeginAutomatic();
+			IosLoadStageJournal.Record("after-game-start", $"map={mapUID}");
+			HangDiagnostics.Record("loading.start-game.exit");
+		}
+
+		public static void RestartGame()
+		{
+			var replay = OrderManager.Connection as ReplayConnection;
+			var replayName = replay?.Filename;
+			var lobbyInfo = OrderManager.LobbyInfo;
+
+			// Reseed the RNG so this isn't an exact repeat of the last game
+			lobbyInfo.GlobalSettings.RandomSeed = CosmeticRandom.Next();
+
+			// Note: the map may have been changed on disk outside the game, changing its UID.
+			// Use the updated UID if we have tracked the update instead of failing.
+			lobbyInfo.GlobalSettings.Map = ModData.MapCache.GetUpdatedMap(lobbyInfo.GlobalSettings.Map);
+			if (lobbyInfo.GlobalSettings.Map == null)
+			{
+				Disconnect();
+				Ui.ResetAll();
+				LoadShellMap();
+				return;
+			}
+
+			var orders = new[]
+			{
+					Order.Command($"sync_lobby {lobbyInfo.Serialize()}"),
+					Order.Command("startgame")
+			};
+
+			// Disconnect from the current game
+			Disconnect();
+			Ui.ResetAll();
+
+			// Restart the game with the same replay/mission
+			if (replay != null)
+				JoinReplay(replayName);
+			else
+				CreateAndStartLocalServer(lobbyInfo.GlobalSettings.Map, orders);
+		}
+
+		public static void CreateAndStartLocalServer(string mapUID, IEnumerable<Order> setupOrders)
+		{
+			OrderManager om = null;
+
+			void LobbyReady()
+			{
+				LobbyInfoChanged -= LobbyReady;
+				foreach (var o in setupOrders)
+					om.IssueOrder(o);
+			}
+
+			LobbyInfoChanged += LobbyReady;
+
+			om = JoinServer(CreateLocalServer(mapUID), "");
+		}
+
+		public static bool IsHost
+		{
+			get
+			{
+				var id = OrderManager.Connection.LocalClientId;
+				var client = OrderManager.LobbyInfo.ClientWithIndex(id);
+				return client != null && client.IsAdmin;
+			}
+		}
+
+		static Modifiers modifiers;
+		public static Modifiers GetModifierKeys() { return modifiers; }
+		internal static void HandleModifierKeys(Modifiers mods) { modifiers = mods; }
+
+		public static void InitializeSettings(Arguments args)
+		{
+			Settings = new Settings(Path.Combine(Platform.SupportDir, "settings.yaml"), args);
+		}
+
+		public static string ReadEngineVersion(string engineDirectory)
+		{
+			try
+			{
+				var version = File.ReadAllText(Path.Combine(engineDirectory, "VERSION")).Trim();
+				return string.IsNullOrEmpty(version) ? "Unknown" : version;
+			}
+			catch
+			{
+				return "Unknown";
+			}
+		}
+
+		public static void InitializeEngineVersion()
+		{
+			EngineVersion = ReadEngineVersion(Platform.EngineDir);
+		}
+
+		public static RunStatus InitializeAndRun(string[] args)
+		{
+			InitializeRuntime(args);
+			return Run();
+		}
+
+		static void InitializeRuntime(string[] args)
+		{
+			Initialize(new Arguments(args));
+			IosSmokeTestJournal.RecordStart();
+
+			// Proactively collect memory during loading to reduce peak memory.
+			if (LoadMemoryPolicy.ShouldForceCollection(OperatingSystem.IsIOS()))
+				GC.Collect();
+		}
+
+		static void Initialize(Arguments args)
+		{
+			ContentManagerReturnToLauncher = string.Equals(
+				args.GetValue("Game.ContentManagerReturnToLauncher", "false"),
+				"true", StringComparison.OrdinalIgnoreCase);
+
+			var engineDirArg = args.GetValue("Engine.EngineDir", null);
+			if (!string.IsNullOrEmpty(engineDirArg))
+				Platform.OverrideEngineDir(engineDirArg);
+
+			var supportDirArg = args.GetValue("Engine.SupportDir", null);
+			if (!string.IsNullOrEmpty(supportDirArg))
+				Platform.OverrideSupportDir(supportDirArg);
+
+			Console.WriteLine($"Platform is {Platform.CurrentPlatform} ({Platform.CurrentArchitecture})");
+
+			// Load the engine version as early as possible so it can be written to exception logs
+			InitializeEngineVersion();
+
+			Console.WriteLine($"Engine version is {EngineVersion}");
+			Console.WriteLine($"Runtime: {Platform.RuntimeVersion}");
+
+			// Special case handling of Game.Mod argument: if it matches a real filesystem path
+			// then we use this to override the mod search path, and replace it with the mod id
+			var modID = args.GetValue("Game.Mod", null);
+			var explicitModPaths = Array.Empty<string>();
+			if (modID != null && (File.Exists(modID) || Directory.Exists(modID)))
+			{
+				explicitModPaths = new[] { modID };
+				modID = Path.GetFileNameWithoutExtension(modID);
+			}
+
+			InitializeSettings(args);
+
+			Log.AddChannel("perf", "perf.log");
+			Log.AddChannel("debug", "debug.log");
+			Log.AddChannel("server", "server.log", true);
+			Log.AddChannel("sound", "sound.log");
+			Log.AddChannel("graphics", "graphics.log");
+			Log.AddChannel("geoip", "geoip.log");
+			Log.AddChannel("nat", "nat.log");
+			Log.AddChannel("client", "client.log");
+			HangDiagnostics.Start();
+
+			var platforms = new[] { Settings.Game.Platform, "Default", null };
+			foreach (var p in platforms)
+			{
+				if (p == null)
+					throw new InvalidOperationException("Failed to initialize platform-integration library. Check graphics.log for details.");
+
+				Settings.Game.Platform = p;
+				try
+				{
+					var platform = CreatePlatform(p);
+					Renderer = new Renderer(platform, Settings.Graphics);
+					Sound = new Sound(platform, Settings.Sound);
+					Haptics = platform.CreateHaptics();
+
+					break;
+				}
+				catch (Exception e)
+				{
+					Log.Write("graphics", $"{e}");
+					Console.WriteLine("Renderer initialization failed. Check graphics.log for details.");
+
+					try
+					{
+						Renderer?.Dispose();
+					}
+					catch (Exception disposeError)
+					{
+						Log.Write("graphics", $"{disposeError}");
+					}
+
+					Renderer = null;
+
+					try
+					{
+						Sound?.Dispose();
+					}
+					catch (Exception disposeError)
+					{
+						Log.Write("graphics", $"{disposeError}");
+					}
+
+					Sound = null;
+
+					try
+					{
+						Haptics?.Dispose();
+					}
+					catch (Exception disposeError)
+					{
+						Log.Write("graphics", $"{disposeError}");
+					}
+
+					Haptics = null;
+				}
+			}
+
+			Nat.Initialize();
+
+			var modSearchArg = args.GetValue("Engine.ModSearchPaths", null);
+			var modSearchPaths = modSearchArg != null ?
+				FieldLoader.GetValue<string[]>("Engine.ModsPath", modSearchArg) :
+				new[] { Path.Combine(Platform.EngineDir, "mods") };
+
+			Mods = new InstalledMods(modSearchPaths, explicitModPaths);
+			Console.WriteLine("Internal mods:");
+			foreach (var mod in Mods)
+				Console.WriteLine($"\t{mod.Key} ({mod.Value.Metadata.Version})");
+
+			modLaunchWrapper = args.GetValue("Engine.LaunchWrapper", null);
+
+			ExternalMods = new ExternalMods();
+
+			if (modID != null && Mods.TryGetValue(modID, out _))
+			{
+				var launchPath = args.GetValue("Engine.LaunchPath", null);
+				var launchArgs = new List<string>();
+
+				// Sanitize input from platform-specific launchers
+				// Process.Start requires paths to not be quoted, even if they contain spaces
+				if (launchPath != null && launchPath[0] == '"' && launchPath.Last() == '"')
+					launchPath = launchPath[1..^1];
+
+				// Metadata registration requires an explicit launch path
+				if (launchPath != null)
+					ExternalMods.Register(Mods[modID], launchPath, launchArgs, ModRegistration.User);
+
+				ExternalMods.ClearInvalidRegistrations(ModRegistration.User);
+			}
+
+			Console.WriteLine("External mods:");
+			foreach (var mod in ExternalMods)
+				Console.WriteLine($"\t{mod.Key} ({mod.Value.Version})");
+
+			InitializeMod(modID, args);
+		}
+
+		public static IPlatform CreatePlatform(string platformName)
+		{
+			if (PlatformFactoryOverride != null)
+				return PlatformFactoryOverride(platformName);
+
+			var rendererPath = Path.Combine(Platform.BinDir, "OpenRA.Platforms." + platformName + ".dll");
+
+#if NET5_0_OR_GREATER
+			var loader = new AssemblyLoader(rendererPath);
+			var platformType = loader.LoadDefaultAssembly().GetTypes().SingleOrDefault(t => typeof(IPlatform).IsAssignableFrom(t));
+
+#else
+			// NOTE: This is currently the only use of System.Reflection in this file, so would give an unused using error if we import it above
+			var assembly = System.Reflection.Assembly.LoadFile(rendererPath);
+			var platformType = assembly.GetTypes().SingleOrDefault(t => typeof(IPlatform).IsAssignableFrom(t));
+#endif
+
+			if (platformType == null)
+				throw new InvalidOperationException("Platform dll must include exactly one IPlatform implementation.");
+
+			return (IPlatform)platformType.GetConstructor(Type.EmptyTypes).Invoke(null);
+		}
+
+		public static void InitializeMod(string mod, Arguments args)
+		{
+			// Clear static state if we have switched mods
+			LobbyInfoChanged = () => { };
+			ConnectionStateChanged = (om, p, conn) => { };
+			BeforeGameStart = () => { };
+			OnRemoteDirectConnect = endpoint => { };
+			delayedActions = new ActionQueue();
+
+			Ui.ResetAll();
+
+			worldRenderer?.Dispose();
+			worldRenderer = null;
+			server?.Shutdown();
+			OrderManager?.Dispose();
+
+			if (ModData != null)
+			{
+				ModData.ModFiles.UnmountAll();
+				ModData.Dispose();
+			}
+
+			ModData = null;
+
+			if (mod == null)
+				throw new InvalidOperationException("Game.Mod argument missing.");
+
+			if (!Mods.ContainsKey(mod))
+				throw new InvalidOperationException($"Unknown or invalid mod '{mod}'.");
+
+			Console.WriteLine($"Loading mod: {mod}");
+
+			Sound.StopVideo();
+
+			ModData = new ModData(Mods[mod], Mods, true);
+
+			LocalPlayerProfile = new LocalPlayerProfile(Path.Combine(Platform.SupportDir, Settings.Game.AuthProfile), ModData.Manifest.Get<PlayerDatabase>());
+
+			// RA2 prepares retail maps inside BeforeLoad. Its bundled fonts are
+			// available now, so display a readable progress screen during that work.
+			var earlyLoadingFonts = ModData.Manifest.Id == "ra2";
+			if (earlyLoadingFonts)
+				Renderer.InitializeFonts(ModData);
+
+			if (!ModData.LoadScreen.BeforeLoad())
+				return;
+
+			ModData.InitializeLoaders(ModData.DefaultFileSystem);
+			if (!earlyLoadingFonts)
+				Renderer.InitializeFonts(ModData);
+
+			using (new PerfTimer("LoadMaps"))
+				ModData.MapCache.LoadMaps();
+
+			var grid = ModData.Manifest.Contains<MapGrid>() ? ModData.Manifest.Get<MapGrid>() : null;
+			Renderer.InitializeDepthBuffer(grid);
+
+			Cursor?.Dispose();
+			Cursor = new CursorManager(ModData.CursorProvider, ModData.Manifest.CursorSheetSize);
+
+			var metadata = ModData.Manifest.Metadata;
+			if (!string.IsNullOrEmpty(metadata.WindowTitleTranslated))
+				Renderer.Window.SetWindowTitle(metadata.WindowTitleTranslated);
+
+			PerfHistory.Items["render"].HasNormalTick = false;
+			PerfHistory.Items["batches"].HasNormalTick = false;
+			PerfHistory.Items["render_world"].HasNormalTick = false;
+			PerfHistory.Items["render_widgets"].HasNormalTick = false;
+			PerfHistory.Items["render_flip"].HasNormalTick = false;
+			PerfHistory.Items["terrain_lighting"].HasNormalTick = false;
+
+			JoinLocal();
+
+			ModData.LoadScreen.StartGame(args);
+		}
+
+		public static void LoadEditor(string mapUid)
+		{
+			JoinLocal();
+			StartGame(mapUid, WorldType.Editor);
+		}
+
+		public static void LoadShellMap()
+		{
+			var shellmap = ChooseShellmap();
+			using (new PerfTimer("StartGame"))
+			{
+				StartGame(shellmap, WorldType.Shellmap);
+				OnShellmapLoaded();
+			}
+		}
+
+		static string ChooseShellmap()
+		{
+			var shellmaps = ModData.MapCache
+				.Where(m => m.Status == MapStatus.Available && m.Visibility.HasFlag(MapVisibility.Shellmap))
+				.Select(m => m.Uid);
+
+			var shellmap = shellmaps.RandomOrDefault(CosmeticRandom);
+			if (shellmap == null)
+				throw new InvalidDataException("No valid shellmaps available");
+
+			return shellmap;
+		}
+
+		public static void SwitchToExternalMod(ExternalMod mod, string[] launchArguments = null, Action onFailed = null)
+		{
+			try
+			{
+				var path = mod.LaunchPath;
+				var args = launchArguments != null ? mod.LaunchArgs.Append(launchArguments) : mod.LaunchArgs;
+				if (modLaunchWrapper != null)
+				{
+					path = modLaunchWrapper;
+					args = new[] { mod.LaunchPath }.Concat(args);
+				}
+
+				var p = Process.Start(path, args.Select(a => "\"" + a + "\"").JoinWith(" "));
+				if (p == null || p.HasExited)
+					onFailed();
+				else
+				{
+					p.Close();
+					Exit();
+				}
+			}
+			catch (Exception e)
+			{
+				Log.Write("debug", "Failed to switch to external mod.");
+				Log.Write("debug", "Error was: " + e.Message);
+				onFailed();
+			}
+		}
+
+		static RunStatus state = RunStatus.Running;
+		public static event Action OnQuit = () => { };
+
+		// Note: These delayed actions should only be used by widgets or disposing objects
+		// - things that depend on a particular world should be queuing them on the world actor.
+		static volatile ActionQueue delayedActions = new();
+
+		public static void RunAfterTick(Action a) { delayedActions.Add(a, RunTime); }
+		public static void RunAfterDelay(int delayMilliseconds, Action a) { delayedActions.Add(a, RunTime + delayMilliseconds); }
+
+		static void TakeScreenshotInner()
+		{
+			using (new PerfTimer("Renderer.SaveScreenshot"))
+			{
+				var mod = ModData.Manifest.Metadata;
+				var directory = Path.Combine(Platform.SupportDir, "Screenshots", ModData.Manifest.Id, mod.Version);
+				Directory.CreateDirectory(directory);
+
+				var filename = TimestampedFilename(true);
+				var path = Path.Combine(directory, string.Concat(filename, ".png"));
+				Log.Write("debug", "Taking screenshot " + path);
+
+				Renderer.SaveScreenshot(path);
+				TextNotificationsManager.Debug(FluentProvider.GetMessage(SavedScreenshot, "filename", filename));
+			}
+		}
+
+		static void InnerLogicTick(OrderManager orderManager)
+		{
+			HangDiagnostics.Record("logic.inner.enter");
+			var tick = RunTime;
+
+			var world = orderManager.World;
+
+			if (Ui.LastTickTime.ShouldAdvance(tick))
+			{
+				Ui.LastTickTime.AdvanceTickTime(tick);
+				Sync.RunUnsynced(world, Ui.Tick);
+				Cursor.Tick();
+			}
+
+			if (orderManager.LastTickTime.ShouldAdvance(tick))
+			{
+				if (orderManager.GameStarted && orderManager.LocalFrameNumber == 0)
+					PerfHistory.Reset(); // Remove history that occurred whilst the new game was loading.
+
+				using (var sample = new PerfSample("tick_time"))
+				{
+					orderManager.LastTickTime.AdvanceTickTime(tick);
+
+					Sound.Tick();
+
+					HangDiagnostics.Record("logic.network-receive.enter");
+					Sync.RunUnsynced(world, orderManager.TickImmediate);
+					HangDiagnostics.Record("logic.network-receive.exit");
+
+					if (world == null)
+					{
+						if (orderManager.GameStarted)
+							PerfHistory.Reset(); // Remove old history when a new game starts.
+						return;
+					}
+
+					HangDiagnostics.Record("logic.order-readiness.enter");
+					if (orderManager.TryTick())
+					{
+						HangDiagnostics.Record("logic.order-generator.enter");
+						Sync.RunUnsynced(world, () => world.OrderGenerator.Tick(world));
+						HangDiagnostics.Record("logic.world-tick.enter");
+
+						using (new PerfSample("world_tick"))
+							world.Tick();
+						HangDiagnostics.Record("logic.world-tick.exit");
+
+						PerfHistory.Tick();
+					}
+
+					// Wait until we have done our first world Tick before TickRendering
+					if (orderManager.LocalFrameNumber > 0)
+					{
+						HangDiagnostics.Record("logic.world-render-state.enter");
+						Sync.RunUnsynced(world, () => world.TickRender(worldRenderer));
+						HangDiagnostics.Record("logic.world-render-state.exit");
+					}
+				}
+
+				benchmark?.Tick(LocalTick);
+			}
+		}
+
+		static void LogicTick()
+		{
+			HangDiagnostics.Record("logic.tick.enter");
+			PerformDelayedActions();
+
+			if (OrderManager.Connection is NetworkConnection nc && nc.ConnectionState != lastConnectionState)
+			{
+				lastConnectionState = nc.ConnectionState;
+				ConnectionStateChanged(OrderManager, null, nc);
+			}
+
+			InnerLogicTick(OrderManager);
+			if (worldRenderer != null && OrderManager.World != worldRenderer.World)
+				InnerLogicTick(worldRenderer.World.OrderManager);
+			HangDiagnostics.Record("logic.tick.exit");
+		}
+
+		public static void PerformDelayedActions()
+		{
+			delayedActions.PerformActions(RunTime);
+		}
+
+		public static void TakeScreenshot()
+		{
+			takeScreenshot = true;
+		}
+
+		static void RenderTick()
+		{
+			HangDiagnostics.Record("render.tick.enter");
+			using (new PerfSample("render"))
+			{
+				++RenderFrame;
+
+				// Prepare renderables (i.e. render voxels) before calling BeginFrame
+				using (new PerfSample("render_prepare"))
+				{
+					HangDiagnostics.Record("render.prepare.enter");
+					worldRenderer?.BeginFrame();
+
+					// World rendering is disabled while the loading screen is displayed
+					if (worldRenderer != null && !worldRenderer.World.IsLoadingGameSave)
+					{
+						worldRenderer.Viewport.Tick();
+						worldRenderer.PrepareRenderables();
+					}
+
+					Ui.PrepareRenderables();
+					worldRenderer?.EndFrame();
+					HangDiagnostics.Record("render.prepare.exit");
+				}
+
+				// worldRenderer is null during the initial install/download screen
+				// World rendering is disabled while the loading screen is displayed
+				// Use worldRenderer.World instead of OrderManager.World to avoid a rendering mismatch while processing orders
+				if (worldRenderer != null && !worldRenderer.World.IsLoadingGameSave)
+				{
+					Renderer.BeginWorld(worldRenderer.Viewport.Rectangle);
+					Sound.SetListenerPosition(worldRenderer.Viewport.CenterPosition);
+					using (new PerfSample("render_world"))
+					{
+						HangDiagnostics.Record("render.world-draw.enter");
+						worldRenderer.Draw();
+						HangDiagnostics.Record("render.world-draw.exit");
+					}
+				}
+
+				using (new PerfSample("render_widgets"))
+				{
+					HangDiagnostics.Record("render.ui-draw.enter");
+					Renderer.BeginUI();
+
+					if (worldRenderer != null && !worldRenderer.World.IsLoadingGameSave)
+						worldRenderer.DrawAnnotations();
+
+					Ui.Draw();
+
+					if (ModData != null && ModData.CursorProvider != null)
+					{
+						if (HideCursor)
+							Cursor.SetCursor(null);
+						else
+						{
+							Cursor.SetCursor(Ui.Root.GetCursorOuter(Viewport.LastMousePos) ?? "default");
+							Cursor.Render(Renderer);
+						}
+					}
+
+					HangDiagnostics.Record("render.ui-draw.exit");
+				}
+
+				using (new PerfSample("render_flip"))
+				{
+					HangDiagnostics.Record("render.present.enter");
+					Renderer.EndFrame(new DefaultInputHandler(OrderManager.World));
+					HangDiagnostics.Record("render.present.exit");
+
+					if (worldRenderer != null)
+					{
+						var presentedWorld = worldRenderer.World;
+						IosSmokeTestJournal.RecordReady(
+							presentedWorld, presentedWorld.OrderManager.LocalFrameNumber,
+							presentedWorld.WorldTick, RenderFrame, RunTime);
+					}
+				}
+
+				if (takeScreenshot)
+				{
+					takeScreenshot = false;
+					TakeScreenshotInner();
+				}
+			}
+
+			PerfHistory.Items["render"].Tick();
+			PerfHistory.Items["batches"].Tick();
+			PerfHistory.Items["render_world"].Tick();
+			PerfHistory.Items["render_widgets"].Tick();
+			PerfHistory.Items["render_flip"].Tick();
+			PerfHistory.Items["terrain_lighting"].Tick();
+		}
+
+		sealed class GameLoopState
+		{
+			// When the logic has fallen behind by this much, skip the pending
+			// updates and start fresh. The logic interval cannot exceed this value.
+			public const int MaxLogicTicksBehind = 250;
+
+			// Try to maintain at least this many FPS during replays, even if it slows down logic.
+			public const int MinReplayFps = 10;
+
+			public long NextLogic;
+			public long NextRender;
+			public long ForcedNextRender;
+			public bool RenderBeforeNextTick;
+
+			public GameLoopState(long now)
+			{
+				NextLogic = now;
+				NextRender = now;
+				ForcedNextRender = now;
+			}
+		}
+
+		static GameLoopState StartLoop()
+		{
+			var loopState = new GameLoopState(RunTime);
+			HangDiagnostics.Resume();
+			HangDiagnostics.Record("loop.started");
+			return loopState;
+		}
+
+		static void RunLoopIteration(GameLoopState loopState, bool allowSleep)
+		{
+			HangDiagnostics.Record("loop.dispatch");
+			var logicInterval = Ui.Timestep;
+			var logicWorld = worldRenderer?.World;
+
+			// ReplayTimestep = 0 means the replay is paused: we need to keep logicInterval as UI.Timestep to avoid breakage
+			if (logicWorld != null && (!logicWorld.IsReplay || logicWorld.ReplayTimestep != 0))
+				logicInterval = logicWorld == OrderManager.World ? OrderManager.SuggestedTimestep : logicWorld.Timestep;
+
+			// Ideal time between screen updates
+			var renderInterval = logicInterval;
+			if (!Settings.Graphics.CapFramerateToGameFps)
+			{
+				var maxFramerate = Settings.Graphics.CapFramerate ? Settings.Graphics.MaxFramerate.Clamp(1, 1000) : 1000;
+				renderInterval = 1000 / maxFramerate;
+			}
+
+			renderInterval = AndroidThermalFramePolicy.LimitRenderInterval(renderInterval, RuntimeRenderFrameRateLimit);
+
+			// Tick as fast as possible while restoring game saves, capping rendering at 5 FPS
+			if (OrderManager.World != null && OrderManager.World.IsLoadingGameSave)
+			{
+				logicInterval = 1;
+				renderInterval = 200;
+			}
+
+			var now = RunTime;
+
+			// If the logic has fallen behind too much, skip it and catch up
+			if (now - loopState.NextLogic > GameLoopState.MaxLogicTicksBehind)
+				loopState.NextLogic = now;
+
+			// Release a pending per-tick render guard when thermal limiting activates.
+			// Rendering less often must never delay the deterministic simulation.
+			loopState.RenderBeforeNextTick = AndroidThermalFramePolicy.RequiresRenderBeforeLogic(
+				loopState.RenderBeforeNextTick, RuntimeRenderFrameRateLimit);
+
+			// When's the next update (logic or render)
+			var nextUpdate = Math.Min(loopState.NextLogic, loopState.NextRender);
+			if (now >= nextUpdate)
+			{
+				var forceRender = loopState.RenderBeforeNextTick || now >= loopState.ForcedNextRender;
+
+				if (now >= loopState.NextLogic && !loopState.RenderBeforeNextTick)
+				{
+					loopState.NextLogic += logicInterval;
+
+					LogicTick();
+
+					// Force at least one render per tick during regular gameplay
+					if (OrderManager.World != null && !OrderManager.World.IsLoadingGameSave && !OrderManager.World.IsReplay)
+						loopState.RenderBeforeNextTick = AndroidThermalFramePolicy.RequiresRenderBeforeLogic(true, RuntimeRenderFrameRateLimit);
+				}
+
+				var haveSomeTimeUntilNextLogic = now < loopState.NextLogic;
+				var isTimeToRender = now >= loopState.NextRender;
+				if (!Renderer.WindowIsSuspended && ((isTimeToRender && haveSomeTimeUntilNextLogic) || forceRender))
+				{
+					loopState.NextRender = now + renderInterval;
+
+					// Pick the minimum allowed FPS (the lower between 'minReplayFPS'
+					// and the user's max frame rate) and convert it to maximum time
+					// allowed between screen updates.
+					// We do this before rendering to include the time rendering takes
+					// in this interval.
+					var maxRenderInterval = Math.Max(1000 / GameLoopState.MinReplayFps, renderInterval);
+					loopState.ForcedNextRender = now + maxRenderInterval;
+
+					RenderTick();
+					loopState.RenderBeforeNextTick = false;
+				}
+
+				// Simulate a render tick if it was time to render but we skip actually rendering
+				if (Renderer.WindowIsSuspended && isTimeToRender)
+				{
+					// Make sure that nextUpdate is set to a proper minimum interval
+					loopState.NextRender = now + renderInterval;
+
+					// Still process SDL events to allow a restore to come through
+					Renderer.Window.PumpInput(new NullInputHandler());
+
+					// Ensure that we still logic tick despite not rendering
+					loopState.RenderBeforeNextTick = false;
+				}
+			}
+			else if (allowSleep)
+				Thread.Sleep((int)(nextUpdate - now));
+		}
+
+		static void Loop()
+		{
+			// Desktop platforms keep the original blocking loop. iOS advances the
+			// same timing state once per CADisplayLink callback instead.
+			var loopState = StartLoop();
+			while (state == RunStatus.Running)
+				RunLoopIteration(loopState, allowSleep: true);
+		}
+
+		static void PrepareRun()
+		{
+			if (Settings.Graphics.MaxFramerate < 1)
+			{
+				Settings.Graphics.MaxFramerate = new GraphicSettings().MaxFramerate;
+				Settings.Graphics.CapFramerate = false;
+			}
+		}
+
+		static void FinishRun()
+		{
+			HangDiagnostics.Stop();
+
+			// Ensure that the active replay is properly saved
+			OrderManager?.Dispose();
+
+			worldRenderer?.Dispose();
+			ModData?.Dispose();
+			ChromeProvider.Deinitialize();
+
+			Sound?.Dispose();
+			Haptics?.Dispose();
+			Renderer?.Dispose();
+
+			OnQuit();
+		}
+
+		static RunStatus Run()
+		{
+			PrepareRun();
+
+			try
+			{
+				Loop();
+			}
+			finally
+			{
+				FinishRun();
+			}
+
+			return state;
+		}
+
+		static GameLoopState externalLoopState;
+		static bool externalLoopFinished;
+
+		public static void InitializeForExternalLoop(string[] args)
+		{
+			if (externalLoopState != null && !externalLoopFinished)
+				throw new InvalidOperationException("The external game loop is already running.");
+
+			state = RunStatus.Running;
+			InitializeRuntime(args);
+			PrepareRun();
+			externalLoopFinished = false;
+			externalLoopState = StartLoop();
+		}
+
+		public static bool RunExternalLoopFrame()
+		{
+			if (externalLoopState == null || externalLoopFinished)
+				throw new InvalidOperationException("The external game loop has not been initialized.");
+
+			if (state == RunStatus.Running)
+			{
+				if (Renderer.Window is IExternalFramePumpWindow externalFrameWindow)
+					externalFrameWindow.PrepareExternalFrame();
+
+				RunLoopIteration(externalLoopState, allowSleep: false);
+
+				// Native display links invoke us only once per refresh. Save restoration
+				// must replay faster than real time, but must not monopolize UIKit.
+				var catchUpStarted = Stopwatch.GetTimestamp();
+				var iterations = 1;
+				while (state == RunStatus.Running && GameSaveCatchUpPolicy.ShouldContinue(
+					OrderManager.World?.IsLoadingGameSave == true, iterations,
+					(Stopwatch.GetTimestamp() - catchUpStarted) * 1000 / Stopwatch.Frequency))
+				{
+					externalLoopState.NextLogic = RunTime;
+					RunLoopIteration(externalLoopState, allowSleep: false);
+					iterations++;
+				}
+			}
+
+			if (state == RunStatus.Running)
+				return true;
+
+			FinishExternalLoop();
+			return false;
+		}
+
+		public static void AbortExternalLoop()
+		{
+			if (externalLoopState == null || externalLoopFinished)
+				return;
+
+			state = RunStatus.Error;
+			FinishExternalLoop();
+		}
+
+		static void FinishExternalLoop()
+		{
+			if (externalLoopFinished)
+				return;
+
+			externalLoopFinished = true;
+			try
+			{
+				FinishRun();
+			}
+			finally
+			{
+				externalLoopState = null;
+			}
+		}
+
+		public static void Exit()
+		{
+			state = RunStatus.Success;
+		}
+
+		public static void ClearContentManagerReturnToLauncher()
+		{
+			ContentManagerReturnToLauncher = false;
+		}
+
+		public static void ReturnFromContentManager(string mod)
+		{
+			if (ContentManagerReturnToLauncher)
+			{
+				Exit();
+				return;
+			}
+
+			RunAfterTick(() => InitializeMod(mod, new Arguments()));
+		}
+
+		public static void Disconnect()
+		{
+			OrderManager.World?.TraitDict.PrintReport();
+
+			OrderManager.Dispose();
+			CloseServer();
+			JoinLocal();
+		}
+
+		public static void CloseServer()
+		{
+			server?.Shutdown();
+		}
+
+		public static T CreateObject<T>(string name)
+		{
+			return ModData.ObjectCreator.CreateObject<T>(name);
+		}
+
+		public static ConnectionTarget CreateServer(ServerSettings settings)
+		{
+			var endpoints = new List<IPEndPoint>
+			{
+				new(IPAddress.IPv6Any, settings.ListenPort),
+				new(IPAddress.Any, settings.ListenPort)
+			};
+			server = new Server.Server(endpoints, settings, ModData, ServerType.Multiplayer);
+
+			return server.GetEndpointForLocalConnection();
+		}
+
+		public static ConnectionTarget CreateLocalServer(string map, bool isSkirmish = false)
+		{
+			var settings = new ServerSettings()
+			{
+				Name = ModData.Manifest.Metadata.TitleTranslated,
+				Map = map,
+				AdvertiseOnline = false
+			};
+
+			// Always connect to local games using the same loopback connection
+			// Exposing multiple endpoints introduces a race condition on the client's PlayerIndex (sometimes 0, sometimes 1)
+			// This would break the Restart button, which relies on the PlayerIndex always being the same for local servers
+			var endpoints = new List<IPEndPoint>
+			{
+				new(IPAddress.Loopback, 0)
+			};
+			server = new Server.Server(endpoints, settings, ModData, isSkirmish ? ServerType.Skirmish : ServerType.Local);
+
+			return server.GetEndpointForLocalConnection();
+		}
+
+		public static bool IsCurrentWorld(World world)
+		{
+			return OrderManager != null && OrderManager.World == world && !world.Disposing;
+		}
+
+		public static bool SetClipboardText(string text)
+		{
+			return Renderer.Window.SetClipboardText(text);
+		}
+
+		public static void BenchmarkMode(string prefix)
+		{
+			benchmark = new Benchmark(prefix);
+		}
+
+		public static void BeginBenchmark()
+		{
+			benchmark?.Begin();
+		}
+
+		public static void LoadMap(string launchMap)
+		{
+			var orders = new List<Order>
+			{
+				Order.Command("option gamespeed default"),
+				Order.Command($"state {Session.ClientState.Ready}")
+			};
+
+			var map = ModData.MapCache.SingleOrDefault(m =>
+				string.Equals(m.Uid, launchMap, StringComparison.OrdinalIgnoreCase) ||
+				string.Equals(Path.GetFileName(m.PackageName), launchMap, StringComparison.OrdinalIgnoreCase) ||
+				string.Equals(Path.GetFileNameWithoutExtension(m.PackageName), launchMap, StringComparison.OrdinalIgnoreCase) ||
+				string.Equals(m.Title, launchMap, StringComparison.OrdinalIgnoreCase));
+			if (map == null)
+				throw new ArgumentException($"Could not find map '{launchMap}'.");
+
+			CreateAndStartLocalServer(map.Uid, orders);
+		}
+
+		public static void FinishBenchmark()
+		{
+			if (benchmark?.Ready == true)
+			{
+				benchmark.Write();
+				Exit();
+			}
+		}
+	}
+
+	public static class CurrentServerSettings
+	{
+		public static string Password;
+		public static ConnectionTarget Target;
+		public static ExternalMod ServerExternalMod;
+		static RankedConnectionAdmission rankedAdmission;
+
+		public static void SetRankedAdmission(RankedMatchAssignment assignment)
+		{
+			ArgumentNullException.ThrowIfNull(assignment);
+			rankedAdmission = new RankedConnectionAdmission(
+				assignment.MatchId, assignment.AdmissionToken, assignment.DeviceFingerprint);
+		}
+
+		public static RankedConnectionAdmission TakeRankedAdmission()
+		{
+			var value = rankedAdmission;
+			rankedAdmission = null;
+			return value;
+		}
+
+		public static void ClearRankedAdmission() => rankedAdmission = null;
+	}
+
+	public sealed class RankedConnectionAdmission
+	{
+		public string MatchId { get; }
+		public string AdmissionToken { get; }
+		public string DeviceFingerprint { get; }
+
+		public RankedConnectionAdmission(string matchId, string admissionToken, string deviceFingerprint)
+		{
+			MatchId = matchId;
+			AdmissionToken = admissionToken;
+			DeviceFingerprint = deviceFingerprint;
+		}
+	}
+}

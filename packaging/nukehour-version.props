@@ -1,0 +1,8 @@
+<Project>
+  <PropertyGroup>
+    <NukeHourPlatform>android</NukeHourPlatform>
+    <NukeHourProductVersion>0.0.31</NukeHourProductVersion>
+    <NukeHourBuildNumber>31</NukeHourBuildNumber>
+    <NukeHourDisplayVersion>NUKE HOUR Android 0.0.31 (Build 31)</NukeHourDisplayVersion>
+  </PropertyGroup>
+</Project>

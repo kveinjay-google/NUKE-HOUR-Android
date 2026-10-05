@@ -1,0 +1,159 @@
+Background@GAMESAVE_BROWSER_PANEL:
+	Logic: GameSaveBrowserLogic, IosTouchMenuLogic
+	Background: cc-mp-surface
+	Width: WINDOW_WIDTH
+	Height: WINDOW_HEIGHT
+	Children:
+		StretchBackground@COMMAND_SAVE_SHELL:
+			Background: cc-ingame-command-shell
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			PreserveAspectRatio: false
+			ClickThrough: true
+		Label@LOAD_TITLE:
+			X: 48
+			Y: 64
+			Width: PARENT_WIDTH - 96
+			Height: 48
+			Font: SettingsTitle
+			Align: Center
+			Text: label-gamesave-browser-panel-load-title
+			Visible: False
+		Label@SAVE_TITLE:
+			X: 48
+			Y: 64
+			Width: PARENT_WIDTH - 96
+			Height: 48
+			Font: SettingsTitle
+			Align: Center
+			Text: label-gamesave-browser-panel-save-title
+			Visible: False
+		ScrollPanel@GAME_LIST:
+			X: 48
+			Y: 128
+			Width: PARENT_WIDTH - 96
+			Height: PARENT_HEIGHT - 296
+			Background: cc-mp-scrollpanel
+			ScrollBarBackground: cc-mp-surface
+			Button: cc-mp-control
+			EnableContentDragging: true
+			Children:
+				ScrollItem@NEW_TEMPLATE:
+					X: 4
+					Width: PARENT_WIDTH - 48
+					Height: 52
+					Background: cc-mp-control
+					Visible: false
+					Children:
+						Label@TITLE:
+							X: 16
+							Width: PARENT_WIDTH - 32
+							Height: PARENT_HEIGHT
+							Align: Left
+							Font: SettingsBold
+							Text: label-gamesave-browser-panel-title
+				ScrollItem@GAME_TEMPLATE:
+					X: 4
+					Width: PARENT_WIDTH - 48
+					Height: 52
+					Background: cc-mp-control
+					Visible: false
+					EnableChildMouseOver: True
+					Children:
+						LabelWithTooltip@TITLE:
+							X: 16
+							Width: PARENT_WIDTH - 232
+							Height: PARENT_HEIGHT
+							Font: SettingsRegular
+							TooltipContainer: GAMESAVE_TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+						Label@DATE:
+							X: PARENT_WIDTH - 212
+							Width: 196
+							Height: PARENT_HEIGHT
+							Align: Right
+							Font: SettingsRegular
+		Container@SAVE_WIDGETS:
+			X: 48
+			Y: PARENT_HEIGHT - 212
+			Width: PARENT_WIDTH - 96
+			Height: 52
+			Visible: False
+			Children:
+				TextField@SAVE_TEXTFIELD:
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
+					Background: cc-mp-field
+					Font: SettingsRegular
+					Type: Filename
+		Button@CANCEL_BUTTON:
+			Key: escape
+			X: 48
+			Y: PARENT_HEIGHT - 148
+			Width: (PARENT_WIDTH - 160) / 5
+			Height: 52
+			Background: cc-mp-control
+			Text: button-back
+			Font: SettingsBold
+		Button@DELETE_ALL_BUTTON:
+			X: 64 + (PARENT_WIDTH - 160) / 5
+			Y: PARENT_HEIGHT - 148
+			Width: (PARENT_WIDTH - 160) / 5
+			Height: 52
+			Background: cc-mp-control
+			Text: button-gamesave-browser-panel-delete-all
+			Font: SettingsBold
+		Button@DELETE_BUTTON:
+			X: 80 + 2 * (PARENT_WIDTH - 160) / 5
+			Y: PARENT_HEIGHT - 148
+			Width: (PARENT_WIDTH - 160) / 5
+			Height: 52
+			Background: cc-mp-control
+			Text: button-gamesave-browser-panel-delete
+			Font: SettingsBold
+			Key: Delete
+		Button@RENAME_BUTTON:
+			X: 96 + 3 * (PARENT_WIDTH - 160) / 5
+			Y: PARENT_HEIGHT - 148
+			Width: (PARENT_WIDTH - 160) / 5
+			Height: 52
+			Background: cc-mp-control
+			Text: button-gamesave-browser-panel-rename
+			Font: SettingsBold
+			Key: F2
+		Button@LOAD_BUTTON:
+			Key: return
+			X: 112 + 4 * (PARENT_WIDTH - 160) / 5
+			Y: PARENT_HEIGHT - 148
+			Width: (PARENT_WIDTH - 160) / 5
+			Height: 52
+			Background: cc-mp-control
+			Text: button-gamesave-browser-panel-load
+			Font: SettingsBold
+			Visible: False
+		Button@SAVE_BUTTON:
+			Key: return
+			X: 112 + 4 * (PARENT_WIDTH - 160) / 5
+			Y: PARENT_HEIGHT - 148
+			Width: (PARENT_WIDTH - 160) / 5
+			Height: 52
+			Background: cc-mp-control
+			Text: button-gamesave-browser-panel-save
+			Font: SettingsBold
+			Visible: False
+		ProgressBar@SAVE_PROGRESS:
+			X: 48
+			Y: PARENT_HEIGHT - 82
+			Width: PARENT_WIDTH - 96
+			Height: 20
+			Indeterminate: true
+			Visible: false
+		Label@SAVE_BUSY:
+			X: 48
+			Y: PARENT_HEIGHT - 58
+			Width: PARENT_WIDTH - 96
+			Height: 28
+			Align: Center
+			Text: label-save-busy
+			Visible: false
+		TooltipContainer@GAMESAVE_TOOLTIP_CONTAINER:

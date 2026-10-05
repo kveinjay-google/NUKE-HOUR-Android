@@ -1,0 +1,55 @@
+# macOS
+.DS_Store
+.AppleDouble
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Local environment and credentials
+/.env
+/.env.*
+!/.env.example
+!/.env.*.example
+!/.env.example.*
+/*.pem
+/*.key
+/*.p12
+/*.pfx
+/credentials.json
+/secrets.json
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+.cache/
+
+# Build products, SDK caches, imported game data, and signing material
+**/bin/
+**/obj/
+artifacts/
+**/__pycache__/
+*.pyc
+*.apk
+*.aab
+*.ipa
+*.so
+*.dylib
+*.dll
+*.pdb
+*.keystore
+*.jks
+*.mobileprovision
+**/.env
+**/.env.*
+*.mix
+*.bag
+*.bik
+*.vqa
+*.vxl
+*.hva
+/Support/
+user.config

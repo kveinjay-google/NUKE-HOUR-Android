@@ -1,0 +1,145 @@
+#region Copyright & License Information
+/*
+ * Copyright (c) The OpenRA Developers and Contributors
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
+ */
+#endregion
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace OpenRA.Network
+{
+	public class HandshakeRequest
+	{
+		public int HandshakeSchema;
+		public int OrdersProtocol;
+		public string EngineCompatibility;
+		public string Mod;
+		public string Version;
+		public string RuntimeProfile;
+		public string RuntimeContract;
+		public string AuthToken;
+		public int MapTransferVersion;
+
+		public static HandshakeRequest Deserialize(string data, string name)
+		{
+			var handshake = new HandshakeRequest();
+			FieldLoader.Load(handshake, MiniYaml.FromString(data, name).First().Value);
+			return handshake;
+		}
+
+		public static bool TryDeserialize(string data, string name, out HandshakeRequest handshake)
+		{
+			try
+			{
+				handshake = Deserialize(data, name);
+				return true;
+			}
+			catch (Exception)
+			{
+				handshake = null;
+				return false;
+			}
+		}
+
+		public string Serialize()
+		{
+			var data = new List<MiniYamlNode> { new("Handshake", FieldSaver.Save(this)) };
+			return data.WriteToString();
+		}
+	}
+
+	public class HandshakeResponse
+	{
+		public int HandshakeSchema;
+		public string EngineCompatibility;
+		public string Mod;
+		public string Version;
+		public string RuntimeProfile;
+		public string RuntimeContract;
+		public string Password;
+
+		// Default value is hardcoded to 7 so that newer servers
+		// (which define OrdersProtocol > 7) can detect older clients
+		public int OrdersProtocol = 7;
+
+		// For player authentication
+		public string Fingerprint;
+		public string AuthSignature;
+
+		// NUKE HOUR local admission proof. This is independent of OpenRA public profile services.
+		public string ClientKeyFingerprint;
+		public string ClientKeyPublicKey;
+		public string ClientKeySignature;
+
+		// Present only for an official ranked assignment. The admission token is single-use.
+		public string RankedMatchId;
+		public string RankedAdmissionToken;
+		public string RankedDeviceFingerprint;
+
+		[FieldLoader.Ignore]
+		public Session.Client Client;
+
+		public static HandshakeResponse Deserialize(string data, string name)
+		{
+			var handshake = new HandshakeResponse
+			{
+				Client = new Session.Client()
+			};
+
+			var ys = MiniYaml.FromString(data, name);
+			foreach (var y in ys)
+			{
+				switch (y.Key)
+				{
+					case "Handshake":
+						FieldLoader.Load(handshake, y.Value);
+						break;
+					case "Client":
+						FieldLoader.Load(handshake.Client, y.Value);
+						break;
+				}
+			}
+
+			return handshake;
+		}
+
+		public static bool TryDeserialize(string data, string name, out HandshakeResponse handshake)
+		{
+			try
+			{
+				handshake = Deserialize(data, name);
+				return true;
+			}
+			catch (Exception)
+			{
+				handshake = null;
+				return false;
+			}
+		}
+
+		public string Serialize()
+		{
+			var data = new List<MiniYamlNode>
+			{
+				new("Handshake", null,
+					new[]
+					{
+						"HandshakeSchema", "OrdersProtocol", "EngineCompatibility", "Mod", "Version",
+						"RuntimeProfile", "RuntimeContract", "Password", "Fingerprint", "AuthSignature",
+						"ClientKeyFingerprint", "ClientKeyPublicKey", "ClientKeySignature",
+						"RankedMatchId", "RankedAdmissionToken", "RankedDeviceFingerprint"
+					}.Select(p => FieldSaver.SaveField(this, p)).ToList()),
+				new("Client", FieldSaver.Save(Client))
+			};
+
+			return data.WriteToString();
+		}
+	}
+}
