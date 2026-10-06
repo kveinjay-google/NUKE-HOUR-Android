@@ -682,6 +682,9 @@ natech:
 	Tooltip:
 		Name: actor-natech.name
 	ProvidesPrerequisite@default:
+	ProvidesPrerequisite@TECH_EXPANSION:
+		Prerequisite: expansion-tech
+		RequiresCondition: !build-incomplete
 	Building:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3

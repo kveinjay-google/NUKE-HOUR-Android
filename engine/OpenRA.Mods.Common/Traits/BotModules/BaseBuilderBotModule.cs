@@ -396,9 +396,24 @@ namespace OpenRA.Mods.Common.Traits
 			AIUtils.CountActorByCommonName(powerBuildings) == 0 ||
 			AIUtils.CountActorByCommonName(constructionYardBuildings) == 0;
 
+		public int NewProductionCashThreshold => player.AiDifficulty == null ? Info.NewProductionCashThreshold
+			: 6000 / Math.Clamp(player.AiDifficulty.Expansion, 1, 4);
+
+		public int StructureDecisionDelay(bool active) => player.AiDifficulty == null
+			? (active ? Info.StructureProductionActiveDelay : Info.StructureProductionInactiveDelay)
+			: Math.Max(10, AiDifficultyRuntime.DecisionInterval(player.AiDifficulty, 30) * (active ? 1 : 2));
+
+		public int BuildingLimit(string name, int legacy)
+		{
+			if (player.AiDifficulty == null || !(Info.RefineryTypes.Contains(name) || Info.ProductionTypes.Contains(name)))
+				return legacy;
+			return Math.Min(legacy, Math.Clamp(player.AiDifficulty.Expansion, 1, 4));
+		}
+
 		int MinimumRefineryCount() =>
 			AIUtils.CountActorByCommonName(barracksBuildings) > 0
-			? Info.InititalMinimumRefineryCount + Info.AdditionalMinimumRefineryCount
+			? (player.AiDifficulty == null ? Info.InititalMinimumRefineryCount + Info.AdditionalMinimumRefineryCount
+				: Math.Clamp(player.AiDifficulty.Expansion, 1, 4))
 			: Info.InititalMinimumRefineryCount;
 
 		List<MiniYamlNode> IGameSaveTraitData.IssueTraitData(Actor self)

@@ -52,6 +52,11 @@
   </Target>
 
   <ItemGroup>
+    <AndroidAsset Include="LanImport/index.html" Link="lan-import.html" />
+    <AndroidAsset Include="java/fi/iki/elonen/LICENSE-NanoHTTPD.txt" Link="licenses/NanoHTTPD.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <!-- SDL2 release-2.30.10 Java glue compiled by the app (see
          java/org/libsdl/app/NOTICE-SDL2-GLUE.txt). The vendored classes are
          package-private and AndroidHostBridge is additive, so no managed

@@ -389,10 +389,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								{
 									foreach (var slot in orderManager.LobbyInfo.Slots)
 									{
-										var bot = botTypes.Random(Game.CosmeticRandom);
+										var command = LobbyUtils.DefaultBotCommand(slot.Key, botController.Index, botTypes);
 										var c = orderManager.LobbyInfo.ClientInSlot(slot.Key);
-										if (slot.Value.AllowBots && (c == null || c.Bot != null))
-											orderManager.IssueOrder(Order.Command($"slot_bot {slot.Key} {botController.Index} {bot}"));
+										if (command != null && slot.Value.AllowBots && (c == null || c.Bot != null))
+											orderManager.IssueOrder(Order.Command(command));
 									}
 								}
 							}

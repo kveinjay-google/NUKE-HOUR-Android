@@ -305,3 +305,59 @@ caoutp.rubble:
 	RenderSprites:
 		Image: caoutp
 		Palette: outpost-rubble
+
+^BuildableTechExpansion:
+	Buildable:
+		Queue: Building
+		Prerequisites: ~global-buildtech, expansion-tech, ~techlevel.unrestricted
+		BuildLimit: 1
+		IconPalette: player
+		IconPaletteIsPlayerPalette: true
+	RequiresBuildableArea:
+		AreaTypes: building
+		Adjacent: 3
+	Sellable:
+		SellSounds: uselbuil.wav
+	OwnerLostAction:
+		Action: Kill
+		DeathTypes: BulletDeath
+	MustBeDestroyed:
+		RequiredForShortGame: true
+	GivesExperience:
+	UpdatesPlayerStatistics:
+
+camach.buildable:
+	Inherits: camach
+	Inherits@expansion: ^BuildableTechExpansion
+	-MapEditorData:
+	Buildable:
+		BuildPaletteOrder: 180
+		Description: actor-camach-buildable.description
+	Valued:
+		Cost: 1500
+	RenderSprites:
+		Image: camach
+
+caslab.buildable:
+	Inherits: caslab
+	Inherits@expansion: ^BuildableTechExpansion
+	-MapEditorData:
+	Buildable:
+		BuildPaletteOrder: 181
+		Description: actor-caslab-buildable.description
+	Valued:
+		Cost: 2500
+	RenderSprites:
+		Image: caslab
+
+capowr.buildable:
+	Inherits: capowr
+	Inherits@expansion: ^BuildableTechExpansion
+	-MapEditorData:
+	Buildable:
+		BuildPaletteOrder: 182
+		Description: actor-capowr-buildable.description
+	Valued:
+		Cost: 1000
+	RenderSprites:
+		Image: capowr

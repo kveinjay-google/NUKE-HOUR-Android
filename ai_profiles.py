@@ -69,6 +69,23 @@ BUILTIN_PRESETS = [
     },
 ]
 
+# Display order is stable. Numeric runtime defaults live in AiDifficultyCatalog.
+OFFICIAL_DIFFICULTIES = [
+    ("beginner", "新手", "Beginner"), ("easy", "简单", "Easy"),
+    ("normal", "普通", "Normal"), ("hard", "困难", "Hard"),
+    ("brutal", "冷酷", "Brutal"), ("expert", "专家", "Expert"),
+    ("master", "大师", "Master"), ("nightmare", "噩梦", "Nightmare"),
+]
+
+
+def difficulty_yaml():
+    # Shared base modules; synchronized runtime profiles supply the actual tier values.
+    baseline = next(p for p in BUILTIN_PRESETS if p["id"] == "profbalanced")
+    return "".join(_profile_yaml(dict(baseline, id="difficulty-" + key,
+                                     name="ai-difficulty-" + key))
+                   for key in [d[0] for d in OFFICIAL_DIFFICULTIES] + ["custom"])
+
+
 # ---------------- 以下为固定模板（复制自 ai.yaml 的 @test 人格，数值部分由配置覆盖） ----------------
 
 _SUPPORT_POWER_BLOCK = """\
@@ -388,6 +405,7 @@ def generate_yaml(profiles):
     profiles = [normalize_profile(p) for p in profiles]
     parts = ["# 本文件由启动器「AI 配置」页自动生成（ai_profiles.py），请勿手改。\n",
              "Player:\n"]
+    parts.append(difficulty_yaml())
     for p in profiles:
         parts.append(_profile_yaml(p))
     with open(OUTPUT_YAML, "w", encoding="utf-8") as f:

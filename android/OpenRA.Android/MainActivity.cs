@@ -638,9 +638,9 @@ public sealed partial class MainActivity : Activity
         var chinese = StartupCopy.IsChinese;
         new AlertDialog.Builder(this)
             .SetTitle(StartupCopy.Current.ImportFiles)
-            .SetItems(chinese ? new[] { "选择游戏文件夹", "选择资源文件（可多选）" } :
-                new[] { "Choose game folder", "Choose resource files (multiple)" },
-                (_, args) => LaunchImportPicker(args.Which == 0))
+            .SetItems(chinese ? new[] { "选择游戏文件夹", "选择资源文件（可多选）", "从电脑导入（同一 Wi-Fi）" } :
+                new[] { "Choose game folder", "Choose resource files (multiple)", "Import from computer (same Wi-Fi)" },
+                (_, args) => { if (args.Which == 2) ShowLanImport(); else LaunchImportPicker(args.Which == 0); })
             .SetNegativeButton(StartupCopy.Current.Close, (_, _) => { })
             .Show();
     }
@@ -708,64 +708,66 @@ public sealed partial class MainActivity : Activity
             if (selection.Count == 0 && data.Data is { } file) selection.Add(file);
             BeginImport(staging =>
             {
-                foreach (var uri in selection) CopySelectedFile(uri, staging);
+                CopyImportSources(selection.Select(ReadImportSource), staging);
             });
         }
     }
 
-    void CopySelectedFile(AndroidUri uri, string staging)
-    {
-        using var cursor = ContentResolver?.Query(uri,
-            new[] { OpenableColumns.DisplayName }, null, null, null);
-        if (cursor == null || !cursor.MoveToFirst())
-            throw new IOException("Unable to read selected file metadata.");
-        var name = Path.GetFileName(cursor.GetString(0));
-        if (string.IsNullOrEmpty(name) || !PublicContentSafetyPolicy.IsSupportedDataFileName(name))
-            throw new IOException("Unsupported resource file: " + name);
-        using var input = ContentResolver?.OpenInputStream(uri) ?? throw new IOException("Unable to read selected file.");
-        using var output = File.Create(Path.Combine(staging, name));
-        input.CopyTo(output);
-    }
-
-    void BeginImport(Action<string> stageFiles)
+    void BeginImport(Action<string> stageFiles, Action<string?>? completed = null)
     {
         importDialog?.Dismiss();
-        RunOnUiThread(() =>
-        {
-            importDialog = new AlertDialog.Builder(this)
-                .SetTitle(StartupCopy.Current.ImportingTitle)
-                .SetMessage(StartupCopy.Current.Importing)
-                .SetCancelable(false)
-                .Show();
-        });
+        ShowImportProgress();
 
         var contentRoot = ContentRoot;
-        var staging = Path.Combine(Path.Combine(Path.GetTempPath()), "ra2-import-" + Guid.NewGuid().ToString("N"));
+        var staging = Path.Combine(CacheDir!.AbsolutePath, "ra2-import-" + Guid.NewGuid().ToString("N"));
+        var importPhase = "prepare";
         System.Threading.ThreadPool.QueueUserWorkItem(_ =>
         {
             try
             {
+                ALog.Info(Tag, "Retail import: preparing private cache");
                 Directory.CreateDirectory(staging);
+                importPhase = "read selected files";
                 stageFiles(staging);
 
                 var files = Directory.EnumerateFiles(staging, "*", SearchOption.AllDirectories).ToArray();
+                ALog.Info(Tag, "Retail import: staged " + files.Length + " files");
+                importPhase = "validate and publish";
+                Directory.CreateDirectory(contentRoot);
+                // Android mounts its writable data separately from the read-only root filesystem.
+                var availableBytes = new global::Android.OS.StatFs(contentRoot).AvailableBytes;
+                ReportImportProgress(StartupCopy.IsChinese ? "2/3  校验并保存资源" : "2/3  Verifying and saving resources", 0, 0);
                 var result = new RetailContentImporter().ImportAsync(
-                    new RetailImportRequest(files, contentRoot), default).GetAwaiter().GetResult();
+                    new RetailImportRequest(files, contentRoot, availableBytes), default, (done, total) =>
+                        ReportImportProgress(StartupCopy.IsChinese ? "2/3  校验并保存资源" : "2/3  Verifying and saving resources", done, total))
+                    .GetAwaiter().GetResult();
+                ALog.Info(Tag, "Retail import result: " + result.Error + "; " + result.Message);
 
                 Directory.Delete(staging, true);
 
                 RunOnUiThread(() =>
                 {
                     importDialog?.Dismiss();
+                    completed?.Invoke(result.Published ? null : result.Message);
                     if (!result.Published)
                     {
                         ShowImportFailure(result.Message);
                         return;
                     }
 
-					RefreshStartupNotice(result.Status?.CanEnterGame == true
-						? StartupCopy.Current.ImportSucceeded
-						: null);
+                    if (result.Status?.CanEnterGame != true || engineFailed)
+                    {
+                        RefreshStartupNotice();
+                        return;
+                    }
+
+                    // First import starts normally. An existing host must unmount old
+                    // archives and rebuild its map cache on its own engine thread.
+                    CloseContentManagement();
+                    if (hostStarted)
+                        openRaHost?.ReloadImportedContent();
+                    else
+                        StartHost();
                 });
             }
             catch (Exception e)
@@ -779,11 +781,12 @@ public sealed partial class MainActivity : Activity
                     // best effort
                 }
 
-                ALog.Error(Tag, "Retail import failed: " + e.GetType().Name);
+                ALog.Error(Tag, "Retail import failed at " + importPhase + ": " + e);
                 RunOnUiThread(() =>
                 {
                     importDialog?.Dismiss();
-                    ShowImportFailure();
+                    completed?.Invoke(e.Message);
+                    ShowImportFailure(importPhase + ": " + e.GetType().Name + " — " + e.Message);
                 });
             }
         });
@@ -791,47 +794,27 @@ public sealed partial class MainActivity : Activity
 
     void EnumerateTreeRecursive(AndroidUri treeUri, string documentId, string destDirectory)
     {
+        var sources = new System.Collections.Generic.List<ImportSource>();
+        CollectImportSources(treeUri, documentId, sources);
+        CopyImportSources(sources, destDirectory);
+    }
+
+    void CollectImportSources(AndroidUri treeUri, string documentId, System.Collections.Generic.List<ImportSource> sources)
+    {
         var childrenUri = DocumentsContract.BuildChildDocumentsUriUsingTree(treeUri, documentId);
-        using var cursor = ContentResolver?.Query(
-            childrenUri,
-            new[] { DocumentsContract.Document.ColumnDocumentId, DocumentsContract.Document.ColumnMimeType, DocumentsContract.Document.ColumnDisplayName },
-            null, null, null);
-
-        if (cursor == null)
-            return;
-
+        using var cursor = ContentResolver?.Query(childrenUri,
+            new[] { DocumentsContract.Document.ColumnDocumentId, DocumentsContract.Document.ColumnMimeType,
+                DocumentsContract.Document.ColumnDisplayName, DocumentsContract.Document.ColumnSize }, null, null, null);
+        if (cursor == null) throw new IOException("Unable to read selected directory.");
         while (cursor.MoveToNext())
         {
             var childId = cursor.GetString(0);
-            var mime = cursor.GetString(1);
-            var displayName = cursor.GetString(2);
-            var childUri = DocumentsContract.BuildDocumentUriUsingTree(treeUri, childId);
-            if (string.IsNullOrEmpty(displayName))
-                continue;
-
-            var isDirectory = mime == DocumentsContract.Document.MimeTypeDir;
-            var safeName = new string(displayName.Where(c => !Path.GetInvalidFileNameChars().Contains(c)).ToArray());
-            if (string.IsNullOrEmpty(safeName))
-                continue;
-
-            if (isDirectory)
-                EnumerateTreeRecursive(treeUri, childId, destDirectory);
-            else
-            {
-				if (!PublicContentSafetyPolicy.IsSupportedDataFileName(displayName))
-					continue;
-
-				var destination = Path.Combine(destDirectory, safeName.ToLowerInvariant());
-                if (File.Exists(destination))
-                    continue;
-
-                using var input = ContentResolver?.OpenInputStream(childUri);
-                if (input == null)
-                    continue;
-
-                using var output = File.Create(destination);
-                input.CopyTo(output);
-            }
+            var name = cursor.GetString(2);
+            if (cursor.GetString(1) == DocumentsContract.Document.MimeTypeDir)
+                CollectImportSources(treeUri, childId, sources);
+            else if (!string.IsNullOrEmpty(name) && PublicContentSafetyPolicy.IsSupportedDataFileName(name))
+                sources.Add(new ImportSource(DocumentsContract.BuildDocumentUriUsingTree(treeUri, childId),
+                    Path.GetFileName(name).ToLowerInvariant(), cursor.IsNull(3) ? -1 : cursor.GetLong(3)));
         }
     }
 
@@ -864,6 +847,8 @@ public sealed partial class MainActivity : Activity
         rootLayout?.Post(RefreshMobileMetrics);
         externalActivityInProgress = false;
         ALog.Info(Tag, "OnResume");
+        updateActivityResumed = true;
+        _ = CheckForOfficialUpdateAsync();
     }
 
     // Intercept physical Back before the focused SDL surface consumes it.
@@ -907,6 +892,7 @@ public sealed partial class MainActivity : Activity
     protected override void OnPause()
     {
         base.OnPause();
+        updateActivityResumed = false;
         ReleaseLanDiscoveryLock();
         HangDiagnostics.Pause();
         NearbyGameNetworking.Suspend();
@@ -962,6 +948,7 @@ public sealed partial class MainActivity : Activity
     protected override void OnDestroy()
     {
         ALog.Info(Tag, "OnDestroy");
+        StopLanImport();
         ReleaseLanDiscoveryLock();
         multicastLock?.Dispose();
         multicastLock = null;

@@ -1,0 +1,313 @@
+Container@AI_PANEL:
+	Logic: AiDifficultySettingsLogic
+	Width: PARENT_WIDTH
+	Height: PARENT_HEIGHT
+	Children:
+		ScrollPanel@SETTINGS_SCROLLPANEL:
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			CollapseHiddenChildren: True
+			TopBottomSpacing: 8
+			ItemSpacing: 10
+			Children:
+				Container@AI_STATUS_ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 40
+					Children:
+						Label@AI_STATUS:
+							X: 12
+							Y: 4
+							Width: PARENT_WIDTH - 24
+							Height: 26
+							Text: ai-settings-official
+							Font: Regular
+				Container@AI_BONUSES_ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 40
+					Children:
+						Label@AI_BONUSES:
+							X: 12
+							Y: 4
+							Width: PARENT_WIDTH - 24
+							Height: 26
+							Text: ai-settings-bonuses-static
+							Font: Regular
+				Container@AI_NOTE_ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 52
+					Children:
+						Label@AI_NOTE:
+							X: 12
+							Y: 4
+							Width: PARENT_WIDTH - 24
+							Height: 26
+							Text: ai-settings-next-game
+							Font: Regular
+				Container@AI_PRESET_ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 86
+					Children:
+						Label@AI_PRESET_LABEL:
+							X: 12
+							Y: 4
+							Width: PARENT_WIDTH - 24
+							Height: 26
+							Text: ai-settings-preset
+							Font: Regular
+						DropDownButton@AI_PRESET:
+							X: 12
+							Y: 34
+							Width: PARENT_WIDTH - 24
+							Height: 44
+							Font: Bold
+				Container@AI_CREATE_ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 56
+					Children:
+						Button@AI_CREATE:
+							X: 12
+							Y: 4
+							Width: PARENT_WIDTH - 24
+							Height: 44
+							Text: ai-settings-create
+							Font: Bold
+				Container@AI_EDIT_ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 56
+					Children:
+						Button@AI_EDIT:
+							X: 12
+							Y: 4
+							Width: PARENT_WIDTH - 24
+							Height: 44
+							Text: ai-settings-edit
+							Font: Bold
+				Container@AI_DELETE_ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 56
+					Children:
+						Button@AI_DELETE:
+							X: 12
+							Y: 4
+							Width: PARENT_WIDTH - 24
+							Height: 44
+							Text: ai-settings-delete
+							Font: Bold
+				Container@AI_DEFAULT_ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 56
+					Children:
+						Button@AI_DEFAULT:
+							X: 12
+							Y: 4
+							Width: PARENT_WIDTH - 24
+							Height: 44
+							Text: ai-settings-default
+							Font: Bold
+				Container@AI_NAME_ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 86
+					Children:
+						Label@AI_NAME_LABEL:
+							X: 12
+							Y: 4
+							Width: PARENT_WIDTH - 24
+							Height: 26
+							Text: ai-settings-name
+							Font: Regular
+						TextField@AI_NAME:
+							X: 12
+							Y: 34
+							Width: PARENT_WIDTH - 24
+							Height: 44
+							MaxLength: 24
+				Container@AI_STYLE_ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 86
+					Children:
+						Label@AI_STYLE_LABEL:
+							X: 12
+							Y: 4
+							Width: PARENT_WIDTH - 24
+							Height: 26
+							Text: ai-settings-style
+							Font: Regular
+						DropDownButton@AI_STYLE:
+							X: 12
+							Y: 34
+							Width: PARENT_WIDTH - 24
+							Height: 44
+							Font: Bold
+				Container@AI_INTERVAL_ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 90
+					Children:
+						Label@AI_INTERVAL_LABEL:
+							X: 12
+							Y: 4
+							Width: PARENT_WIDTH - 90
+							Height: 26
+							Text: ai-settings-interval
+							Font: Regular
+						Label@AI_INTERVAL_VALUE:
+							X: PARENT_WIDTH - 78
+							Y: 4
+							Width: 66
+							Height: 26
+							Align: Right
+							Font: Bold
+						Slider@AI_INTERVAL:
+							X: 12
+							Y: 36
+							Width: PARENT_WIDTH - 24
+							Height: 44
+							MinimumValue: 2
+							MaximumValue: 120
+							Ticks: 118
+							UseTouchStepControls: true
+							TouchStep: 1
+				Container@AI_WAVE_ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 90
+					Children:
+						Label@AI_WAVE_LABEL:
+							X: 12
+							Y: 4
+							Width: PARENT_WIDTH - 90
+							Height: 26
+							Text: ai-settings-wave
+							Font: Regular
+						Label@AI_WAVE_VALUE:
+							X: PARENT_WIDTH - 78
+							Y: 4
+							Width: 66
+							Height: 26
+							Align: Right
+							Font: Bold
+						Slider@AI_WAVE:
+							X: 12
+							Y: 36
+							Width: PARENT_WIDTH - 24
+							Height: 44
+							MinimumValue: 3
+							MaximumValue: 60
+							Ticks: 57
+							UseTouchStepControls: true
+							TouchStep: 1
+				Container@AI_EXPANSION_ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 90
+					Children:
+						Label@AI_EXPANSION_LABEL:
+							X: 12
+							Y: 4
+							Width: PARENT_WIDTH - 90
+							Height: 26
+							Text: ai-settings-expansion
+							Font: Regular
+						Label@AI_EXPANSION_VALUE:
+							X: PARENT_WIDTH - 78
+							Y: 4
+							Width: 66
+							Height: 26
+							Align: Right
+							Font: Bold
+						Slider@AI_EXPANSION:
+							X: 12
+							Y: 36
+							Width: PARENT_WIDTH - 24
+							Height: 44
+							MinimumValue: 1
+							MaximumValue: 4
+							Ticks: 3
+							UseTouchStepControls: true
+							TouchStep: 1
+				Container@AI_INCOME_ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 90
+					Children:
+						Label@AI_INCOME_LABEL:
+							X: 12
+							Y: 4
+							Width: PARENT_WIDTH - 90
+							Height: 26
+							Text: ai-settings-income
+							Font: Regular
+						Label@AI_INCOME_VALUE:
+							X: PARENT_WIDTH - 78
+							Y: 4
+							Width: 66
+							Height: 26
+							Align: Right
+							Font: Bold
+						Slider@AI_INCOME:
+							X: 12
+							Y: 36
+							Width: PARENT_WIDTH - 24
+							Height: 44
+							MinimumValue: 100
+							MaximumValue: 300
+							Ticks: 200
+							UseTouchStepControls: true
+							TouchStep: 1
+				Container@AI_SPEED_ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 90
+					Children:
+						Label@AI_SPEED_LABEL:
+							X: 12
+							Y: 4
+							Width: PARENT_WIDTH - 90
+							Height: 26
+							Text: ai-settings-speed
+							Font: Regular
+						Label@AI_SPEED_VALUE:
+							X: PARENT_WIDTH - 78
+							Y: 4
+							Width: 66
+							Height: 26
+							Align: Right
+							Font: Bold
+						Slider@AI_SPEED:
+							X: 12
+							Y: 36
+							Width: PARENT_WIDTH - 24
+							Height: 44
+							MinimumValue: 100
+							MaximumValue: 200
+							Ticks: 100
+							UseTouchStepControls: true
+							TouchStep: 1
+				Container@AI_RESET_ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 56
+					Children:
+						Button@AI_RESET:
+							X: 12
+							Y: 4
+							Width: PARENT_WIDTH - 24
+							Height: 44
+							Text: ai-settings-reset
+							Font: Bold
+				Container@AI_SAVE_ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 56
+					Children:
+						Button@AI_SAVE:
+							X: 12
+							Y: 4
+							Width: PARENT_WIDTH - 24
+							Height: 44
+							Text: ai-settings-save
+							Font: Bold
+				Container@AI_CANCEL_ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 56
+					Children:
+						Button@AI_CANCEL:
+							X: 12
+							Y: 4
+							Width: PARENT_WIDTH - 24
+							Height: 44
+							Text: ai-settings-cancel
+							Font: Bold

@@ -1,4 +1,10 @@
 camach:
+	icon:
+		Filename: camach.shp
+		Start: 0
+		Length: 1
+		Offset: 0, 0
+		ShadowStart: -1
 	Inherits: ^TechStructure
 	Defaults:
 		Filename: camach.shp
@@ -9,6 +15,12 @@ camach:
 		ShadowStart: 16
 
 caslab:
+	icon:
+		Filename: caslab.shp
+		Start: 0
+		Length: 1
+		Offset: 0, 0
+		ShadowStart: -1
 	Inherits: ^TechStructure
 	Defaults:
 		Filename: caslab.shp
@@ -19,6 +31,12 @@ caslab:
 		ShadowStart: 16
 
 capowr:
+	icon:
+		Filename: capowr.shp
+		Start: 0
+		Length: 1
+		Offset: 0, 0
+		ShadowStart: -1
 	Inherits: ^TechStructure
 	-flag:
 	Defaults:

@@ -120,8 +120,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Minimum should not be negative as delays in HackyAI could be zero.
 			var randomFactor = world.LocalRandom.Next(0, baseBuilder.Info.StructureProductionRandomBonusDelay);
 
-			WaitTicks = active ? baseBuilder.Info.StructureProductionActiveDelay + randomFactor
-				: baseBuilder.Info.StructureProductionInactiveDelay + randomFactor;
+			WaitTicks = baseBuilder.StructureDecisionDelay(active) + randomFactor;
 		}
 
 		bool TickQueue(IBot bot, ProductionQueue queue)
@@ -227,7 +226,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!baseBuilder.Info.BuildingLimits.TryGetValue(actor.Name, out var limit))
 					return true;
 
-				return playerBuildings.Count(a => a.Info.Name == actor.Name) < limit;
+				return playerBuildings.Count(a => a.Info.Name == actor.Name) < baseBuilder.BuildingLimit(actor.Name, limit);
 			});
 
 			if (orderBy != null)
@@ -276,7 +275,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Make sure that we can spend as fast as we are earning
-			if (baseBuilder.Info.NewProductionCashThreshold > 0 && playerResources.GetCashAndResources() > baseBuilder.Info.NewProductionCashThreshold)
+			if (baseBuilder.NewProductionCashThreshold > 0 && playerResources.GetCashAndResources() > baseBuilder.NewProductionCashThreshold)
 			{
 				var production = GetProducibleBuilding(baseBuilder.Info.ProductionTypes, buildableThings);
 				if (production != null && HasSufficientPowerForActor(production))
@@ -293,8 +292,8 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Only consider building this if there is enough water inside the base perimeter and there are close enough adjacent buildings
-			if (waterState == WaterCheck.EnoughWater && baseBuilder.Info.NewProductionCashThreshold > 0
-				&& playerResources.GetCashAndResources() > baseBuilder.Info.NewProductionCashThreshold
+			if (waterState == WaterCheck.EnoughWater && baseBuilder.NewProductionCashThreshold > 0
+				&& playerResources.GetCashAndResources() > baseBuilder.NewProductionCashThreshold
 				&& AIUtils.IsAreaAvailable<GivesBuildableArea>(world, player, world.Map, baseBuilder.Info.CheckForWaterRadius, baseBuilder.Info.WaterTerrainTypes))
 			{
 				var navalproduction = GetProducibleBuilding(baseBuilder.Info.NavalProductionTypes, buildableThings);
@@ -356,7 +355,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (count * 100 > frac.Value * playerBuildings.Length)
 					continue;
 
-				if (baseBuilder.Info.BuildingLimits.TryGetValue(name, out var limit) && limit <= count)
+				if (baseBuilder.Info.BuildingLimits.TryGetValue(name, out var limit) && baseBuilder.BuildingLimit(name, limit) <= count)
 					continue;
 
 				// If we're considering to build a naval structure, check whether there is enough water inside the base perimeter

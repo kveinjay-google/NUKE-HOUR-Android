@@ -1,13 +1,14 @@
 """Regression checks against a real APK; all selectable UI styles must survive."""
 import json
 import os
+import re
 import unittest
 import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 APK = Path(os.environ.get('NUKEHOUR_ANDROID_AUDIT_APK',
-    str(ROOT / 'artifacts/android-public-clean/build/Release/net8.0-android/android-arm64/com.openra.android.personal-Signed.apk')))
+    '/Users/kevin/Desktop/NUKE HOUR Android-0.0.31-无原版红警资源-arm64.apk'))
 PREFIX = 'assets/runtime/mods/ra2/uibits/'
 
 
@@ -20,6 +21,24 @@ class AndroidCleanUiApkTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.archive.close()
+
+    def test_lan_import_runtime_and_license_are_packaged(self):
+        self.assertTrue('assets/lan-import.html' in self.names)
+        self.assertTrue('assets/licenses/NanoHTTPD.txt' in self.names)
+        dex = b''.join(self.archive.read(name) for name in self.names if name.endswith('.dex'))
+        for runtime in (b'Lorg/nukehour/LanImportServer;', b'Lfi/iki/elonen/NanoHTTPD;'):
+            self.assertTrue(runtime in dex, 'JNI upload server must survive packaging')
+
+    def test_manifest_source_references_are_packaged(self):
+        for mod in ('ra2', 'ra2-content'):
+            manifest = self.archive.read(f'assets/runtime/mods/{mod}/mod.yaml').decode()
+            references = re.findall(r'(?:^|\s)(ra2|ra2-content|common|common-content)\|([^\s:#]+)', manifest)
+            for package, relative in references:
+                if not relative.endswith(('.yaml', '.ftl')):
+                    continue
+                base = 'assets/runtime/engine/mods/' if package.startswith('common') else 'assets/runtime/mods/'
+                self.assertTrue(base + package + '/' + relative in self.names,
+                              f'{mod}/mod.yaml references missing {package}|{relative}')
 
     def test_no_duplicate_raster_directory_is_packaged(self):
         copies = [n for n in self.names if n.startswith('assets/runtime/mods/ra2/chrome/') and n.endswith('.png')]

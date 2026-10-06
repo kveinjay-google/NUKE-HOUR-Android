@@ -190,7 +190,7 @@ namespace OpenRA.Test
 			Assert.That(layout.MinimumTarget / layout.LogicalPerPoint, Is.GreaterThanOrEqualTo(48));
 			AssertPhysicalTarget(layout.Reset, layout.LogicalPerPoint);
 			AssertPhysicalTarget(layout.Back, layout.LogicalPerPoint);
-			for (var i = 0; i < 5; i++)
+			for (var i = 0; i < 6; i++)
 				AssertPhysicalTarget(layout.TabBounds(i), layout.LogicalPerPoint);
 		}
 
@@ -381,7 +381,7 @@ namespace OpenRA.Test
 		}
 
 		[Test]
-		public void Ra2SettingsYamlUsesCommandCenterGeometryAndFivePanels()
+		public void Ra2SettingsYamlUsesCommandCenterGeometryAndSixPanels()
 		{
 			var yaml = File.ReadAllText(Path.Combine(RepositoryRoot(), "mods", "ra2", "chrome", "settings.yaml"));
 
@@ -394,6 +394,7 @@ namespace OpenRA.Test
 			Assert.That(yaml, Does.Contain("Background@SETTINGS_CONTENT_WELL"));
 			Assert.That(yaml, Does.Contain("Background: settings-v3-navigation"));
 			Assert.That(CountOccurrences(yaml, "_PANEL: button-settings-tab-"), Is.EqualTo(5));
+			Assert.That(yaml, Does.Contain("AI_PANEL: ai-settings-tab"));
 		}
 
 		[Test]

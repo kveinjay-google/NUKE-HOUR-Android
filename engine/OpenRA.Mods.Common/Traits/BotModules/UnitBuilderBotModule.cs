@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			ticks++;
 
-			var interval = Math.Max(5, Info.UnitProductionInterval);
+			var interval = AiDifficultyRuntime.DecisionInterval(player.AiDifficulty, Info.UnitProductionInterval);
 			if (ticks % interval == 0)
 			{
 				ILookup<string, ProductionQueue> queuesByCategory = null;
@@ -114,7 +114,9 @@ namespace OpenRA.Mods.Common.Traits
 					queuedBuildRequests.Remove(buildRequest);
 				}
 
-				if (Info.IdleBaseUnitsMaximum <= 0 || Info.IdleBaseUnitsMaximum > idleUnitCount)
+				var idleMaximum = player.AiDifficulty == null ? Info.IdleBaseUnitsMaximum
+					: Math.Max(Info.IdleBaseUnitsMaximum, player.AiDifficulty.WaveSize + AiDifficultyRuntime.DefenseReserve(player.AiDifficulty) + 1);
+				if (idleMaximum <= 0 || idleMaximum > idleUnitCount)
 				{
 					queuesByCategory ??= AIUtils.FindQueuesByCategory(player);
 					for (var i = 0; i < Info.UnitQueues.Length; i++)
@@ -210,6 +212,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (Info.UnitLimits != null && Info.UnitLimits.TryGetValue(unit.Name, out var count) && unitCount >= count)
 					continue;
 
+				share = AiDifficultyRuntime.UnitShare(player.AiDifficulty, share, unit.TraitInfoOrDefault<ValuedInfo>()?.Cost ?? 0);
 				var error = allUnits.Length > 0 ? unitCount * 100 / allUnits.Length - share : -1;
 				if (error < 0)
 					return HasAdequateAirUnitReloadBuildings(unit) ? unit : null;

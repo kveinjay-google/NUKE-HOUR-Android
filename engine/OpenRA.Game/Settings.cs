@@ -337,6 +337,9 @@ namespace OpenRA
 
 	public class GameSettings
 	{
+		public string[] AiCustomProfiles = Array.Empty<string>();
+		public string AiDefaultProfile = "normal";
+
 		public string Platform = "Default";
 
 		[Desc("Language preference for in-game text: System, zh-CN, or en.")]

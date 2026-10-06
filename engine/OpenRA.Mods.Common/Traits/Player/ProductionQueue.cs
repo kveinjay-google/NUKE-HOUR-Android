@@ -554,7 +554,7 @@ namespace OpenRA.Mods.Common.Traits
 				.Append(bi.BuildDurationModifier)
 				.Append(Info.BuildDurationModifier);
 
-			return Util.ApplyPercentageModifiers(time, modifiers);
+			return AiDifficultyRuntime.ProductionTime(Util.ApplyPercentageModifiers(time, modifiers), Actor.Owner.AiDifficulty);
 		}
 
 		public virtual int GetProductionCost(ActorInfo unit)

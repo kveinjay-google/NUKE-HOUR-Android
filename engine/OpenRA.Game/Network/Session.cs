@@ -212,6 +212,7 @@ namespace OpenRA.Network
 			public int Handicap;
 			public string Slot; // Slot ID, or null for observer
 			public string Bot; // Bot type, null for real clients
+			public string BotDifficulty = ""; // Frozen, normalized per-slot difficulty snapshot
 			public int BotControllerClientIndex; // who added the bot to the slot
 			public bool IsAdmin;
 			public bool IsReady => State == ClientState.Ready;

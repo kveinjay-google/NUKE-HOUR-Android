@@ -732,6 +732,9 @@ gatech:
 	Tooltip:
 		Name: actor-gatech.name
 	ProvidesPrerequisite@default:
+	ProvidesPrerequisite@TECH_EXPANSION:
+		Prerequisite: expansion-tech
+		RequiresCondition: !build-incomplete
 	Building:
 		Footprint: xx xx xx
 		Dimensions: 3,2

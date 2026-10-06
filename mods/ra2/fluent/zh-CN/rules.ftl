@@ -1142,3 +1142,12 @@ actor-caslab =
 actor-capowr =
     .name = 科技电厂
 
+
+actor-camach-buildable =
+    .description = 自动修复己方机械单位。限建一座；需要作战实验室。
+
+actor-caslab-buildable =
+    .description = 随机解锁一种其他阵营特色单位。限建一座；需要作战实验室。
+
+actor-capowr-buildable =
+    .description = 提供 200 电力。限建一座；需要作战实验室。

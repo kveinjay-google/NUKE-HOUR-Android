@@ -644,7 +644,7 @@ namespace OpenRA.Mods.Common.Server
 			lock (server.LobbyInfo)
 			{
 				var parts = s.Split(' ');
-				if (parts.Length < 3)
+				if (parts.Length < 3 || parts.Length > 4)
 				{
 					server.SendFluentMessageTo(conn, MalformedCommand, new object[] { "command", "slot_bot" });
 					return true;
@@ -690,6 +690,13 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 				}
 
+				if (!server.Map.Players.Players[parts[0]].AllowBots ||
+					!AiDifficultyLobbyPolicy.TrySnapshot(botType, parts.Length == 4 ? parts[3] : "", out var difficulty, out var customName))
+				{
+					server.SendFluentMessageTo(conn, InvalidBotType);
+					return true;
+				}
+
 				slot.Closed = false;
 				if (bot == null)
 				{
@@ -697,7 +704,8 @@ namespace OpenRA.Mods.Common.Server
 					bot = new Session.Client()
 					{
 						Index = server.ChooseFreePlayerIndex(),
-						Name = botInfo.Name,
+						Name = customName ?? botInfo.Name,
+						BotDifficulty = difficulty,
 						Bot = botType,
 						Slot = parts[0],
 						Faction = "Random",
@@ -721,7 +729,8 @@ namespace OpenRA.Mods.Common.Server
 				else
 				{
 					// Change the type of the existing bot
-					bot.Name = botInfo.Name;
+					bot.Name = customName ?? botInfo.Name;
+					bot.BotDifficulty = difficulty;
 					bot.Bot = botType;
 					bot.BotControllerClientIndex = controllerClientIndex;
 				}

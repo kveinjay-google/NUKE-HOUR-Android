@@ -1142,13 +1142,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			});
 		}
 
-		void OpenSettingsPanel()
+		void OpenSettingsPanel() => OpenSettingsPanel(null);
+
+		void OpenSettingsPanel(string initialPanel)
 		{
 			SwitchMenu(MenuType.None);
-			Game.OpenWindow("SETTINGS_PANEL", new WidgetArgs
+			var settings = Game.OpenWindow("SETTINGS_PANEL", new WidgetArgs
 			{
 				{ "onExit", () => SwitchMenu(MenuType.Main) }
 			});
+			if (initialPanel != null)
+				settings.Get("SETTINGS_TAB_CONTAINER").GetOrNull<ButtonWidget>(initialPanel)?.OnClick();
 		}
 
 		void OpenSpecialThanksPanel()
@@ -1261,6 +1265,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					break;
 				case "load":
 					OpenGameSaveBrowserPanel();
+					break;
+				case "ai-settings":
+					OpenSettingsPanel("AI_PANEL");
 					break;
 				case "settings":
 					OpenSettingsPanel();

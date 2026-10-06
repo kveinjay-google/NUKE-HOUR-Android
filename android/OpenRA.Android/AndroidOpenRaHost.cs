@@ -50,6 +50,16 @@ public sealed class AndroidOpenRaHost
         thread.Start();
     }
 
+    public void ReloadImportedContent()
+    {
+        Game.RunAfterTick(() =>
+        {
+            ALog.Info(Tag, "Retail reload: rebuilding RA2 resources and maps");
+            Game.InitializeMod("ra2", new Arguments());
+            ALog.Info(Tag, "Retail reload: main menu ready");
+        });
+    }
+
     public void Stop()
     {
         running = false;
@@ -152,7 +162,17 @@ public sealed class AndroidOpenRaHost
             Game.PlatformFactoryOverride = _ => new AndroidPlatform();
             if (activity is MainActivity nativeActivity)
             {
-                Game.OpenContentManagement = () => activity.RunOnUiThread(nativeActivity.OpenContentManagement);
+                Game.OpenContentManagement = () =>
+                {
+                    if (Game.OrderManager?.World is { Type: not WorldType.Shellmap })
+                    {
+                        activity.RunOnUiThread(() => global::Android.Widget.Toast.MakeText(activity,
+                            StartupCopy.IsChinese ? "请返回主菜单后导入资源。" : "Return to the main menu before importing resources.",
+                            global::Android.Widget.ToastLength.Long)?.Show());
+                        return;
+                    }
+                    activity.RunOnUiThread(nativeActivity.OpenContentManagement);
+                };
                 Game.OpenSpecialThanks = () => activity.RunOnUiThread(nativeActivity.ShowAcknowledgements);
                 Game.OpenSupportPage = () => activity.RunOnUiThread(() => nativeActivity.OpenOfficialPage("https://nukehour.com/supporters#support"));
                 Game.OpenSupportersPage = () => activity.RunOnUiThread(() => nativeActivity.OpenOfficialPage("https://nukehour.com/supporters"));

@@ -520,6 +520,9 @@ yatech:
 	Tooltip:
 		Name: actor-yatech.name
 	ProvidesPrerequisite@default:
+	ProvidesPrerequisite@TECH_EXPANSION:
+		Prerequisite: expansion-tech
+		RequiresCondition: !build-incomplete
 	ProvidesPrerequisite@psychiclab:
 		Prerequisite: psychic.lab
 	Building:

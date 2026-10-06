@@ -40,6 +40,7 @@ namespace OpenRA.Mods.RA2.LoadScreens
 		Size lastResolution;
 		Rectangle bounds;
 		string importStage;
+		readonly System.Diagnostics.Stopwatch importClock = new();
 		int completed, total;
 		string[] messages = Array.Empty<string>();
 
@@ -101,7 +102,10 @@ namespace OpenRA.Mods.RA2.LoadScreens
 
 		void UpdateImportProgress(string stage, int done, int count)
 		{
-			importStage = FluentProvider.GetMessage(stage);
+			var label = FluentProvider.GetMessage(stage);
+			if (importStage != label)
+				importClock.Restart();
+			importStage = label;
 			completed = done;
 			total = count;
 			Display();
@@ -164,7 +168,12 @@ namespace OpenRA.Mods.RA2.LoadScreens
 					var width = Math.Max(1, r.Resolution.Width * 3 / 5);
 					var x = (r.Resolution.Width - width) / 2;
 					var y = r.Resolution.Height * 4 / 5;
-					var text = $"{importStage}  {completed}/{total}";
+					var remaining = ImportProgressEstimate.RemainingSeconds(completed, total, importClock.Elapsed.TotalSeconds);
+                    var chinese = FluentProvider.CurrentLanguage.StartsWith("zh", StringComparison.OrdinalIgnoreCase);
+                    var eta = remaining.HasValue
+                        ? (chinese ? $"预计剩余 {Math.Ceiling(remaining.Value):0} 秒" : $"About {Math.Ceiling(remaining.Value):0} s remaining")
+                        : (chinese ? "正在估算时间…" : "Estimating time…");
+                    var text = $"3/3  {importStage}  {completed}/{total}  ·  {eta}";
 					var font = r.Fonts["Bold"];
 					font.DrawTextWithShadow(text, new float2(x, y - font.Measure(text).Y - 12), Color.White, Color.Black, 1);
 				}

@@ -1,3 +1,16 @@
+# Update verification — 2026-10-06
+
+Published source now includes eight AI difficulty levels and custom profiles, buildable technology expansion, import progress/ETA and automatic loading, weekly official update checks, and browser-to-phone LAN import with a copyable session access link. NanoHTTPD 2.3.1 source and BSD license are vendored with upstream provenance.
+
+- Public checkout Release ARM64 build passed (41.1 seconds); all 843 runtime resources match the manifest, eight APK checks pass, signature and 16 KB alignment verified.
+- Focused suite: 165 C# passed, three platform/development-mirror skips, zero failures; 11 Python policy checks passed.
+- Real JVM HTTP tests pass for credentials, origin checks, chunking, resume, commit and shutdown; measured 27 JVM threads. Page-script tests cover complete, incomplete and expired links.
+- Git-index export scanned with Gitleaks 8.30.1: no leaks found. Source inventory rejects game archives, binaries, signing material and files at least 50 MiB.
+- Xiaomi acceptance: previous PIN-based transfer imported 15 files / 1784.7 MiB and automatically reached the main menu. The replacement copy-link build was installed successfully; physical clipboard/WeChat interaction has not yet been verified.
+- Desktop APK SHA-256: `cf1e411ab13affe5d55a19751e6160213518cd2c486da140e302428689e82544`.
+
+Historical verification follows.
+
 # Public source verification — 2026-10-05
 
 The Android-only public source tree was built on macOS using .NET SDK 8.0.423, Android SDK 34, Build Tools 35.0.0, NDK 28.2.13676358 and JDK 17.

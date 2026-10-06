@@ -28,6 +28,7 @@ namespace OpenRA.Network
 		public readonly int Handicap;
 		public readonly string Slot;
 		public readonly string Bot;
+		public readonly string BotDifficulty = "";
 		public readonly bool IsAdmin;
 
 		public readonly string BotName;
@@ -43,6 +44,7 @@ namespace OpenRA.Network
 			Handicap = client.Handicap;
 			Slot = client.Slot;
 			Bot = client.Bot;
+			BotDifficulty = client.BotDifficulty;
 			IsAdmin = client.IsAdmin;
 
 			if (client.Bot != null)
@@ -58,6 +60,7 @@ namespace OpenRA.Network
 			client.Handicap = Handicap;
 			client.Slot = Slot;
 			client.Bot = Bot;
+			client.BotDifficulty = BotDifficulty;
 			client.IsAdmin = IsAdmin;
 
 			if (Bot != null)

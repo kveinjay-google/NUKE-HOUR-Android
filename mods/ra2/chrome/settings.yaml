@@ -7,10 +7,12 @@ StretchBackground@SETTINGS_PANEL:
 			INPUT_PANEL: button-settings-tab-input
 			HOTKEYS_PANEL: button-settings-tab-hotkeys
 			ADVANCED_PANEL: button-settings-tab-advanced
+			AI_PANEL: ai-settings-tab
 	Background: settings-v3-background
 	TabletBackground: settings-ipad-fullscreen
 	PreserveAspectRatio: false
 	ClickThrough: false
+	OpaqueSurface: true
 	CompactPhoneSurface: true
 	X: (WINDOW_WIDTH - WIDTH) / 2
 	Y: (WINDOW_HEIGHT - HEIGHT) / 2

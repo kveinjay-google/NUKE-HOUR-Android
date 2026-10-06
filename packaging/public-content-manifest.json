@@ -1466,6 +1466,7 @@
       "category": "project-original",
       "license": "GPL-3.0-only / NUKE HOUR interface configuration",
       "provenance": "Approved Chrome definitions minus reviewed inactive collections",
+      "generated_from": "/Users/kevin/Projects/RA2Android/mods/ra2/chrome.yaml",
       "public": true
     },
     {
@@ -1667,6 +1668,15 @@
       "public": true
     },
     {
+      "path": "mods/ra2/chrome/settings-ai.yaml",
+      "sha256": "1f2b4c5773f5419fcba013c95fa493c2aa42ca163f33fd8580c2827dd6ec5474",
+      "size": 6833,
+      "category": "project-original",
+      "license": "Project original",
+      "provenance": "Existing approved Android/iOS manifest",
+      "public": true
+    },
+    {
       "path": "mods/ra2/chrome/settings-audio.yaml",
       "sha256": "13de47fee6dd1bd49b3831261e847e415e07affcdfac0536a8f3fafc27e667a5",
       "size": 3961,
@@ -1704,8 +1714,8 @@
     },
     {
       "path": "mods/ra2/chrome/settings.yaml",
-      "sha256": "bea9c4bcbf66451cad41ab6f7a6227005d42c2da48c5901f5d2a16ef1648a670",
-      "size": 2480,
+      "sha256": "9dc9c0f2adf425ee2a8df44f8173152d85294fe40600e9110cfe8834e2246f96",
+      "size": 2530,
       "category": "project-original",
       "license": "GPL-3.0-only / NUKE HOUR interface configuration",
       "provenance": "Existing approved Android/iOS manifest",
@@ -1731,8 +1741,8 @@
     },
     {
       "path": "mods/ra2/fluent/chrome.ftl",
-      "sha256": "ab30bf4826d21a868ad05e4f20da9fb8d0cba6fde7cf1e68788b1e95e494734f",
-      "size": 40880,
+      "sha256": "29ec8b0f3dc487fd887ae021f460a74ba3e229d8a60d226393e4a786118ba446",
+      "size": 43230,
       "category": "project-original",
       "license": "GPL-3.0-only / NUKE HOUR project",
       "provenance": "Existing approved Android/iOS manifest",
@@ -1758,8 +1768,8 @@
     },
     {
       "path": "mods/ra2/fluent/rules.ftl",
-      "sha256": "669baf00b4f45d39d8b2df1673210e0b5479923f4e18f71ced1ff2d9fd2c6fad",
-      "size": 29833,
+      "sha256": "f53db435a60dabe3e3a6d93e916b6a9d3c244711f092db7932b5f44da4557ee6",
+      "size": 30181,
       "category": "project-original",
       "license": "GPL-3.0-only / NUKE HOUR project",
       "provenance": "Existing approved Android/iOS manifest",
@@ -1776,8 +1786,8 @@
     },
     {
       "path": "mods/ra2/fluent/zh-CN/chrome.ftl",
-      "sha256": "76c8557705f256d7705727180f0fe274651bb6a948d10791d7c1e00fc075be18",
-      "size": 37791,
+      "sha256": "14e3aa654470fd1d508eb8a82f2d502109ea82a8fff9718df28820af72de5886",
+      "size": 40191,
       "category": "project-original",
       "license": "GPL-3.0-only / NUKE HOUR project",
       "provenance": "Existing approved Android/iOS manifest",
@@ -1803,8 +1813,8 @@
     },
     {
       "path": "mods/ra2/fluent/zh-CN/rules.ftl",
-      "sha256": "a3cbad69f1a7e839c9070adc4eb6b921fbb9703b5b178655d2ade64822eef4c3",
-      "size": 29149,
+      "sha256": "a148fe566e736847dc33e518f54cbf8ede0fa12c778a87df34227f4eea5bd932",
+      "size": 29502,
       "category": "project-original",
       "license": "GPL-3.0-only / NUKE HOUR project",
       "provenance": "Existing approved Android/iOS manifest",
@@ -1866,8 +1876,8 @@
     },
     {
       "path": "mods/ra2/mod.yaml",
-      "sha256": "76161bb31641fcc25c9bab45957760dc354da8bd4d2f95cb7115954ddc9adae5",
-      "size": 10819,
+      "sha256": "3e0d475a82069fce6cc95db29d4950eff2fa3a13d128b7c2b12b00c2627d37bd",
+      "size": 10848,
       "category": "project-original",
       "license": "GPL-3.0-only / NUKE HOUR interface configuration",
       "provenance": "Existing approved Android/iOS manifest",
@@ -1875,8 +1885,8 @@
     },
     {
       "path": "mods/ra2/rules/ai-profiles.yaml",
-      "sha256": "49753d27382248273b04c3b55c13d87ce776a05fff22d092fb9572cef441e88c",
-      "size": 16006,
+      "sha256": "fe772cd5da48f569410bbd37b3e1cd48b05b475c54eb2c1c2d6608d898ea95c4",
+      "size": 64727,
       "category": "project-original",
       "license": "GPL-3.0-only / NUKE HOUR project",
       "provenance": "Existing approved Android/iOS manifest",
@@ -1920,8 +1930,8 @@
     },
     {
       "path": "mods/ra2/rules/allied-structures.yaml",
-      "sha256": "2f8f2d92ff7509f39a7f6a862111d906b82f502462bcbbc49c4bfecb80f77d51",
-      "size": 28145,
+      "sha256": "9132e0f56afa10867bee00efd3133fc6b1c710ddd4655a7ae8b1e2c08a783970",
+      "size": 28253,
       "category": "project-original",
       "license": "GPL-3.0-only / NUKE HOUR project",
       "provenance": "Existing approved Android/iOS manifest",
@@ -2028,8 +2038,8 @@
     },
     {
       "path": "mods/ra2/rules/player.yaml",
-      "sha256": "6ed0763ab57ca7bd8703ecd418a90d8f2423a1de869fe7f28e6e0c94b672277f",
-      "size": 5880,
+      "sha256": "cc8f67f0068e13d59fc6fe3af357a72f82d2a8f6daec3a8b4f7557b98fd5fac3",
+      "size": 6090,
       "category": "project-original",
       "license": "GPL-3.0-only / NUKE HOUR project",
       "provenance": "Existing approved Android/iOS manifest",
@@ -2064,8 +2074,8 @@
     },
     {
       "path": "mods/ra2/rules/soviet-structures.yaml",
-      "sha256": "a5aebc714864bba8721f7c03db6e63bbe99e0031365160da07bb2cf9d4c7b27f",
-      "size": 25989,
+      "sha256": "8271417cb9b6d207693f934cc91f503eaefbab1d2d30c4ac9d554e26599493be",
+      "size": 26097,
       "category": "project-original",
       "license": "GPL-3.0-only / NUKE HOUR project",
       "provenance": "Existing approved Android/iOS manifest",
@@ -2082,8 +2092,8 @@
     },
     {
       "path": "mods/ra2/rules/tech-structures.yaml",
-      "sha256": "20cb22d58c7361400a99fcfd47ebf3201b4975751b2a476598aedc148cd3331e",
-      "size": 5902,
+      "sha256": "14d2ff89696a4efd67f36662fc70385f0f696b330ff433aad4328c26a6a6d64c",
+      "size": 7075,
       "category": "project-original",
       "license": "GPL-3.0-only / NUKE HOUR project",
       "provenance": "Existing approved Android/iOS manifest",
@@ -2127,8 +2137,8 @@
     },
     {
       "path": "mods/ra2/rules/yuri-structures.yaml",
-      "sha256": "351b90a4477ad73114c6b55b0e72bf72a0fb84bbfe25508f5f8f561197d07a61",
-      "size": 21836,
+      "sha256": "d9c3687a9f18988339e978df4ea35b02ddca198c0043d2938221977327b68d4e",
+      "size": 21944,
       "category": "project-original",
       "license": "GPL-3.0-only / NUKE HOUR project",
       "provenance": "Existing approved Android/iOS manifest",
@@ -2271,8 +2281,8 @@
     },
     {
       "path": "mods/ra2/sequences/tech-structures.yaml",
-      "sha256": "c68142bfefa60cd8853cc68ec913e876ee9b1451ff6179430c4a1b0492c98851",
-      "size": 3660,
+      "sha256": "307d5b461e10f10a2f4163d5648a0965d3e5f5fd9f866296ab03effe298c8333",
+      "size": 3918,
       "category": "project-original",
       "license": "GPL-3.0-only / NUKE HOUR project",
       "provenance": "Existing approved Android/iOS manifest",

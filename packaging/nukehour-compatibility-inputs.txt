@@ -25,3 +25,14 @@ engine/OpenRA.Mods.Common/Traits/Air/Aircraft.cs
 
 # Captured secret lab changes deterministic production permissions.
 OpenRA.Mods.RA2/Traits/SecretLab.cs
+
+# AI difficulty snapshots and deterministic runtime behavior.
+engine/OpenRA.Game/AiDifficultyProfile.cs
+engine/OpenRA.Game/AiDifficultyLobbyPolicy.cs
+engine/OpenRA.Game/Network/GameSave.cs
+engine/OpenRA.Mods.Common/Traits/BotModules/BaseBuilderBotModule.cs
+engine/OpenRA.Mods.Common/Traits/BotModules/BotModuleLogic/BaseBuilderQueueManager.cs
+engine/OpenRA.Mods.Common/Traits/BotModules/UnitBuilderBotModule.cs
+engine/OpenRA.Mods.Common/Traits/BotModules/SquadManagerBotModule.cs
+engine/OpenRA.Mods.Common/Traits/Buildings/Refinery.cs
+engine/OpenRA.Mods.Common/Traits/Player/ProductionQueue.cs

@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const int ReferenceWidth = 1180;
 		const int ReferenceHeight = 720;
 		const int PhoneHeightBreakpoint = 600;
-		const int TabCount = 5;
+		const int TabCount = 6;
 
 		public bool Enabled { get; }
 		public bool IsPhone { get; }

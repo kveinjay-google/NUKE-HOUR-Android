@@ -61,7 +61,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (!playerResources.Info.ResourceValues.TryGetValue(resourceType, out var resourceValue))
 				return 0;
 
-			var value = Util.ApplyPercentageModifiers(count * resourceValue, resourceValueModifiers);
+			int DeliveredValue(int amount) => AiDifficultyRuntime.MinedIncome(
+				Util.ApplyPercentageModifiers(amount * resourceValue, resourceValueModifiers), self.Owner.AiDifficulty);
+
+			var value = DeliveredValue(count);
 
 			if (info.UseStorage)
 			{
@@ -70,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					// Reduce amount if needed until it will fit the available storage
 					while (value > storageLimit)
-						value = Util.ApplyPercentageModifiers(--count * resourceValue, resourceValueModifiers);
+						value = DeliveredValue(--count);
 				}
 				else
 					value = Math.Min(value, playerResources.ResourceCapacity - playerResources.Resources);

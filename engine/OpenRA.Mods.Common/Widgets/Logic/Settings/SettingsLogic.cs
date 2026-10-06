@@ -309,32 +309,66 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void ApplyDesktopLayout()
 		{
+			RestoreIosOriginalLayout();
 			lastViewportSize = Game.Renderer.Resolution;
+			var layout = DesktopSettingsLayout.ForViewport(lastViewportSize);
+			settingsWidget.Bounds = ToWidgetBounds(layout.Window);
+			panelContainer.Bounds = ToWidgetBounds(layout.Window);
+			panelTemplate.Bounds = ToWidgetBounds(layout.Content);
+			tabContainer.Bounds = ToWidgetBounds(layout.Tabs);
+			var title = settingsWidget.Get<LabelWidget>("SETTINGS_LABEL_TITLE");
+			title.Bounds = ToWidgetBounds(layout.Header);
+			title.Bounds.Width /= 2;
+			title.Font = "SettingsTitle";
+			title.Visible = true;
+			if (contextLabel != null)
+			{
+				contextLabel.Bounds = ToWidgetBounds(layout.Header);
+				contextLabel.Bounds.X += layout.Header.Width / 2;
+				contextLabel.Bounds.Width -= layout.Header.Width / 2;
+				contextLabel.Font = "SettingsTitle";
+				contextLabel.Align = TextAlign.Right;
+				contextLabel.Visible = true;
+			}
+			for (var i = 0; i < buttons.Count; i++)
+			{
+				buttons[i].Bounds = RelativeTo(layout.TabBounds(i, buttons.Count), layout.Tabs);
+				buttons[i].Font = "SettingsBold";
+			}
+			SetBounds(settingsWidget.Get<ButtonWidget>("RESET_BUTTON"), layout.Reset);
+			SetBounds(settingsWidget.Get<ButtonWidget>("BACK_BUTTON"), layout.Back);
+			var well = settingsWidget.GetOrNull("SETTINGS_CONTENT_WELL");
+			if (well != null) { well.Bounds = ToWidgetBounds(layout.Content); well.Visible = true; }
+
 			foreach (var panelId in panels.Keys)
 			{
 				var panel = panelContainer.Get(panelId);
-				if (panelId == "HOTKEYS_PANEL")
-					ApplyDesktopHotkeyPanel(panel);
-				foreach (var widget in DescendantsAndSelf(panel))
-					ApplyDesktopFont(widget);
-
+				panel.Bounds = ToWidgetBounds(layout.Content);
+				foreach (var content in panel.Children.Where(c => c.Id == panelId))
+					content.Bounds = new WidgetBounds(0, 0, panel.Bounds.Width, panel.Bounds.Height);
+				foreach (var widget in DescendantsAndSelf(panel)) ApplyDesktopFont(widget);
+				if (panelId == "HOTKEYS_PANEL") ApplyDesktopHotkeyPanel(panel);
 				var scroll = panel.GetOrNull<ScrollPanelWidget>("SETTINGS_SCROLLPANEL");
-				if (scroll == null)
-					continue;
-
+				if (scroll == null) continue;
+				scroll.Bounds = new WidgetBounds(0, 0, panel.Bounds.Width, panel.Bounds.Height);
 				scroll.TopBottomSpacing = 8;
-				scroll.ItemSpacing = 10;
+				scroll.ItemSpacing = 8;
+				if (panelId == "AI_PANEL")
+				{
+					DesktopAiSettingsLayout.Apply(scroll);
+					continue;
+				}
+				var scale = scroll.Bounds.Width / (double)Math.Max(1, OriginalBounds(scroll).Width);
 				foreach (var row in scroll.Children)
 				{
-					var section = row.Id != null && row.Id.EndsWith("SECTION_HEADER", StringComparison.Ordinal);
-					var sourceHeight = Math.Max(1, row.Bounds.Height);
-					ScaleDesktopWidgetTree(row, section ? 36d / sourceHeight : 1.6);
-					if (section)
+					DesktopSettingsLayout.ScaleRowFromOriginal(row, OriginalBounds, scale);
+					if (row.Id?.EndsWith("SECTION_HEADER", StringComparison.Ordinal) == true)
+					{
+						row.Bounds.Height = 30;
 						PrepareSectionHeader(row, "SettingsBold", 10);
-					else
-						row.Bounds.Height = Math.Max(row.Bounds.Height, VisibleContentHeight(row));
+					}
 				}
-
+				scroll.Layout = new ListLayout(scroll);
 				scroll.Layout.AdjustChildren();
 			}
 		}
@@ -361,16 +395,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			LayoutDesktopHotkeyList(list);
 		}
 
-		static void ScaleDesktopWidgetTree(Widget widget, double verticalScale)
-		{
-			widget.Bounds.Y = ScaleHorizontal(widget.Bounds.Y, verticalScale);
-			widget.Bounds.Height = ScaleHorizontal(widget.Bounds.Height, verticalScale);
-			if (IsTouchTarget(widget))
-				widget.Bounds.Height = Math.Max(32, widget.Bounds.Height);
-			ApplyDesktopFont(widget);
-			foreach (var child in widget.Children)
-				ScaleDesktopWidgetTree(child, verticalScale);
-		}
 
 		static void ApplyDesktopFont(Widget widget)
 		{
@@ -544,6 +568,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			scrollPanel.ScrollBar = layout.IsPhone ? ScrollBar.Hidden : originalMetrics.Position;
 			scrollPanel.TopBottomSpacing = layout.Scale(4);
 			scrollPanel.ItemSpacing = layout.Scale(6);
+			if (layout.IsPhone && panel.Id == "AI_PANEL")
+			{
+				MobileAiSettingsLayout.Apply(scrollPanel, layout);
+				return;
+			}
 			if (layout.IsPhone && panel.Id == "AUDIO_PANEL")
 			{
 				MobileAudioSettingsLayout.Apply(scrollPanel, layout);
@@ -572,7 +601,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					PrepareSectionHeader(item, "IosBold", layout.Scale(10));
 			}
 
-			if (!layout.IsPhone && scrollPanel.Layout is PhoneSettingsRowsLayout)
+			if (!layout.IsPhone && (scrollPanel.Layout is PhoneSettingsRowsLayout || MobileAiSettingsLayout.IsApplied(scrollPanel) || DesktopAiSettingsLayout.IsApplied(scrollPanel)))
 				scrollPanel.Layout = new ListLayout(scrollPanel);
 			scrollPanel.Layout.AdjustChildren();
 			if (layout.IsPhone) PackPhoneSingleRows(scrollPanel, layout);
@@ -1128,8 +1157,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var viewport = Game.Renderer.Resolution;
 			if (!Platform.UsesMobileLayout)
 			{
-				if (viewport != lastViewportSize && TouchLayoutFor(viewport).Enabled)
-					ApplyIosLayout();
+				if (viewport != lastViewportSize)
+				{
+					if (TouchLayoutFor(viewport).Enabled) ApplyIosLayout();
+					else ApplyDesktopLayout();
+				}
 
 				return;
 			}

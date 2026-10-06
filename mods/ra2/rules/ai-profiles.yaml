@@ -1,5 +1,1976 @@
 # 本文件由启动器「AI 配置」页自动生成（ai_profiles.py），请勿手改。
 Player:
+	ModularBot@difficulty-beginner:
+		Name: ai-difficulty-beginner
+		Type: difficulty-beginner
+		MinOrderQuotientPerTick: 2
+	GrantConditionOnBotOwner@difficulty-beginner:
+		Condition: enable-ai-difficulty-beginner
+		Bots: difficulty-beginner
+	SupportPowerBotModule@difficulty-beginner:
+		RequiresCondition: enable-ai-difficulty-beginner
+		Decisions:
+			airborne:
+				OrderName: AmericanParatroopers
+				MinimumAttractiveness: 5
+				MinimumScanTimeInterval: 100
+				MaximumScanTimeInterval: 105
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 8c0
+				Consideration@2:
+					Against: Enemy
+					Types: Water
+					Attractiveness: -5
+					TargetMetric: None
+					CheckRadius: 8c0
+			nukepower:
+				OrderName: NukePowerInfoOrder
+				MinimumAttractiveness: 3000
+				MinimumScanTimeInterval: 100
+				MaximumScanTimeInterval: 105
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: Value
+					CheckRadius: 5c0
+				Consideration@2:
+					Against: Ally
+					Types: Air, Ground, Water
+					Attractiveness: -10
+					TargetMetric: Value
+					CheckRadius: 7c0
+	BaseBuilderBotModule@difficulty-beginner:
+		RequiresCondition: enable-ai-difficulty-beginner
+		DefenseQueues: Support
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		RefineryTypes: garefn, narefn, yarefn
+		PowerTypes: gapowr, napowr, nanrct, yapowr
+		BarracksTypes: gapile, nahand, yabrck
+		VehiclesFactoryTypes: gaweap, naweap, yaweap
+		ProductionTypes: gapile, nahand, yabrck, gaweap, naweap, yaweap, gaairc, amradr
+		NavalProductionTypes: nayard, gayard, yayard
+		MaxBaseRadius: 50
+		StructureProductionActiveDelay: 10
+		StructureProductionInactiveDelay: 50
+		StructureProductionRandomBonusDelay: 4
+		ProductionMinCashRequirement: 200
+		NewProductionCashThreshold: 2000
+		BuildingLimits:
+			garefn: 6
+			narefn: 6
+			yarefn: 6
+			gapowr: 8
+			napowr: 8
+			yapowr: 8
+			nanrct: 1
+			gapile: 4
+			nahand: 4
+			yabrck: 4
+			gaweap: 5
+			naweap: 5
+			yaweap: 5
+			nayard: 3
+			gayard: 3
+			yayard: 3
+			gadept: 1
+			nadept: 1
+			yadept: 1
+			gaairc: 4
+			amradr: 4
+			naradr: 1
+			yadome: 1
+			gatech: 1
+			natech: 1
+			yatech: 1
+			yagrnd: 1
+			gagap: 2
+		BuildingFractions:
+			gapowr: 20
+			napowr: 20
+			yapowr: 20
+			nanrct: 1
+			garefn: 15
+			narefn: 15
+			yarefn: 15
+			gapile: 1
+			nahand: 1
+			yabrck: 1
+			gaweap: 6
+			naweap: 6
+			yaweap: 6
+			nayard: 1
+			gayard: 1
+			yayard: 1
+			gaairc: 1
+			amradr: 1
+			naradr: 1
+			yadome: 1
+			gatech: 1
+			natech: 1
+			yatech: 1
+			naclon: 1
+			gadept: 1
+			nadept: 1
+			yadept: 1
+			yagrnd: 1
+			gapill: 10
+			nalasr: 10
+			yaggun: 10
+			yapsyt: 4
+			nasam: 4
+			naflak: 4
+			tesla: 4
+			atesla: 4
+			gtgcan: 1
+			gagap: 1
+			namisl: 1
+			yagntc: 1
+			yappet: 1
+		DefenseTypes: gapill, nasam, gtgcan, atesla, naflak, tesla, nalasr, yaggun, yapsyt
+	SquadManagerBotModule@difficulty-beginner:
+		RequiresCondition: enable-ai-difficulty-beginner
+		SquadSize: 5
+		SquadSizeRandomBonus: 30
+		AssignRolesInterval: 20
+		RushInterval: 240
+		AttackForceInterval: 30
+		MinimumAttackForceDelay: 1
+		ExcludeFromSquadsTypes: cmin, harv, amcv, smcv, pcv, smin, slav, dog, engineer
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		NavalUnitsTypes: dest, aegis, dlph, carrier, sub, hyd, sqd, yhvr, bsub
+		NavalProductionTypes: nayard, gayard, yayard
+		AirUnitsTypes: jumpjet, shad, zep, orca, beag, disk
+		ProtectionTypes: gacnst, gapowr, gapile, garefn, gaairc, amradr, gaweap, gayard, gadept, gatech, gapill, nasam, gtgcan, gaorep, gaspysat, gagap, gaweat, gacsph, atesla, nacnst, napowr, nahand, narefn, naradr, naweap, nayard, nadept, nanrct, natech, naclon, napsis, nairon, namisl, naflak, tesla, nalasr, yacnst, yapowr, yabrck, yarefn, yaweap, yadome, yaggun, yatech, yagrnd, yadept, yayard, yapsyt, natbnk, yagntc, yappet, amcv, cmin, smcv, harv, pcv, smin, slav
+	UnitBuilderBotModule@difficulty-beginner:
+		RequiresCondition: enable-ai-difficulty-beginner
+		ProductionMinCashRequirement: 200
+		UnitProductionInterval: 10
+		UnitsToBuild:
+			e1: 90
+			e2: 90
+			init: 90
+			brute: 10
+			virus: 5
+			engineer: 1
+			dog: 1
+			flakt: 10
+			shk: 10
+			ivan: 3
+			jumpjet: 2
+			deso: 1
+			tany: 1
+			yuri: 1
+			yurix: 1
+			snipe: 5
+			cmin: 10
+			harv: 10
+			smin: 10
+			htnk: 50
+			htk: 20
+			mtnk: 50
+			ltnk: 50
+			ytnk: 20
+			caos: 10
+			tele: 10
+			mind: 4
+			disk: 5
+			fv: 20
+			sref: 10
+			mgtk: 10
+			apoc: 10
+			tnkd: 15
+			ttnk: 15
+			dest: 20
+			aegis: 20
+			dlph: 5
+			carrier: 3
+			sub: 20
+			hyd: 20
+			sqd: 5
+			yhvr: 5
+			bsub: 3
+		UnitLimits:
+			engineer: 1
+			dog: 4
+			cmin: 14
+			harv: 14
+			smin: 14
+	McvManagerBotModule@difficulty-beginner:
+		RequiresCondition: enable-ai-difficulty-beginner
+		MinimumConstructionYardCount: 2
+		McvTypes: amcv, smcv, pcv
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		McvFactoryTypes: gaweap, naweap, yaweap
+	HarvesterBotModule@difficulty-beginner:
+		RequiresCondition: enable-ai-difficulty-beginner
+		HarvesterTypes: cmin, harv, smin, slav
+		RefineryTypes: garefn, narefn, yarefn
+	BuildingRepairBotModule@difficulty-beginner:
+		RequiresCondition: enable-ai-difficulty-beginner
+	CaptureManagerBotModule@difficulty-beginner:
+		RequiresCondition: enable-ai-difficulty-beginner
+		CapturingActorTypes: engineer
+		CapturableActorTypes: caoild, caairp, cahosp, cathosp, caoutp
+		CapturableRelationships: Neutral
+		CheckCaptureTargetsForVisibility: false
+		MaximumCaptureTargetOptions: 15
+	ModularBot@difficulty-easy:
+		Name: ai-difficulty-easy
+		Type: difficulty-easy
+		MinOrderQuotientPerTick: 2
+	GrantConditionOnBotOwner@difficulty-easy:
+		Condition: enable-ai-difficulty-easy
+		Bots: difficulty-easy
+	SupportPowerBotModule@difficulty-easy:
+		RequiresCondition: enable-ai-difficulty-easy
+		Decisions:
+			airborne:
+				OrderName: AmericanParatroopers
+				MinimumAttractiveness: 5
+				MinimumScanTimeInterval: 100
+				MaximumScanTimeInterval: 105
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 8c0
+				Consideration@2:
+					Against: Enemy
+					Types: Water
+					Attractiveness: -5
+					TargetMetric: None
+					CheckRadius: 8c0
+			nukepower:
+				OrderName: NukePowerInfoOrder
+				MinimumAttractiveness: 3000
+				MinimumScanTimeInterval: 100
+				MaximumScanTimeInterval: 105
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: Value
+					CheckRadius: 5c0
+				Consideration@2:
+					Against: Ally
+					Types: Air, Ground, Water
+					Attractiveness: -10
+					TargetMetric: Value
+					CheckRadius: 7c0
+	BaseBuilderBotModule@difficulty-easy:
+		RequiresCondition: enable-ai-difficulty-easy
+		DefenseQueues: Support
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		RefineryTypes: garefn, narefn, yarefn
+		PowerTypes: gapowr, napowr, nanrct, yapowr
+		BarracksTypes: gapile, nahand, yabrck
+		VehiclesFactoryTypes: gaweap, naweap, yaweap
+		ProductionTypes: gapile, nahand, yabrck, gaweap, naweap, yaweap, gaairc, amradr
+		NavalProductionTypes: nayard, gayard, yayard
+		MaxBaseRadius: 50
+		StructureProductionActiveDelay: 10
+		StructureProductionInactiveDelay: 50
+		StructureProductionRandomBonusDelay: 4
+		ProductionMinCashRequirement: 200
+		NewProductionCashThreshold: 2000
+		BuildingLimits:
+			garefn: 6
+			narefn: 6
+			yarefn: 6
+			gapowr: 8
+			napowr: 8
+			yapowr: 8
+			nanrct: 1
+			gapile: 4
+			nahand: 4
+			yabrck: 4
+			gaweap: 5
+			naweap: 5
+			yaweap: 5
+			nayard: 3
+			gayard: 3
+			yayard: 3
+			gadept: 1
+			nadept: 1
+			yadept: 1
+			gaairc: 4
+			amradr: 4
+			naradr: 1
+			yadome: 1
+			gatech: 1
+			natech: 1
+			yatech: 1
+			yagrnd: 1
+			gagap: 2
+		BuildingFractions:
+			gapowr: 20
+			napowr: 20
+			yapowr: 20
+			nanrct: 1
+			garefn: 15
+			narefn: 15
+			yarefn: 15
+			gapile: 1
+			nahand: 1
+			yabrck: 1
+			gaweap: 6
+			naweap: 6
+			yaweap: 6
+			nayard: 1
+			gayard: 1
+			yayard: 1
+			gaairc: 1
+			amradr: 1
+			naradr: 1
+			yadome: 1
+			gatech: 1
+			natech: 1
+			yatech: 1
+			naclon: 1
+			gadept: 1
+			nadept: 1
+			yadept: 1
+			yagrnd: 1
+			gapill: 10
+			nalasr: 10
+			yaggun: 10
+			yapsyt: 4
+			nasam: 4
+			naflak: 4
+			tesla: 4
+			atesla: 4
+			gtgcan: 1
+			gagap: 1
+			namisl: 1
+			yagntc: 1
+			yappet: 1
+		DefenseTypes: gapill, nasam, gtgcan, atesla, naflak, tesla, nalasr, yaggun, yapsyt
+	SquadManagerBotModule@difficulty-easy:
+		RequiresCondition: enable-ai-difficulty-easy
+		SquadSize: 5
+		SquadSizeRandomBonus: 30
+		AssignRolesInterval: 20
+		RushInterval: 240
+		AttackForceInterval: 30
+		MinimumAttackForceDelay: 1
+		ExcludeFromSquadsTypes: cmin, harv, amcv, smcv, pcv, smin, slav, dog, engineer
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		NavalUnitsTypes: dest, aegis, dlph, carrier, sub, hyd, sqd, yhvr, bsub
+		NavalProductionTypes: nayard, gayard, yayard
+		AirUnitsTypes: jumpjet, shad, zep, orca, beag, disk
+		ProtectionTypes: gacnst, gapowr, gapile, garefn, gaairc, amradr, gaweap, gayard, gadept, gatech, gapill, nasam, gtgcan, gaorep, gaspysat, gagap, gaweat, gacsph, atesla, nacnst, napowr, nahand, narefn, naradr, naweap, nayard, nadept, nanrct, natech, naclon, napsis, nairon, namisl, naflak, tesla, nalasr, yacnst, yapowr, yabrck, yarefn, yaweap, yadome, yaggun, yatech, yagrnd, yadept, yayard, yapsyt, natbnk, yagntc, yappet, amcv, cmin, smcv, harv, pcv, smin, slav
+	UnitBuilderBotModule@difficulty-easy:
+		RequiresCondition: enable-ai-difficulty-easy
+		ProductionMinCashRequirement: 200
+		UnitProductionInterval: 10
+		UnitsToBuild:
+			e1: 90
+			e2: 90
+			init: 90
+			brute: 10
+			virus: 5
+			engineer: 1
+			dog: 1
+			flakt: 10
+			shk: 10
+			ivan: 3
+			jumpjet: 2
+			deso: 1
+			tany: 1
+			yuri: 1
+			yurix: 1
+			snipe: 5
+			cmin: 10
+			harv: 10
+			smin: 10
+			htnk: 50
+			htk: 20
+			mtnk: 50
+			ltnk: 50
+			ytnk: 20
+			caos: 10
+			tele: 10
+			mind: 4
+			disk: 5
+			fv: 20
+			sref: 10
+			mgtk: 10
+			apoc: 10
+			tnkd: 15
+			ttnk: 15
+			dest: 20
+			aegis: 20
+			dlph: 5
+			carrier: 3
+			sub: 20
+			hyd: 20
+			sqd: 5
+			yhvr: 5
+			bsub: 3
+		UnitLimits:
+			engineer: 1
+			dog: 4
+			cmin: 14
+			harv: 14
+			smin: 14
+	McvManagerBotModule@difficulty-easy:
+		RequiresCondition: enable-ai-difficulty-easy
+		MinimumConstructionYardCount: 2
+		McvTypes: amcv, smcv, pcv
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		McvFactoryTypes: gaweap, naweap, yaweap
+	HarvesterBotModule@difficulty-easy:
+		RequiresCondition: enable-ai-difficulty-easy
+		HarvesterTypes: cmin, harv, smin, slav
+		RefineryTypes: garefn, narefn, yarefn
+	BuildingRepairBotModule@difficulty-easy:
+		RequiresCondition: enable-ai-difficulty-easy
+	CaptureManagerBotModule@difficulty-easy:
+		RequiresCondition: enable-ai-difficulty-easy
+		CapturingActorTypes: engineer
+		CapturableActorTypes: caoild, caairp, cahosp, cathosp, caoutp
+		CapturableRelationships: Neutral
+		CheckCaptureTargetsForVisibility: false
+		MaximumCaptureTargetOptions: 15
+	ModularBot@difficulty-normal:
+		Name: ai-difficulty-normal
+		Type: difficulty-normal
+		MinOrderQuotientPerTick: 2
+	GrantConditionOnBotOwner@difficulty-normal:
+		Condition: enable-ai-difficulty-normal
+		Bots: difficulty-normal
+	SupportPowerBotModule@difficulty-normal:
+		RequiresCondition: enable-ai-difficulty-normal
+		Decisions:
+			airborne:
+				OrderName: AmericanParatroopers
+				MinimumAttractiveness: 5
+				MinimumScanTimeInterval: 100
+				MaximumScanTimeInterval: 105
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 8c0
+				Consideration@2:
+					Against: Enemy
+					Types: Water
+					Attractiveness: -5
+					TargetMetric: None
+					CheckRadius: 8c0
+			nukepower:
+				OrderName: NukePowerInfoOrder
+				MinimumAttractiveness: 3000
+				MinimumScanTimeInterval: 100
+				MaximumScanTimeInterval: 105
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: Value
+					CheckRadius: 5c0
+				Consideration@2:
+					Against: Ally
+					Types: Air, Ground, Water
+					Attractiveness: -10
+					TargetMetric: Value
+					CheckRadius: 7c0
+	BaseBuilderBotModule@difficulty-normal:
+		RequiresCondition: enable-ai-difficulty-normal
+		DefenseQueues: Support
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		RefineryTypes: garefn, narefn, yarefn
+		PowerTypes: gapowr, napowr, nanrct, yapowr
+		BarracksTypes: gapile, nahand, yabrck
+		VehiclesFactoryTypes: gaweap, naweap, yaweap
+		ProductionTypes: gapile, nahand, yabrck, gaweap, naweap, yaweap, gaairc, amradr
+		NavalProductionTypes: nayard, gayard, yayard
+		MaxBaseRadius: 50
+		StructureProductionActiveDelay: 10
+		StructureProductionInactiveDelay: 50
+		StructureProductionRandomBonusDelay: 4
+		ProductionMinCashRequirement: 200
+		NewProductionCashThreshold: 2000
+		BuildingLimits:
+			garefn: 6
+			narefn: 6
+			yarefn: 6
+			gapowr: 8
+			napowr: 8
+			yapowr: 8
+			nanrct: 1
+			gapile: 4
+			nahand: 4
+			yabrck: 4
+			gaweap: 5
+			naweap: 5
+			yaweap: 5
+			nayard: 3
+			gayard: 3
+			yayard: 3
+			gadept: 1
+			nadept: 1
+			yadept: 1
+			gaairc: 4
+			amradr: 4
+			naradr: 1
+			yadome: 1
+			gatech: 1
+			natech: 1
+			yatech: 1
+			yagrnd: 1
+			gagap: 2
+		BuildingFractions:
+			gapowr: 20
+			napowr: 20
+			yapowr: 20
+			nanrct: 1
+			garefn: 15
+			narefn: 15
+			yarefn: 15
+			gapile: 1
+			nahand: 1
+			yabrck: 1
+			gaweap: 6
+			naweap: 6
+			yaweap: 6
+			nayard: 1
+			gayard: 1
+			yayard: 1
+			gaairc: 1
+			amradr: 1
+			naradr: 1
+			yadome: 1
+			gatech: 1
+			natech: 1
+			yatech: 1
+			naclon: 1
+			gadept: 1
+			nadept: 1
+			yadept: 1
+			yagrnd: 1
+			gapill: 10
+			nalasr: 10
+			yaggun: 10
+			yapsyt: 4
+			nasam: 4
+			naflak: 4
+			tesla: 4
+			atesla: 4
+			gtgcan: 1
+			gagap: 1
+			namisl: 1
+			yagntc: 1
+			yappet: 1
+		DefenseTypes: gapill, nasam, gtgcan, atesla, naflak, tesla, nalasr, yaggun, yapsyt
+	SquadManagerBotModule@difficulty-normal:
+		RequiresCondition: enable-ai-difficulty-normal
+		SquadSize: 5
+		SquadSizeRandomBonus: 30
+		AssignRolesInterval: 20
+		RushInterval: 240
+		AttackForceInterval: 30
+		MinimumAttackForceDelay: 1
+		ExcludeFromSquadsTypes: cmin, harv, amcv, smcv, pcv, smin, slav, dog, engineer
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		NavalUnitsTypes: dest, aegis, dlph, carrier, sub, hyd, sqd, yhvr, bsub
+		NavalProductionTypes: nayard, gayard, yayard
+		AirUnitsTypes: jumpjet, shad, zep, orca, beag, disk
+		ProtectionTypes: gacnst, gapowr, gapile, garefn, gaairc, amradr, gaweap, gayard, gadept, gatech, gapill, nasam, gtgcan, gaorep, gaspysat, gagap, gaweat, gacsph, atesla, nacnst, napowr, nahand, narefn, naradr, naweap, nayard, nadept, nanrct, natech, naclon, napsis, nairon, namisl, naflak, tesla, nalasr, yacnst, yapowr, yabrck, yarefn, yaweap, yadome, yaggun, yatech, yagrnd, yadept, yayard, yapsyt, natbnk, yagntc, yappet, amcv, cmin, smcv, harv, pcv, smin, slav
+	UnitBuilderBotModule@difficulty-normal:
+		RequiresCondition: enable-ai-difficulty-normal
+		ProductionMinCashRequirement: 200
+		UnitProductionInterval: 10
+		UnitsToBuild:
+			e1: 90
+			e2: 90
+			init: 90
+			brute: 10
+			virus: 5
+			engineer: 1
+			dog: 1
+			flakt: 10
+			shk: 10
+			ivan: 3
+			jumpjet: 2
+			deso: 1
+			tany: 1
+			yuri: 1
+			yurix: 1
+			snipe: 5
+			cmin: 10
+			harv: 10
+			smin: 10
+			htnk: 50
+			htk: 20
+			mtnk: 50
+			ltnk: 50
+			ytnk: 20
+			caos: 10
+			tele: 10
+			mind: 4
+			disk: 5
+			fv: 20
+			sref: 10
+			mgtk: 10
+			apoc: 10
+			tnkd: 15
+			ttnk: 15
+			dest: 20
+			aegis: 20
+			dlph: 5
+			carrier: 3
+			sub: 20
+			hyd: 20
+			sqd: 5
+			yhvr: 5
+			bsub: 3
+		UnitLimits:
+			engineer: 1
+			dog: 4
+			cmin: 14
+			harv: 14
+			smin: 14
+	McvManagerBotModule@difficulty-normal:
+		RequiresCondition: enable-ai-difficulty-normal
+		MinimumConstructionYardCount: 2
+		McvTypes: amcv, smcv, pcv
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		McvFactoryTypes: gaweap, naweap, yaweap
+	HarvesterBotModule@difficulty-normal:
+		RequiresCondition: enable-ai-difficulty-normal
+		HarvesterTypes: cmin, harv, smin, slav
+		RefineryTypes: garefn, narefn, yarefn
+	BuildingRepairBotModule@difficulty-normal:
+		RequiresCondition: enable-ai-difficulty-normal
+	CaptureManagerBotModule@difficulty-normal:
+		RequiresCondition: enable-ai-difficulty-normal
+		CapturingActorTypes: engineer
+		CapturableActorTypes: caoild, caairp, cahosp, cathosp, caoutp
+		CapturableRelationships: Neutral
+		CheckCaptureTargetsForVisibility: false
+		MaximumCaptureTargetOptions: 15
+	ModularBot@difficulty-hard:
+		Name: ai-difficulty-hard
+		Type: difficulty-hard
+		MinOrderQuotientPerTick: 2
+	GrantConditionOnBotOwner@difficulty-hard:
+		Condition: enable-ai-difficulty-hard
+		Bots: difficulty-hard
+	SupportPowerBotModule@difficulty-hard:
+		RequiresCondition: enable-ai-difficulty-hard
+		Decisions:
+			airborne:
+				OrderName: AmericanParatroopers
+				MinimumAttractiveness: 5
+				MinimumScanTimeInterval: 100
+				MaximumScanTimeInterval: 105
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 8c0
+				Consideration@2:
+					Against: Enemy
+					Types: Water
+					Attractiveness: -5
+					TargetMetric: None
+					CheckRadius: 8c0
+			nukepower:
+				OrderName: NukePowerInfoOrder
+				MinimumAttractiveness: 3000
+				MinimumScanTimeInterval: 100
+				MaximumScanTimeInterval: 105
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: Value
+					CheckRadius: 5c0
+				Consideration@2:
+					Against: Ally
+					Types: Air, Ground, Water
+					Attractiveness: -10
+					TargetMetric: Value
+					CheckRadius: 7c0
+	BaseBuilderBotModule@difficulty-hard:
+		RequiresCondition: enable-ai-difficulty-hard
+		DefenseQueues: Support
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		RefineryTypes: garefn, narefn, yarefn
+		PowerTypes: gapowr, napowr, nanrct, yapowr
+		BarracksTypes: gapile, nahand, yabrck
+		VehiclesFactoryTypes: gaweap, naweap, yaweap
+		ProductionTypes: gapile, nahand, yabrck, gaweap, naweap, yaweap, gaairc, amradr
+		NavalProductionTypes: nayard, gayard, yayard
+		MaxBaseRadius: 50
+		StructureProductionActiveDelay: 10
+		StructureProductionInactiveDelay: 50
+		StructureProductionRandomBonusDelay: 4
+		ProductionMinCashRequirement: 200
+		NewProductionCashThreshold: 2000
+		BuildingLimits:
+			garefn: 6
+			narefn: 6
+			yarefn: 6
+			gapowr: 8
+			napowr: 8
+			yapowr: 8
+			nanrct: 1
+			gapile: 4
+			nahand: 4
+			yabrck: 4
+			gaweap: 5
+			naweap: 5
+			yaweap: 5
+			nayard: 3
+			gayard: 3
+			yayard: 3
+			gadept: 1
+			nadept: 1
+			yadept: 1
+			gaairc: 4
+			amradr: 4
+			naradr: 1
+			yadome: 1
+			gatech: 1
+			natech: 1
+			yatech: 1
+			yagrnd: 1
+			gagap: 2
+		BuildingFractions:
+			gapowr: 20
+			napowr: 20
+			yapowr: 20
+			nanrct: 1
+			garefn: 15
+			narefn: 15
+			yarefn: 15
+			gapile: 1
+			nahand: 1
+			yabrck: 1
+			gaweap: 6
+			naweap: 6
+			yaweap: 6
+			nayard: 1
+			gayard: 1
+			yayard: 1
+			gaairc: 1
+			amradr: 1
+			naradr: 1
+			yadome: 1
+			gatech: 1
+			natech: 1
+			yatech: 1
+			naclon: 1
+			gadept: 1
+			nadept: 1
+			yadept: 1
+			yagrnd: 1
+			gapill: 10
+			nalasr: 10
+			yaggun: 10
+			yapsyt: 4
+			nasam: 4
+			naflak: 4
+			tesla: 4
+			atesla: 4
+			gtgcan: 1
+			gagap: 1
+			namisl: 1
+			yagntc: 1
+			yappet: 1
+		DefenseTypes: gapill, nasam, gtgcan, atesla, naflak, tesla, nalasr, yaggun, yapsyt
+	SquadManagerBotModule@difficulty-hard:
+		RequiresCondition: enable-ai-difficulty-hard
+		SquadSize: 5
+		SquadSizeRandomBonus: 30
+		AssignRolesInterval: 20
+		RushInterval: 240
+		AttackForceInterval: 30
+		MinimumAttackForceDelay: 1
+		ExcludeFromSquadsTypes: cmin, harv, amcv, smcv, pcv, smin, slav, dog, engineer
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		NavalUnitsTypes: dest, aegis, dlph, carrier, sub, hyd, sqd, yhvr, bsub
+		NavalProductionTypes: nayard, gayard, yayard
+		AirUnitsTypes: jumpjet, shad, zep, orca, beag, disk
+		ProtectionTypes: gacnst, gapowr, gapile, garefn, gaairc, amradr, gaweap, gayard, gadept, gatech, gapill, nasam, gtgcan, gaorep, gaspysat, gagap, gaweat, gacsph, atesla, nacnst, napowr, nahand, narefn, naradr, naweap, nayard, nadept, nanrct, natech, naclon, napsis, nairon, namisl, naflak, tesla, nalasr, yacnst, yapowr, yabrck, yarefn, yaweap, yadome, yaggun, yatech, yagrnd, yadept, yayard, yapsyt, natbnk, yagntc, yappet, amcv, cmin, smcv, harv, pcv, smin, slav
+	UnitBuilderBotModule@difficulty-hard:
+		RequiresCondition: enable-ai-difficulty-hard
+		ProductionMinCashRequirement: 200
+		UnitProductionInterval: 10
+		UnitsToBuild:
+			e1: 90
+			e2: 90
+			init: 90
+			brute: 10
+			virus: 5
+			engineer: 1
+			dog: 1
+			flakt: 10
+			shk: 10
+			ivan: 3
+			jumpjet: 2
+			deso: 1
+			tany: 1
+			yuri: 1
+			yurix: 1
+			snipe: 5
+			cmin: 10
+			harv: 10
+			smin: 10
+			htnk: 50
+			htk: 20
+			mtnk: 50
+			ltnk: 50
+			ytnk: 20
+			caos: 10
+			tele: 10
+			mind: 4
+			disk: 5
+			fv: 20
+			sref: 10
+			mgtk: 10
+			apoc: 10
+			tnkd: 15
+			ttnk: 15
+			dest: 20
+			aegis: 20
+			dlph: 5
+			carrier: 3
+			sub: 20
+			hyd: 20
+			sqd: 5
+			yhvr: 5
+			bsub: 3
+		UnitLimits:
+			engineer: 1
+			dog: 4
+			cmin: 14
+			harv: 14
+			smin: 14
+	McvManagerBotModule@difficulty-hard:
+		RequiresCondition: enable-ai-difficulty-hard
+		MinimumConstructionYardCount: 2
+		McvTypes: amcv, smcv, pcv
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		McvFactoryTypes: gaweap, naweap, yaweap
+	HarvesterBotModule@difficulty-hard:
+		RequiresCondition: enable-ai-difficulty-hard
+		HarvesterTypes: cmin, harv, smin, slav
+		RefineryTypes: garefn, narefn, yarefn
+	BuildingRepairBotModule@difficulty-hard:
+		RequiresCondition: enable-ai-difficulty-hard
+	CaptureManagerBotModule@difficulty-hard:
+		RequiresCondition: enable-ai-difficulty-hard
+		CapturingActorTypes: engineer
+		CapturableActorTypes: caoild, caairp, cahosp, cathosp, caoutp
+		CapturableRelationships: Neutral
+		CheckCaptureTargetsForVisibility: false
+		MaximumCaptureTargetOptions: 15
+	ModularBot@difficulty-brutal:
+		Name: ai-difficulty-brutal
+		Type: difficulty-brutal
+		MinOrderQuotientPerTick: 2
+	GrantConditionOnBotOwner@difficulty-brutal:
+		Condition: enable-ai-difficulty-brutal
+		Bots: difficulty-brutal
+	SupportPowerBotModule@difficulty-brutal:
+		RequiresCondition: enable-ai-difficulty-brutal
+		Decisions:
+			airborne:
+				OrderName: AmericanParatroopers
+				MinimumAttractiveness: 5
+				MinimumScanTimeInterval: 100
+				MaximumScanTimeInterval: 105
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 8c0
+				Consideration@2:
+					Against: Enemy
+					Types: Water
+					Attractiveness: -5
+					TargetMetric: None
+					CheckRadius: 8c0
+			nukepower:
+				OrderName: NukePowerInfoOrder
+				MinimumAttractiveness: 3000
+				MinimumScanTimeInterval: 100
+				MaximumScanTimeInterval: 105
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: Value
+					CheckRadius: 5c0
+				Consideration@2:
+					Against: Ally
+					Types: Air, Ground, Water
+					Attractiveness: -10
+					TargetMetric: Value
+					CheckRadius: 7c0
+	BaseBuilderBotModule@difficulty-brutal:
+		RequiresCondition: enable-ai-difficulty-brutal
+		DefenseQueues: Support
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		RefineryTypes: garefn, narefn, yarefn
+		PowerTypes: gapowr, napowr, nanrct, yapowr
+		BarracksTypes: gapile, nahand, yabrck
+		VehiclesFactoryTypes: gaweap, naweap, yaweap
+		ProductionTypes: gapile, nahand, yabrck, gaweap, naweap, yaweap, gaairc, amradr
+		NavalProductionTypes: nayard, gayard, yayard
+		MaxBaseRadius: 50
+		StructureProductionActiveDelay: 10
+		StructureProductionInactiveDelay: 50
+		StructureProductionRandomBonusDelay: 4
+		ProductionMinCashRequirement: 200
+		NewProductionCashThreshold: 2000
+		BuildingLimits:
+			garefn: 6
+			narefn: 6
+			yarefn: 6
+			gapowr: 8
+			napowr: 8
+			yapowr: 8
+			nanrct: 1
+			gapile: 4
+			nahand: 4
+			yabrck: 4
+			gaweap: 5
+			naweap: 5
+			yaweap: 5
+			nayard: 3
+			gayard: 3
+			yayard: 3
+			gadept: 1
+			nadept: 1
+			yadept: 1
+			gaairc: 4
+			amradr: 4
+			naradr: 1
+			yadome: 1
+			gatech: 1
+			natech: 1
+			yatech: 1
+			yagrnd: 1
+			gagap: 2
+		BuildingFractions:
+			gapowr: 20
+			napowr: 20
+			yapowr: 20
+			nanrct: 1
+			garefn: 15
+			narefn: 15
+			yarefn: 15
+			gapile: 1
+			nahand: 1
+			yabrck: 1
+			gaweap: 6
+			naweap: 6
+			yaweap: 6
+			nayard: 1
+			gayard: 1
+			yayard: 1
+			gaairc: 1
+			amradr: 1
+			naradr: 1
+			yadome: 1
+			gatech: 1
+			natech: 1
+			yatech: 1
+			naclon: 1
+			gadept: 1
+			nadept: 1
+			yadept: 1
+			yagrnd: 1
+			gapill: 10
+			nalasr: 10
+			yaggun: 10
+			yapsyt: 4
+			nasam: 4
+			naflak: 4
+			tesla: 4
+			atesla: 4
+			gtgcan: 1
+			gagap: 1
+			namisl: 1
+			yagntc: 1
+			yappet: 1
+		DefenseTypes: gapill, nasam, gtgcan, atesla, naflak, tesla, nalasr, yaggun, yapsyt
+	SquadManagerBotModule@difficulty-brutal:
+		RequiresCondition: enable-ai-difficulty-brutal
+		SquadSize: 5
+		SquadSizeRandomBonus: 30
+		AssignRolesInterval: 20
+		RushInterval: 240
+		AttackForceInterval: 30
+		MinimumAttackForceDelay: 1
+		ExcludeFromSquadsTypes: cmin, harv, amcv, smcv, pcv, smin, slav, dog, engineer
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		NavalUnitsTypes: dest, aegis, dlph, carrier, sub, hyd, sqd, yhvr, bsub
+		NavalProductionTypes: nayard, gayard, yayard
+		AirUnitsTypes: jumpjet, shad, zep, orca, beag, disk
+		ProtectionTypes: gacnst, gapowr, gapile, garefn, gaairc, amradr, gaweap, gayard, gadept, gatech, gapill, nasam, gtgcan, gaorep, gaspysat, gagap, gaweat, gacsph, atesla, nacnst, napowr, nahand, narefn, naradr, naweap, nayard, nadept, nanrct, natech, naclon, napsis, nairon, namisl, naflak, tesla, nalasr, yacnst, yapowr, yabrck, yarefn, yaweap, yadome, yaggun, yatech, yagrnd, yadept, yayard, yapsyt, natbnk, yagntc, yappet, amcv, cmin, smcv, harv, pcv, smin, slav
+	UnitBuilderBotModule@difficulty-brutal:
+		RequiresCondition: enable-ai-difficulty-brutal
+		ProductionMinCashRequirement: 200
+		UnitProductionInterval: 10
+		UnitsToBuild:
+			e1: 90
+			e2: 90
+			init: 90
+			brute: 10
+			virus: 5
+			engineer: 1
+			dog: 1
+			flakt: 10
+			shk: 10
+			ivan: 3
+			jumpjet: 2
+			deso: 1
+			tany: 1
+			yuri: 1
+			yurix: 1
+			snipe: 5
+			cmin: 10
+			harv: 10
+			smin: 10
+			htnk: 50
+			htk: 20
+			mtnk: 50
+			ltnk: 50
+			ytnk: 20
+			caos: 10
+			tele: 10
+			mind: 4
+			disk: 5
+			fv: 20
+			sref: 10
+			mgtk: 10
+			apoc: 10
+			tnkd: 15
+			ttnk: 15
+			dest: 20
+			aegis: 20
+			dlph: 5
+			carrier: 3
+			sub: 20
+			hyd: 20
+			sqd: 5
+			yhvr: 5
+			bsub: 3
+		UnitLimits:
+			engineer: 1
+			dog: 4
+			cmin: 14
+			harv: 14
+			smin: 14
+	McvManagerBotModule@difficulty-brutal:
+		RequiresCondition: enable-ai-difficulty-brutal
+		MinimumConstructionYardCount: 2
+		McvTypes: amcv, smcv, pcv
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		McvFactoryTypes: gaweap, naweap, yaweap
+	HarvesterBotModule@difficulty-brutal:
+		RequiresCondition: enable-ai-difficulty-brutal
+		HarvesterTypes: cmin, harv, smin, slav
+		RefineryTypes: garefn, narefn, yarefn
+	BuildingRepairBotModule@difficulty-brutal:
+		RequiresCondition: enable-ai-difficulty-brutal
+	CaptureManagerBotModule@difficulty-brutal:
+		RequiresCondition: enable-ai-difficulty-brutal
+		CapturingActorTypes: engineer
+		CapturableActorTypes: caoild, caairp, cahosp, cathosp, caoutp
+		CapturableRelationships: Neutral
+		CheckCaptureTargetsForVisibility: false
+		MaximumCaptureTargetOptions: 15
+	ModularBot@difficulty-expert:
+		Name: ai-difficulty-expert
+		Type: difficulty-expert
+		MinOrderQuotientPerTick: 2
+	GrantConditionOnBotOwner@difficulty-expert:
+		Condition: enable-ai-difficulty-expert
+		Bots: difficulty-expert
+	SupportPowerBotModule@difficulty-expert:
+		RequiresCondition: enable-ai-difficulty-expert
+		Decisions:
+			airborne:
+				OrderName: AmericanParatroopers
+				MinimumAttractiveness: 5
+				MinimumScanTimeInterval: 100
+				MaximumScanTimeInterval: 105
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 8c0
+				Consideration@2:
+					Against: Enemy
+					Types: Water
+					Attractiveness: -5
+					TargetMetric: None
+					CheckRadius: 8c0
+			nukepower:
+				OrderName: NukePowerInfoOrder
+				MinimumAttractiveness: 3000
+				MinimumScanTimeInterval: 100
+				MaximumScanTimeInterval: 105
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: Value
+					CheckRadius: 5c0
+				Consideration@2:
+					Against: Ally
+					Types: Air, Ground, Water
+					Attractiveness: -10
+					TargetMetric: Value
+					CheckRadius: 7c0
+	BaseBuilderBotModule@difficulty-expert:
+		RequiresCondition: enable-ai-difficulty-expert
+		DefenseQueues: Support
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		RefineryTypes: garefn, narefn, yarefn
+		PowerTypes: gapowr, napowr, nanrct, yapowr
+		BarracksTypes: gapile, nahand, yabrck
+		VehiclesFactoryTypes: gaweap, naweap, yaweap
+		ProductionTypes: gapile, nahand, yabrck, gaweap, naweap, yaweap, gaairc, amradr
+		NavalProductionTypes: nayard, gayard, yayard
+		MaxBaseRadius: 50
+		StructureProductionActiveDelay: 10
+		StructureProductionInactiveDelay: 50
+		StructureProductionRandomBonusDelay: 4
+		ProductionMinCashRequirement: 200
+		NewProductionCashThreshold: 2000
+		BuildingLimits:
+			garefn: 6
+			narefn: 6
+			yarefn: 6
+			gapowr: 8
+			napowr: 8
+			yapowr: 8
+			nanrct: 1
+			gapile: 4
+			nahand: 4
+			yabrck: 4
+			gaweap: 5
+			naweap: 5
+			yaweap: 5
+			nayard: 3
+			gayard: 3
+			yayard: 3
+			gadept: 1
+			nadept: 1
+			yadept: 1
+			gaairc: 4
+			amradr: 4
+			naradr: 1
+			yadome: 1
+			gatech: 1
+			natech: 1
+			yatech: 1
+			yagrnd: 1
+			gagap: 2
+		BuildingFractions:
+			gapowr: 20
+			napowr: 20
+			yapowr: 20
+			nanrct: 1
+			garefn: 15
+			narefn: 15
+			yarefn: 15
+			gapile: 1
+			nahand: 1
+			yabrck: 1
+			gaweap: 6
+			naweap: 6
+			yaweap: 6
+			nayard: 1
+			gayard: 1
+			yayard: 1
+			gaairc: 1
+			amradr: 1
+			naradr: 1
+			yadome: 1
+			gatech: 1
+			natech: 1
+			yatech: 1
+			naclon: 1
+			gadept: 1
+			nadept: 1
+			yadept: 1
+			yagrnd: 1
+			gapill: 10
+			nalasr: 10
+			yaggun: 10
+			yapsyt: 4
+			nasam: 4
+			naflak: 4
+			tesla: 4
+			atesla: 4
+			gtgcan: 1
+			gagap: 1
+			namisl: 1
+			yagntc: 1
+			yappet: 1
+		DefenseTypes: gapill, nasam, gtgcan, atesla, naflak, tesla, nalasr, yaggun, yapsyt
+	SquadManagerBotModule@difficulty-expert:
+		RequiresCondition: enable-ai-difficulty-expert
+		SquadSize: 5
+		SquadSizeRandomBonus: 30
+		AssignRolesInterval: 20
+		RushInterval: 240
+		AttackForceInterval: 30
+		MinimumAttackForceDelay: 1
+		ExcludeFromSquadsTypes: cmin, harv, amcv, smcv, pcv, smin, slav, dog, engineer
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		NavalUnitsTypes: dest, aegis, dlph, carrier, sub, hyd, sqd, yhvr, bsub
+		NavalProductionTypes: nayard, gayard, yayard
+		AirUnitsTypes: jumpjet, shad, zep, orca, beag, disk
+		ProtectionTypes: gacnst, gapowr, gapile, garefn, gaairc, amradr, gaweap, gayard, gadept, gatech, gapill, nasam, gtgcan, gaorep, gaspysat, gagap, gaweat, gacsph, atesla, nacnst, napowr, nahand, narefn, naradr, naweap, nayard, nadept, nanrct, natech, naclon, napsis, nairon, namisl, naflak, tesla, nalasr, yacnst, yapowr, yabrck, yarefn, yaweap, yadome, yaggun, yatech, yagrnd, yadept, yayard, yapsyt, natbnk, yagntc, yappet, amcv, cmin, smcv, harv, pcv, smin, slav
+	UnitBuilderBotModule@difficulty-expert:
+		RequiresCondition: enable-ai-difficulty-expert
+		ProductionMinCashRequirement: 200
+		UnitProductionInterval: 10
+		UnitsToBuild:
+			e1: 90
+			e2: 90
+			init: 90
+			brute: 10
+			virus: 5
+			engineer: 1
+			dog: 1
+			flakt: 10
+			shk: 10
+			ivan: 3
+			jumpjet: 2
+			deso: 1
+			tany: 1
+			yuri: 1
+			yurix: 1
+			snipe: 5
+			cmin: 10
+			harv: 10
+			smin: 10
+			htnk: 50
+			htk: 20
+			mtnk: 50
+			ltnk: 50
+			ytnk: 20
+			caos: 10
+			tele: 10
+			mind: 4
+			disk: 5
+			fv: 20
+			sref: 10
+			mgtk: 10
+			apoc: 10
+			tnkd: 15
+			ttnk: 15
+			dest: 20
+			aegis: 20
+			dlph: 5
+			carrier: 3
+			sub: 20
+			hyd: 20
+			sqd: 5
+			yhvr: 5
+			bsub: 3
+		UnitLimits:
+			engineer: 1
+			dog: 4
+			cmin: 14
+			harv: 14
+			smin: 14
+	McvManagerBotModule@difficulty-expert:
+		RequiresCondition: enable-ai-difficulty-expert
+		MinimumConstructionYardCount: 2
+		McvTypes: amcv, smcv, pcv
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		McvFactoryTypes: gaweap, naweap, yaweap
+	HarvesterBotModule@difficulty-expert:
+		RequiresCondition: enable-ai-difficulty-expert
+		HarvesterTypes: cmin, harv, smin, slav
+		RefineryTypes: garefn, narefn, yarefn
+	BuildingRepairBotModule@difficulty-expert:
+		RequiresCondition: enable-ai-difficulty-expert
+	CaptureManagerBotModule@difficulty-expert:
+		RequiresCondition: enable-ai-difficulty-expert
+		CapturingActorTypes: engineer
+		CapturableActorTypes: caoild, caairp, cahosp, cathosp, caoutp
+		CapturableRelationships: Neutral
+		CheckCaptureTargetsForVisibility: false
+		MaximumCaptureTargetOptions: 15
+	ModularBot@difficulty-master:
+		Name: ai-difficulty-master
+		Type: difficulty-master
+		MinOrderQuotientPerTick: 2
+	GrantConditionOnBotOwner@difficulty-master:
+		Condition: enable-ai-difficulty-master
+		Bots: difficulty-master
+	SupportPowerBotModule@difficulty-master:
+		RequiresCondition: enable-ai-difficulty-master
+		Decisions:
+			airborne:
+				OrderName: AmericanParatroopers
+				MinimumAttractiveness: 5
+				MinimumScanTimeInterval: 100
+				MaximumScanTimeInterval: 105
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 8c0
+				Consideration@2:
+					Against: Enemy
+					Types: Water
+					Attractiveness: -5
+					TargetMetric: None
+					CheckRadius: 8c0
+			nukepower:
+				OrderName: NukePowerInfoOrder
+				MinimumAttractiveness: 3000
+				MinimumScanTimeInterval: 100
+				MaximumScanTimeInterval: 105
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: Value
+					CheckRadius: 5c0
+				Consideration@2:
+					Against: Ally
+					Types: Air, Ground, Water
+					Attractiveness: -10
+					TargetMetric: Value
+					CheckRadius: 7c0
+	BaseBuilderBotModule@difficulty-master:
+		RequiresCondition: enable-ai-difficulty-master
+		DefenseQueues: Support
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		RefineryTypes: garefn, narefn, yarefn
+		PowerTypes: gapowr, napowr, nanrct, yapowr
+		BarracksTypes: gapile, nahand, yabrck
+		VehiclesFactoryTypes: gaweap, naweap, yaweap
+		ProductionTypes: gapile, nahand, yabrck, gaweap, naweap, yaweap, gaairc, amradr
+		NavalProductionTypes: nayard, gayard, yayard
+		MaxBaseRadius: 50
+		StructureProductionActiveDelay: 10
+		StructureProductionInactiveDelay: 50
+		StructureProductionRandomBonusDelay: 4
+		ProductionMinCashRequirement: 200
+		NewProductionCashThreshold: 2000
+		BuildingLimits:
+			garefn: 6
+			narefn: 6
+			yarefn: 6
+			gapowr: 8
+			napowr: 8
+			yapowr: 8
+			nanrct: 1
+			gapile: 4
+			nahand: 4
+			yabrck: 4
+			gaweap: 5
+			naweap: 5
+			yaweap: 5
+			nayard: 3
+			gayard: 3
+			yayard: 3
+			gadept: 1
+			nadept: 1
+			yadept: 1
+			gaairc: 4
+			amradr: 4
+			naradr: 1
+			yadome: 1
+			gatech: 1
+			natech: 1
+			yatech: 1
+			yagrnd: 1
+			gagap: 2
+		BuildingFractions:
+			gapowr: 20
+			napowr: 20
+			yapowr: 20
+			nanrct: 1
+			garefn: 15
+			narefn: 15
+			yarefn: 15
+			gapile: 1
+			nahand: 1
+			yabrck: 1
+			gaweap: 6
+			naweap: 6
+			yaweap: 6
+			nayard: 1
+			gayard: 1
+			yayard: 1
+			gaairc: 1
+			amradr: 1
+			naradr: 1
+			yadome: 1
+			gatech: 1
+			natech: 1
+			yatech: 1
+			naclon: 1
+			gadept: 1
+			nadept: 1
+			yadept: 1
+			yagrnd: 1
+			gapill: 10
+			nalasr: 10
+			yaggun: 10
+			yapsyt: 4
+			nasam: 4
+			naflak: 4
+			tesla: 4
+			atesla: 4
+			gtgcan: 1
+			gagap: 1
+			namisl: 1
+			yagntc: 1
+			yappet: 1
+		DefenseTypes: gapill, nasam, gtgcan, atesla, naflak, tesla, nalasr, yaggun, yapsyt
+	SquadManagerBotModule@difficulty-master:
+		RequiresCondition: enable-ai-difficulty-master
+		SquadSize: 5
+		SquadSizeRandomBonus: 30
+		AssignRolesInterval: 20
+		RushInterval: 240
+		AttackForceInterval: 30
+		MinimumAttackForceDelay: 1
+		ExcludeFromSquadsTypes: cmin, harv, amcv, smcv, pcv, smin, slav, dog, engineer
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		NavalUnitsTypes: dest, aegis, dlph, carrier, sub, hyd, sqd, yhvr, bsub
+		NavalProductionTypes: nayard, gayard, yayard
+		AirUnitsTypes: jumpjet, shad, zep, orca, beag, disk
+		ProtectionTypes: gacnst, gapowr, gapile, garefn, gaairc, amradr, gaweap, gayard, gadept, gatech, gapill, nasam, gtgcan, gaorep, gaspysat, gagap, gaweat, gacsph, atesla, nacnst, napowr, nahand, narefn, naradr, naweap, nayard, nadept, nanrct, natech, naclon, napsis, nairon, namisl, naflak, tesla, nalasr, yacnst, yapowr, yabrck, yarefn, yaweap, yadome, yaggun, yatech, yagrnd, yadept, yayard, yapsyt, natbnk, yagntc, yappet, amcv, cmin, smcv, harv, pcv, smin, slav
+	UnitBuilderBotModule@difficulty-master:
+		RequiresCondition: enable-ai-difficulty-master
+		ProductionMinCashRequirement: 200
+		UnitProductionInterval: 10
+		UnitsToBuild:
+			e1: 90
+			e2: 90
+			init: 90
+			brute: 10
+			virus: 5
+			engineer: 1
+			dog: 1
+			flakt: 10
+			shk: 10
+			ivan: 3
+			jumpjet: 2
+			deso: 1
+			tany: 1
+			yuri: 1
+			yurix: 1
+			snipe: 5
+			cmin: 10
+			harv: 10
+			smin: 10
+			htnk: 50
+			htk: 20
+			mtnk: 50
+			ltnk: 50
+			ytnk: 20
+			caos: 10
+			tele: 10
+			mind: 4
+			disk: 5
+			fv: 20
+			sref: 10
+			mgtk: 10
+			apoc: 10
+			tnkd: 15
+			ttnk: 15
+			dest: 20
+			aegis: 20
+			dlph: 5
+			carrier: 3
+			sub: 20
+			hyd: 20
+			sqd: 5
+			yhvr: 5
+			bsub: 3
+		UnitLimits:
+			engineer: 1
+			dog: 4
+			cmin: 14
+			harv: 14
+			smin: 14
+	McvManagerBotModule@difficulty-master:
+		RequiresCondition: enable-ai-difficulty-master
+		MinimumConstructionYardCount: 2
+		McvTypes: amcv, smcv, pcv
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		McvFactoryTypes: gaweap, naweap, yaweap
+	HarvesterBotModule@difficulty-master:
+		RequiresCondition: enable-ai-difficulty-master
+		HarvesterTypes: cmin, harv, smin, slav
+		RefineryTypes: garefn, narefn, yarefn
+	BuildingRepairBotModule@difficulty-master:
+		RequiresCondition: enable-ai-difficulty-master
+	CaptureManagerBotModule@difficulty-master:
+		RequiresCondition: enable-ai-difficulty-master
+		CapturingActorTypes: engineer
+		CapturableActorTypes: caoild, caairp, cahosp, cathosp, caoutp
+		CapturableRelationships: Neutral
+		CheckCaptureTargetsForVisibility: false
+		MaximumCaptureTargetOptions: 15
+	ModularBot@difficulty-nightmare:
+		Name: ai-difficulty-nightmare
+		Type: difficulty-nightmare
+		MinOrderQuotientPerTick: 2
+	GrantConditionOnBotOwner@difficulty-nightmare:
+		Condition: enable-ai-difficulty-nightmare
+		Bots: difficulty-nightmare
+	SupportPowerBotModule@difficulty-nightmare:
+		RequiresCondition: enable-ai-difficulty-nightmare
+		Decisions:
+			airborne:
+				OrderName: AmericanParatroopers
+				MinimumAttractiveness: 5
+				MinimumScanTimeInterval: 100
+				MaximumScanTimeInterval: 105
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 8c0
+				Consideration@2:
+					Against: Enemy
+					Types: Water
+					Attractiveness: -5
+					TargetMetric: None
+					CheckRadius: 8c0
+			nukepower:
+				OrderName: NukePowerInfoOrder
+				MinimumAttractiveness: 3000
+				MinimumScanTimeInterval: 100
+				MaximumScanTimeInterval: 105
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: Value
+					CheckRadius: 5c0
+				Consideration@2:
+					Against: Ally
+					Types: Air, Ground, Water
+					Attractiveness: -10
+					TargetMetric: Value
+					CheckRadius: 7c0
+	BaseBuilderBotModule@difficulty-nightmare:
+		RequiresCondition: enable-ai-difficulty-nightmare
+		DefenseQueues: Support
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		RefineryTypes: garefn, narefn, yarefn
+		PowerTypes: gapowr, napowr, nanrct, yapowr
+		BarracksTypes: gapile, nahand, yabrck
+		VehiclesFactoryTypes: gaweap, naweap, yaweap
+		ProductionTypes: gapile, nahand, yabrck, gaweap, naweap, yaweap, gaairc, amradr
+		NavalProductionTypes: nayard, gayard, yayard
+		MaxBaseRadius: 50
+		StructureProductionActiveDelay: 10
+		StructureProductionInactiveDelay: 50
+		StructureProductionRandomBonusDelay: 4
+		ProductionMinCashRequirement: 200
+		NewProductionCashThreshold: 2000
+		BuildingLimits:
+			garefn: 6
+			narefn: 6
+			yarefn: 6
+			gapowr: 8
+			napowr: 8
+			yapowr: 8
+			nanrct: 1
+			gapile: 4
+			nahand: 4
+			yabrck: 4
+			gaweap: 5
+			naweap: 5
+			yaweap: 5
+			nayard: 3
+			gayard: 3
+			yayard: 3
+			gadept: 1
+			nadept: 1
+			yadept: 1
+			gaairc: 4
+			amradr: 4
+			naradr: 1
+			yadome: 1
+			gatech: 1
+			natech: 1
+			yatech: 1
+			yagrnd: 1
+			gagap: 2
+		BuildingFractions:
+			gapowr: 20
+			napowr: 20
+			yapowr: 20
+			nanrct: 1
+			garefn: 15
+			narefn: 15
+			yarefn: 15
+			gapile: 1
+			nahand: 1
+			yabrck: 1
+			gaweap: 6
+			naweap: 6
+			yaweap: 6
+			nayard: 1
+			gayard: 1
+			yayard: 1
+			gaairc: 1
+			amradr: 1
+			naradr: 1
+			yadome: 1
+			gatech: 1
+			natech: 1
+			yatech: 1
+			naclon: 1
+			gadept: 1
+			nadept: 1
+			yadept: 1
+			yagrnd: 1
+			gapill: 10
+			nalasr: 10
+			yaggun: 10
+			yapsyt: 4
+			nasam: 4
+			naflak: 4
+			tesla: 4
+			atesla: 4
+			gtgcan: 1
+			gagap: 1
+			namisl: 1
+			yagntc: 1
+			yappet: 1
+		DefenseTypes: gapill, nasam, gtgcan, atesla, naflak, tesla, nalasr, yaggun, yapsyt
+	SquadManagerBotModule@difficulty-nightmare:
+		RequiresCondition: enable-ai-difficulty-nightmare
+		SquadSize: 5
+		SquadSizeRandomBonus: 30
+		AssignRolesInterval: 20
+		RushInterval: 240
+		AttackForceInterval: 30
+		MinimumAttackForceDelay: 1
+		ExcludeFromSquadsTypes: cmin, harv, amcv, smcv, pcv, smin, slav, dog, engineer
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		NavalUnitsTypes: dest, aegis, dlph, carrier, sub, hyd, sqd, yhvr, bsub
+		NavalProductionTypes: nayard, gayard, yayard
+		AirUnitsTypes: jumpjet, shad, zep, orca, beag, disk
+		ProtectionTypes: gacnst, gapowr, gapile, garefn, gaairc, amradr, gaweap, gayard, gadept, gatech, gapill, nasam, gtgcan, gaorep, gaspysat, gagap, gaweat, gacsph, atesla, nacnst, napowr, nahand, narefn, naradr, naweap, nayard, nadept, nanrct, natech, naclon, napsis, nairon, namisl, naflak, tesla, nalasr, yacnst, yapowr, yabrck, yarefn, yaweap, yadome, yaggun, yatech, yagrnd, yadept, yayard, yapsyt, natbnk, yagntc, yappet, amcv, cmin, smcv, harv, pcv, smin, slav
+	UnitBuilderBotModule@difficulty-nightmare:
+		RequiresCondition: enable-ai-difficulty-nightmare
+		ProductionMinCashRequirement: 200
+		UnitProductionInterval: 10
+		UnitsToBuild:
+			e1: 90
+			e2: 90
+			init: 90
+			brute: 10
+			virus: 5
+			engineer: 1
+			dog: 1
+			flakt: 10
+			shk: 10
+			ivan: 3
+			jumpjet: 2
+			deso: 1
+			tany: 1
+			yuri: 1
+			yurix: 1
+			snipe: 5
+			cmin: 10
+			harv: 10
+			smin: 10
+			htnk: 50
+			htk: 20
+			mtnk: 50
+			ltnk: 50
+			ytnk: 20
+			caos: 10
+			tele: 10
+			mind: 4
+			disk: 5
+			fv: 20
+			sref: 10
+			mgtk: 10
+			apoc: 10
+			tnkd: 15
+			ttnk: 15
+			dest: 20
+			aegis: 20
+			dlph: 5
+			carrier: 3
+			sub: 20
+			hyd: 20
+			sqd: 5
+			yhvr: 5
+			bsub: 3
+		UnitLimits:
+			engineer: 1
+			dog: 4
+			cmin: 14
+			harv: 14
+			smin: 14
+	McvManagerBotModule@difficulty-nightmare:
+		RequiresCondition: enable-ai-difficulty-nightmare
+		MinimumConstructionYardCount: 2
+		McvTypes: amcv, smcv, pcv
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		McvFactoryTypes: gaweap, naweap, yaweap
+	HarvesterBotModule@difficulty-nightmare:
+		RequiresCondition: enable-ai-difficulty-nightmare
+		HarvesterTypes: cmin, harv, smin, slav
+		RefineryTypes: garefn, narefn, yarefn
+	BuildingRepairBotModule@difficulty-nightmare:
+		RequiresCondition: enable-ai-difficulty-nightmare
+	CaptureManagerBotModule@difficulty-nightmare:
+		RequiresCondition: enable-ai-difficulty-nightmare
+		CapturingActorTypes: engineer
+		CapturableActorTypes: caoild, caairp, cahosp, cathosp, caoutp
+		CapturableRelationships: Neutral
+		CheckCaptureTargetsForVisibility: false
+		MaximumCaptureTargetOptions: 15
+	ModularBot@difficulty-custom:
+		Name: ai-difficulty-custom
+		Type: difficulty-custom
+		MinOrderQuotientPerTick: 2
+	GrantConditionOnBotOwner@difficulty-custom:
+		Condition: enable-ai-difficulty-custom
+		Bots: difficulty-custom
+	SupportPowerBotModule@difficulty-custom:
+		RequiresCondition: enable-ai-difficulty-custom
+		Decisions:
+			airborne:
+				OrderName: AmericanParatroopers
+				MinimumAttractiveness: 5
+				MinimumScanTimeInterval: 100
+				MaximumScanTimeInterval: 105
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 8c0
+				Consideration@2:
+					Against: Enemy
+					Types: Water
+					Attractiveness: -5
+					TargetMetric: None
+					CheckRadius: 8c0
+			nukepower:
+				OrderName: NukePowerInfoOrder
+				MinimumAttractiveness: 3000
+				MinimumScanTimeInterval: 100
+				MaximumScanTimeInterval: 105
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: Value
+					CheckRadius: 5c0
+				Consideration@2:
+					Against: Ally
+					Types: Air, Ground, Water
+					Attractiveness: -10
+					TargetMetric: Value
+					CheckRadius: 7c0
+	BaseBuilderBotModule@difficulty-custom:
+		RequiresCondition: enable-ai-difficulty-custom
+		DefenseQueues: Support
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		RefineryTypes: garefn, narefn, yarefn
+		PowerTypes: gapowr, napowr, nanrct, yapowr
+		BarracksTypes: gapile, nahand, yabrck
+		VehiclesFactoryTypes: gaweap, naweap, yaweap
+		ProductionTypes: gapile, nahand, yabrck, gaweap, naweap, yaweap, gaairc, amradr
+		NavalProductionTypes: nayard, gayard, yayard
+		MaxBaseRadius: 50
+		StructureProductionActiveDelay: 10
+		StructureProductionInactiveDelay: 50
+		StructureProductionRandomBonusDelay: 4
+		ProductionMinCashRequirement: 200
+		NewProductionCashThreshold: 2000
+		BuildingLimits:
+			garefn: 6
+			narefn: 6
+			yarefn: 6
+			gapowr: 8
+			napowr: 8
+			yapowr: 8
+			nanrct: 1
+			gapile: 4
+			nahand: 4
+			yabrck: 4
+			gaweap: 5
+			naweap: 5
+			yaweap: 5
+			nayard: 3
+			gayard: 3
+			yayard: 3
+			gadept: 1
+			nadept: 1
+			yadept: 1
+			gaairc: 4
+			amradr: 4
+			naradr: 1
+			yadome: 1
+			gatech: 1
+			natech: 1
+			yatech: 1
+			yagrnd: 1
+			gagap: 2
+		BuildingFractions:
+			gapowr: 20
+			napowr: 20
+			yapowr: 20
+			nanrct: 1
+			garefn: 15
+			narefn: 15
+			yarefn: 15
+			gapile: 1
+			nahand: 1
+			yabrck: 1
+			gaweap: 6
+			naweap: 6
+			yaweap: 6
+			nayard: 1
+			gayard: 1
+			yayard: 1
+			gaairc: 1
+			amradr: 1
+			naradr: 1
+			yadome: 1
+			gatech: 1
+			natech: 1
+			yatech: 1
+			naclon: 1
+			gadept: 1
+			nadept: 1
+			yadept: 1
+			yagrnd: 1
+			gapill: 10
+			nalasr: 10
+			yaggun: 10
+			yapsyt: 4
+			nasam: 4
+			naflak: 4
+			tesla: 4
+			atesla: 4
+			gtgcan: 1
+			gagap: 1
+			namisl: 1
+			yagntc: 1
+			yappet: 1
+		DefenseTypes: gapill, nasam, gtgcan, atesla, naflak, tesla, nalasr, yaggun, yapsyt
+	SquadManagerBotModule@difficulty-custom:
+		RequiresCondition: enable-ai-difficulty-custom
+		SquadSize: 5
+		SquadSizeRandomBonus: 30
+		AssignRolesInterval: 20
+		RushInterval: 240
+		AttackForceInterval: 30
+		MinimumAttackForceDelay: 1
+		ExcludeFromSquadsTypes: cmin, harv, amcv, smcv, pcv, smin, slav, dog, engineer
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		NavalUnitsTypes: dest, aegis, dlph, carrier, sub, hyd, sqd, yhvr, bsub
+		NavalProductionTypes: nayard, gayard, yayard
+		AirUnitsTypes: jumpjet, shad, zep, orca, beag, disk
+		ProtectionTypes: gacnst, gapowr, gapile, garefn, gaairc, amradr, gaweap, gayard, gadept, gatech, gapill, nasam, gtgcan, gaorep, gaspysat, gagap, gaweat, gacsph, atesla, nacnst, napowr, nahand, narefn, naradr, naweap, nayard, nadept, nanrct, natech, naclon, napsis, nairon, namisl, naflak, tesla, nalasr, yacnst, yapowr, yabrck, yarefn, yaweap, yadome, yaggun, yatech, yagrnd, yadept, yayard, yapsyt, natbnk, yagntc, yappet, amcv, cmin, smcv, harv, pcv, smin, slav
+	UnitBuilderBotModule@difficulty-custom:
+		RequiresCondition: enable-ai-difficulty-custom
+		ProductionMinCashRequirement: 200
+		UnitProductionInterval: 10
+		UnitsToBuild:
+			e1: 90
+			e2: 90
+			init: 90
+			brute: 10
+			virus: 5
+			engineer: 1
+			dog: 1
+			flakt: 10
+			shk: 10
+			ivan: 3
+			jumpjet: 2
+			deso: 1
+			tany: 1
+			yuri: 1
+			yurix: 1
+			snipe: 5
+			cmin: 10
+			harv: 10
+			smin: 10
+			htnk: 50
+			htk: 20
+			mtnk: 50
+			ltnk: 50
+			ytnk: 20
+			caos: 10
+			tele: 10
+			mind: 4
+			disk: 5
+			fv: 20
+			sref: 10
+			mgtk: 10
+			apoc: 10
+			tnkd: 15
+			ttnk: 15
+			dest: 20
+			aegis: 20
+			dlph: 5
+			carrier: 3
+			sub: 20
+			hyd: 20
+			sqd: 5
+			yhvr: 5
+			bsub: 3
+		UnitLimits:
+			engineer: 1
+			dog: 4
+			cmin: 14
+			harv: 14
+			smin: 14
+	McvManagerBotModule@difficulty-custom:
+		RequiresCondition: enable-ai-difficulty-custom
+		MinimumConstructionYardCount: 2
+		McvTypes: amcv, smcv, pcv
+		ConstructionYardTypes: gacnst, nacnst, yacnst
+		McvFactoryTypes: gaweap, naweap, yaweap
+	HarvesterBotModule@difficulty-custom:
+		RequiresCondition: enable-ai-difficulty-custom
+		HarvesterTypes: cmin, harv, smin, slav
+		RefineryTypes: garefn, narefn, yarefn
+	BuildingRepairBotModule@difficulty-custom:
+		RequiresCondition: enable-ai-difficulty-custom
+	CaptureManagerBotModule@difficulty-custom:
+		RequiresCondition: enable-ai-difficulty-custom
+		CapturingActorTypes: engineer
+		CapturableActorTypes: caoild, caairp, cahosp, cathosp, caoutp
+		CapturableRelationships: Neutral
+		CheckCaptureTargetsForVisibility: false
+		MaximumCaptureTargetOptions: 15
 	ModularBot@profturtle:
 		Name: 龟缩防御
 		Type: profturtle

@@ -1145,3 +1145,12 @@ actor-caslab =
 actor-capowr =
     .name = Tech Power Plant
 
+
+actor-camach-buildable =
+    .description = Automatically repairs your mechanical units. Limit: one. Requires a Battle Lab.
+
+actor-caslab-buildable =
+    .description = Unlocks one random foreign specialty unit. Limit: one. Requires a Battle Lab.
+
+actor-capowr-buildable =
+    .description = Provides 200 power. Limit: one. Requires a Battle Lab.

@@ -202,16 +202,20 @@ namespace OpenRA.Mods.Common.Traits
 			notifyIdleBaseUnits = self.Owner.PlayerActor.TraitsImplementing<IBotNotifyIdleBaseUnits>().ToArray();
 		}
 
+		int DifficultyAttackInterval => AiDifficultyRuntime.AttackIntervalTicks(Player.AiDifficulty, World.Timestep, Info.MinimumAttackForceDelay);
+		int DifficultyRushInterval => AiDifficultyRuntime.AttackIntervalTicks(Player.AiDifficulty, World.Timestep, Info.RushInterval);
+		int DifficultyWaveSize => Player.AiDifficulty?.WaveSize ?? Info.SquadSize;
+
 		protected override void TraitEnabled(Actor self)
 		{
 			// Avoid all AIs trying to rush in the same tick, randomize their initial rush a little.
-			var smallFractionOfRushInterval = Info.RushInterval / 20;
-			rushTicks = World.LocalRandom.Next(Info.RushInterval - smallFractionOfRushInterval, Info.RushInterval + smallFractionOfRushInterval);
+			var smallFractionOfRushInterval = DifficultyRushInterval / 20;
+			rushTicks = World.LocalRandom.Next(DifficultyRushInterval - smallFractionOfRushInterval, DifficultyRushInterval + smallFractionOfRushInterval);
 
 			// Avoid all AIs reevaluating assignments on the same tick, randomize their initial evaluation delay.
 			assignRolesTicks = World.LocalRandom.Next(0, Info.AssignRolesInterval);
 			attackForceTicks = World.LocalRandom.Next(0, Info.AttackForceInterval);
-			minAttackForceDelayTicks = World.LocalRandom.Next(0, Info.MinimumAttackForceDelay);
+			minAttackForceDelayTicks = Player.AiDifficulty == null ? World.LocalRandom.Next(0, Info.MinimumAttackForceDelay) : DifficultyAttackInterval;
 		}
 
 		void IBotEnabled.BotEnabled(IBot bot)
@@ -359,8 +363,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (--rushTicks <= 0)
 			{
-				rushTicks = Info.RushInterval;
-				TryToRushAttack(bot);
+				rushTicks = DifficultyRushInterval;
+				if (Player.AiDifficulty == null || Player.AiDifficulty.Style == "rush")
+					TryToRushAttack(bot);
 			}
 
 			if (--attackForceTicks <= 0)
@@ -387,7 +392,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (--minAttackForceDelayTicks <= 0)
 			{
-				minAttackForceDelayTicks = Info.MinimumAttackForceDelay;
+				minAttackForceDelayTicks = DifficultyAttackInterval;
 				CreateAttackForce(bot);
 			}
 		}
@@ -430,13 +435,15 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Create an attack force when we have enough units around our base.
 			// (don't bother leaving any behind for defense)
-			var randomizedSquadSize = Info.SquadSize + World.LocalRandom.Next(Info.SquadSizeRandomBonus);
+			var reserve = AiDifficultyRuntime.DefenseReserve(Player.AiDifficulty);
+			var randomizedSquadSize = DifficultyWaveSize + reserve +
+				(Player.AiDifficulty == null ? World.LocalRandom.Next(Info.SquadSizeRandomBonus) : 0);
 
 			if (unitsHangingAroundTheBase.Count >= randomizedSquadSize)
 			{
 				var attackForce = RegisterNewSquad(bot, SquadType.Assault);
 				var transferCount = AiLoadSheddingPolicy.UnitsToTransfer(
-					unitsHangingAroundTheBase.Count, 0, Info.MaximumAttackForceSize);
+					unitsHangingAroundTheBase.Count - reserve, 0, Info.MaximumAttackForceSize);
 				var transferredUnits = unitsHangingAroundTheBase.Take(transferCount).ToArray();
 				attackForce.Units.UnionWith(transferredUnits);
 				foreach (var unit in transferredUnits)
@@ -466,7 +473,7 @@ namespace OpenRA.Mods.Common.Traits
 				.Take(transferCount)
 				.ToList();
 
-			if (rushUnits.Count < Info.SquadSize)
+			if (rushUnits.Count < DifficultyWaveSize)
 				return;
 
 			var allEnemyBaseBuilder = FindEnemies(

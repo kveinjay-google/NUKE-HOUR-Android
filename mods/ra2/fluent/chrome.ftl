@@ -683,3 +683,56 @@ population-runtime-description = The host can change the room total during play.
 
 loadscreen-preparing-maps = Preparing maps
 loadscreen-preparing-campaign = Preparing campaign missions
+
+## AI difficulty presets
+ai-settings-tab = AI Difficulty
+ai-settings-preset = Official and custom presets
+ai-settings-official = Select a preset; copy official tiers to customize.
+ai-settings-editing = Editing a copy. Save to keep your changes.
+ai-settings-bonuses-static = Mining income / production speed
+ai-settings-bonuses = Mining: { $income }%    Production: { $speed }%
+ai-settings-next-game = Changes apply when selected for a new match. Host controls multiplayer AI.
+ai-settings-create = Create a named copy
+ai-settings-edit = Edit / rename custom preset
+ai-settings-delete = Delete custom preset
+ai-settings-delete-title = Delete AI preset
+ai-settings-delete-prompt = Delete this saved preset? Existing matches keep their settings.
+ai-settings-default = Use as default when filling bot slots
+ai-settings-name = Custom preset name
+ai-settings-style = Play style
+ai-style-balanced = Balanced
+ai-style-defensive = Defensive
+ai-style-rush = Rush
+ai-settings-interval = Attack interval (seconds; requires available troops)
+ai-settings-wave = Target troops per attack wave
+ai-settings-expansion = Expansion level (1–4)
+ai-settings-income = Mining income (%)
+ai-settings-speed = Production speed (%)
+ai-settings-reset = Restore base tier parameters
+ai-settings-save = Save preset
+ai-settings-cancel = Cancel editing
+ai-settings-invalid-name = Use a unique, non-empty name (maximum 32 presets).
+ai-settings-saved = Preset saved. Select it in a bot slot to use it.
+ai-settings-copy-name = Copy
+ai-difficulty-custom = Custom
+ai-difficulty-beginner = Beginner
+ai-difficulty-easy = Easy
+ai-difficulty-normal = Normal
+ai-difficulty-hard = Hard
+ai-difficulty-brutal = Brutal
+ai-difficulty-expert = Expert
+ai-difficulty-master = Master
+ai-difficulty-nightmare = Nightmare
+
+ai-settings-custom-status = Custom (based on { $base })
+ai-lobby-summary-title = AI configuration
+ai-lobby-summary-view = View AI configuration
+ai-lobby-summary-close = Close
+ai-lobby-summary-body = { $name }
+    Base: { $base } · { $style } · Attack interval: { $interval }s
+    Wave: { $wave } units · Expansion: { $expansion }/4
+    Mining: { $income }% · Production speed: { $speed }%
+
+checkbox-build-tech =
+    .label = Build tech facilities
+    .description = Complete a Battle Lab to build a Tech Machine Shop, Secret Lab and Tech Power Plant. One of each per player.

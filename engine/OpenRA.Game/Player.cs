@@ -65,6 +65,7 @@ namespace OpenRA
 		public readonly PlayerReference PlayerReference;
 		public readonly bool IsBot;
 		public readonly string BotType;
+		public readonly AiDifficultyProfile AiDifficulty;
 		public readonly Shroud Shroud;
 		public readonly FrozenActorLayer FrozenActorLayer;
 
@@ -179,6 +180,7 @@ namespace OpenRA
 				PlayerName = client.Name;
 
 				BotType = client.Bot;
+				AiDifficulty = AiDifficultyCatalog.Resolve(client.Bot, client.BotDifficulty);
 				Faction = ResolveFaction(world, client.Faction, playerRandom, !pr.LockFaction);
 				DisplayFaction = ResolveDisplayFaction(world, client.Faction);
 
@@ -250,6 +252,10 @@ namespace OpenRA
 
 		string ResolvePlayerName()
 		{
+			// Custom names are literal synchronized user text, never Fluent message identifiers.
+			if (IsBot && BotType == AiDifficultyCatalog.CustomBotType && AiDifficulty != null)
+				return AiDifficulty.Name;
+
 			if (IsBot)
 			{
 				var botInfo = botInfos.First(b => b.Type == BotType);

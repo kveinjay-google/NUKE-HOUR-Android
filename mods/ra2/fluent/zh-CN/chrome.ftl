@@ -683,3 +683,56 @@ population-runtime-description = 房主可在对局中调整房间单位总上�
 
 loadscreen-preparing-maps = 正在准备对战地图
 loadscreen-preparing-campaign = 正在准备战役地图
+
+## AI difficulty presets
+ai-settings-tab = AI 难度
+ai-settings-preset = 官方及自定义预设
+ai-settings-official = 选择预设；官方难度需创建副本后调整。
+ai-settings-editing = 正在编辑自定义副本，保存后生效。
+ai-settings-bonuses-static = 采矿收益 / 生产速度
+ai-settings-bonuses = 采矿收益：{ $income }%    生产速度：{ $speed }%
+ai-settings-next-game = 用于后续对局；联机由房主选择，不影响当前战斗。
+ai-settings-create = 以此为基础创建 / 复制
+ai-settings-edit = 编辑 / 重命名自定义预设
+ai-settings-delete = 删除自定义预设
+ai-settings-delete-title = 删除 AI 预设
+ai-settings-delete-prompt = 删除此自定义预设？已有对局的配置会保留。
+ai-settings-default = 设为填充电脑槽位时的默认难度
+ai-settings-name = 自定义难度名称
+ai-settings-style = 打法
+ai-style-balanced = 均衡
+ai-style-defensive = 防御
+ai-style-rush = 快攻
+ai-settings-interval = 进攻间隔（秒，受可用兵力限制）
+ai-settings-wave = 每波目标兵力
+ai-settings-expansion = 扩张积极性（1–4）
+ai-settings-income = 采矿收益（%）
+ai-settings-speed = 生产速度（%）
+ai-settings-reset = 恢复基础难度参数
+ai-settings-save = 保存预设
+ai-settings-cancel = 取消编辑
+ai-settings-invalid-name = 名称不能为空或重复，最多保存 32 份预设。
+ai-settings-saved = 预设已保存，可在电脑槽位中选择。
+ai-settings-copy-name = 副本
+ai-difficulty-custom = 自定义
+ai-difficulty-beginner = 新手
+ai-difficulty-easy = 简单
+ai-difficulty-normal = 普通
+ai-difficulty-hard = 困难
+ai-difficulty-brutal = 冷酷
+ai-difficulty-expert = 专家
+ai-difficulty-master = 大师
+ai-difficulty-nightmare = 噩梦
+
+ai-settings-custom-status = 自定义（基于{ $base }）
+ai-lobby-summary-title = AI 配置详情
+ai-lobby-summary-view = 查看 AI 配置详情
+ai-lobby-summary-close = 关闭
+ai-lobby-summary-body = { $name }
+    基于{ $base } · { $style } · 进攻间隔：{ $interval } 秒
+    每波目标：{ $wave } 单位 · 扩张积极性：{ $expansion }/4
+    采矿收益：{ $income }% · 生产速度：{ $speed }%
+
+checkbox-build-tech =
+    .label = 建造拓展科技设施
+    .description = 建成作战实验室后，可建造科技机器商店、秘密科技实验室和科技电厂，每种限建一座。

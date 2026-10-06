@@ -4,7 +4,7 @@ Metadata:
 	WindowTitle: mod-windowtitle
 
 	DisplayVersion: NUKE HOUR Android 0.0.31 (Build 31)
-	Compatibility: nukehour-core-sha256-97fdb49d79e614154e72d893456dd7f9b6db749eb4a28cd1f989e7b2206c04d4
+	Compatibility: nukehour-core-sha256-721c3cb27cf0af5d41a8a8e8c3cbb9bf7031f7a4040aee3c3eebd995b771e331
 ModCredits:
 	ModTabTitle: NUKE HOUR
 	ModCreditsFile: ra2|AUTHORS
@@ -206,6 +206,7 @@ ChromeLayout:
 	ra2|chrome/settings-input.yaml
 	ra2|chrome/settings-hotkeys.yaml
 	ra2|chrome/settings-advanced.yaml
+	ra2|chrome/settings-ai.yaml
 	common|chrome/credits.yaml
 	ra2|chrome/lobby.yaml
 	common|chrome/lobby-players.yaml

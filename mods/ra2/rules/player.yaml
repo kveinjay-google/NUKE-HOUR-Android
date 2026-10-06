@@ -161,6 +161,13 @@ Player:
 	GpsWatcher:
 	Shroud:
 		FogCheckboxDisplayOrder: 3
+	LobbyPrerequisiteCheckbox@TECH_EXPANSION:
+		ID: buildtech
+		Label: checkbox-build-tech.label
+		Description: checkbox-build-tech.description
+		Enabled: False
+		DisplayOrder: 8
+		Prerequisites: global-buildtech
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
 		ID: factundeploy
 		Label: checkbox-redeployable-mcvs.label

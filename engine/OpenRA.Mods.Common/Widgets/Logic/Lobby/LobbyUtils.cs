@@ -42,6 +42,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string Slot = "options-lobby-slot.slot";
 
+		[FluentReference] const string DifficultyTitle = "ai-lobby-summary-title";
+		[FluentReference] const string DifficultyView = "ai-lobby-summary-view";
+		[FluentReference] const string DifficultyClose = "ai-lobby-summary-close";
+		[FluentReference("name", "base", "style", "interval", "wave", "expansion", "income", "speed")]
+		const string DifficultyBody = "ai-lobby-summary-body";
+
 		/// <summary>
 		/// Resolve a bot client's display name. Prefers fluent keys (stock bots),
 		/// otherwise keeps the literal ModularBot.Name (custom AI profiles).
@@ -57,17 +63,84 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return FluentProvider.GetMessage(BotPlayer);
 		}
 
+		public static string ResolveClientDisplayName(MapPreview map, Session.Client client)
+		{
+			if (client == null)
+				return "";
+			if (client.Bot == AiDifficultyCatalog.CustomBotType)
+				return DifficultyProfile(client).Name;
+			if (!client.IsBot)
+				return client.Name;
+			if (map == null && FluentProvider.TryGetMessage(client.Name, out var message))
+				return message;
+			return ResolveBotDisplayName(map, client.Name);
+		}
+
+		public static string DefaultBotCommand(string slot, int controller, IEnumerable<string> allowedTypes)
+		{
+			var types = allowedTypes.ToArray();
+			var profile = AiDifficultyPresets.Find(Game.Settings.Game.AiDefaultProfile,
+				AiDifficultyPresets.Load(Game.Settings.Game.AiCustomProfiles));
+			var custom = profile.Id.StartsWith("custom-", StringComparison.Ordinal);
+			var type = custom ? AiDifficultyCatalog.CustomBotType : AiDifficultyCatalog.BotType(profile.Id);
+			if (!types.Contains(type))
+				return types.Length == 0 ? null : $"slot_bot {slot} {controller} {types[0]}";
+			return $"slot_bot {slot} {controller} {type}" + (custom ? " " + AiDifficultyCatalog.Encode(profile) : "");
+		}
+
+		static AiDifficultyProfile DifficultyProfile(Session.Client client) => client == null ? null
+			: AiDifficultyCatalog.Resolve(client.Bot, client.BotDifficulty);
+
+		static object[] DifficultyArguments(AiDifficultyProfile profile) => new object[]
+		{
+			"name", AiDifficultySettingsLogic.DisplayName(profile),
+			"base", AiDifficultySettingsLogic.DisplayName(AiDifficultyCatalog.GetOfficial(profile.BaseDifficulty)),
+			"style", AiDifficultySettingsLogic.StyleName(profile.Style),
+			"interval", profile.AttackIntervalSeconds, "wave", profile.WaveSize,
+			"expansion", profile.Expansion, "income", profile.IncomePercent, "speed", profile.ProductionSpeedPercent
+		};
+
+		public static string DifficultySummary(Session.Client client)
+		{
+			var profile = DifficultyProfile(client);
+			return profile == null ? "" : FluentProvider.GetMessage(DifficultyBody, DifficultyArguments(profile));
+		}
+
+		public static bool DifficultySummaryHasTitle(bool isIos, IosScreenSnapshot snapshot) =>
+			!IosSettingsLayout.ForSnapshot(isIos, snapshot).IsPhone;
+
+		static void ShowDifficultySummary(Session.Client client, ModData modData)
+		{
+			var profile = DifficultyProfile(client);
+			if (profile != null)
+				ConfirmationDialogs.ButtonPrompt(modData, DifficultyTitle, DifficultyBody,
+					textArguments: DifficultyArguments(profile), onConfirm: () => { }, confirmText: DifficultyClose,
+					hideTitle: Platform.UsesMobileLayout && !DifficultySummaryHasTitle(true, IosScreenMetrics.SnapshotFor(Game.Renderer.Resolution)));
+		}
+
+		// Reuses the name-sized action control on guest rows; inspection never depends on ready/admin state.
+		public static void BindDifficultyInspection(DropDownButtonWidget button, Action show)
+		{
+			button.IsVisible = () => true;
+			button.IsDisabled = () => false;
+			button.HideArrow = true;
+			button.OnMouseDown = _ => { };
+			button.OnClick = show;
+		}
+
 		sealed class SlotDropDownOption
 		{
 			public readonly string Title;
 			public readonly string Order;
 			public readonly Func<bool> Selected;
+			public readonly Action Action;
 
-			public SlotDropDownOption(string title, string order, Func<bool> selected)
+			public SlotDropDownOption(string title, string order, Func<bool> selected, Action action = null)
 			{
 				Title = title;
 				Order = order;
 				Selected = selected;
+				Action = action;
 			}
 		}
 
@@ -87,16 +160,34 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			};
 
-			var bots = new List<SlotDropDownOption>();
-			if (slot.AllowBots)
-			{
-				foreach (var b in map.PlayerActorInfo.TraitInfos<IBotInfo>())
+			if (DifficultyProfile(client) != null)
+				options.Add(FluentProvider.GetMessage(DifficultyTitle), new[]
 				{
-					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
-					bots.Add(new SlotDropDownOption(map.GetMessage(b.Name),
+					new SlotDropDownOption(FluentProvider.GetMessage(DifficultyView), null, () => false,
+						() => ShowDifficultySummary(client, modData))
+				});
+
+			var bots = new List<SlotDropDownOption>();
+			var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
+			if (slot.AllowBots && botController != null)
+			{
+				var infos = map.PlayerActorInfo.TraitInfos<IBotInfo>().ToArray();
+				var hasDifficulties = infos.Any(b => AiDifficultyCatalog.IsOfficialBotType(b.Type));
+				foreach (var b in infos.Where(b => !hasDifficulties || AiDifficultyCatalog.IsOfficialBotType(b.Type)))
+				{
+					bots.Add(new SlotDropDownOption(ResolveBotDisplayName(map, b.Name),
 						$"slot_bot {slot.PlayerReference} {botController.Index} {b.Type}",
 						() => client != null && client.Bot == b.Type));
 				}
+
+				if (hasDifficulties && infos.Any(b => b.Type == AiDifficultyCatalog.CustomBotType))
+					foreach (var profile in AiDifficultyPresets.Load(Game.Settings.Game.AiCustomProfiles))
+					{
+						var encoded = AiDifficultyCatalog.Encode(profile);
+						bots.Add(new SlotDropDownOption(profile.Name,
+							$"slot_bot {slot.PlayerReference} {botController.Index} {AiDifficultyCatalog.CustomBotType} {encoded}",
+							() => client != null && client.BotDifficulty == encoded));
+					}
 			}
 
 			options.Add(bots.Count > 0 ? FluentProvider.GetMessage(Bots) : FluentProvider.GetMessage(BotsDisabled), bots);
@@ -105,7 +196,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					o.Selected,
-					() => orderManager.IssueOrder(Order.Command(o.Order)));
+					() =>
+					{
+						if (o.Action != null) o.Action();
+						else orderManager.IssueOrder(Order.Command(o.Order));
+					});
 				item.Get<LabelWidget>("LABEL").GetText = () => o.Title;
 				return item;
 			}
@@ -498,13 +593,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var clientName = new CachedTransform<MapStatus, string>(s =>
 			{
-				var name = c.IsBot ? ResolveBotDisplayName(map, c.Name) : c.Name;
+				var name = ResolveClientDisplayName(map, c);
 				return WidgetUtils.TruncateText(name, label.Bounds.Width, font);
 			});
 
 			label.GetText = () => clientName.Update(map.Status);
 
 			SetupProfileWidget(parent, c, orderManager, worldRenderer);
+			var inspection = parent.GetOrNull<DropDownButtonWidget>("PLAYER_ACTION");
+			if (DifficultyProfile(c) != null && inspection != null)
+			{
+				BindDifficultyInspection(inspection, () => ShowDifficultySummary(c, Game.ModData));
+				inspection.GetText = label.GetText;
+				inspection.Align = TextAlign.Center;
+				inspection.LeftMargin = inspection.RightMargin = 5;
+				label.IsVisible = () => false;
+				HideChildWidget(parent, "PROFILE");
+				HideChildWidget(parent, "PROFILE_TOOLTIP");
+			}
+			else if (inspection != null)
+				inspection.IsVisible = () => false;
 		}
 
 		public static void SetupEditableSlotWidget(Widget parent, Session.Slot s, Session.Client c,
@@ -516,8 +624,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				slot.Align = TextAlign.Center;
 				slot.LeftMargin = slot.RightMargin = 5;
 			}
+			var hasDifficulty = DifficultyProfile(c) != null;
 			slot.IsVisible = () => true;
-			slot.IsDisabled = () => orderManager.LocalClient.IsReady;
+			slot.IsDisabled = () => orderManager.LocalClient.IsReady && !hasDifficulty;
 
 			var truncated = new CachedTransform<string, string>(name =>
 				WidgetUtils.TruncateText(name, slot.Bounds.Width - slot.Bounds.Height - slot.LeftMargin - slot.RightMargin,
@@ -528,17 +637,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var clientName = new CachedTransform<MapStatus, string>(s =>
 			{
-				if (c.IsBot)
-					return ResolveBotDisplayName(map, c.Name);
-
-				return c.Name;
+				return ResolveClientDisplayName(map, c);
 			});
 
 			slot.GetText = () => truncated.Update(c != null ?
 				clientName.Update(map.Status)
 				: s.Closed ? closed : open);
 
-			slot.OnMouseDown = _ => ShowSlotDropDown(slot, s, c, orderManager, map, modData);
+			void OpenSlot()
+			{
+				if (orderManager.LocalClient.IsReady && hasDifficulty)
+					ShowDifficultySummary(c, modData);
+				else
+					ShowSlotDropDown(slot, s, c, orderManager, map, modData);
+			}
+			slot.OnMouseDown = _ => OpenSlot();
+			slot.OnKeyPress = _ => OpenSlot();
 
 			// Ensure Name selector (if present) is hidden
 			HideChildWidget(parent, "NAME");
@@ -555,10 +669,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (c == null)
 					return s.Closed ? FluentProvider.GetMessage(Closed) : FluentProvider.GetMessage(Open);
 
-				if (c.IsBot)
-					return FluentProvider.TryGetMessage(c.Name, out var message) ? message : c.Name;
-
-				return c.Name;
+				return ResolveClientDisplayName(null, c);
 			};
 
 			// Ensure Slot selector (if present) is hidden
